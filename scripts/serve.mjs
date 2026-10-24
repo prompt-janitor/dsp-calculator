@@ -5,6 +5,7 @@ import { createServer } from 'node:http';
 import { readFile, stat } from 'node:fs/promises';
 import { join, extname, normalize, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { gzipSync } from 'node:zlib';
 
 const base = '/dsp-calculator/';
 const types = {
@@ -33,9 +34,16 @@ export function serveDir(getRoot, port) {
     }
     try {
       if ((await stat(file)).isDirectory()) file = join(file, 'index.html');
-      const body = await readFile(file);
+      let body = await readFile(file);
+      const type = types[extname(file)] || 'application/octet-stream';
       // no-cache matches how Pages revalidates, so the service worker sees new builds.
-      res.writeHead(200, { 'Content-Type': types[extname(file)] || 'application/octet-stream', 'Cache-Control': 'no-cache' });
+      const headers = { 'Content-Type': type, 'Cache-Control': 'no-cache', Vary: 'Accept-Encoding' };
+      // Pages gzips text files, so Lighthouse sees the same sizes here.
+      if (/text|javascript|json/.test(type) && /\bgzip\b/.test(req.headers['accept-encoding'] || '')) {
+        body = gzipSync(body);
+        headers['Content-Encoding'] = 'gzip';
+      }
+      res.writeHead(200, headers);
       res.end(req.method === 'HEAD' ? undefined : body);
     } catch {
       res.writeHead(404);

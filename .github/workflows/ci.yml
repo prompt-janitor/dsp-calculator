@@ -20,8 +20,7 @@ jobs:
       - run: npm ci
       - run: npm test
       - run: npm run build
-      # Copy lint goes here once the copy is clean:
-      # - run: npm run lint:copy -- --strict
+      - run: npm run lint:copy -- --strict
 
   e2e:
     runs-on: ubuntu-latest

@@ -1,14 +1,13 @@
-// Flags AI-style writing tics ("Claudisms") in docs, UI copy and code comments.
-// Usage: npm run lint:copy            (report)
-//        npm run lint:copy -- --strict (exit 1 on any hit, for CI)
-// Put `copy-ok` on a line to silence it when the wording is deliberate.
-// The rules are described in docs/STYLE.md.
+// Flags common AI writing tics in docs, UI copy and code comments.
+// Usage: npm run lint:copy              (report)
+//        npm run lint:copy -- --strict  (exit 1 on any hit, for CI)
+// Put `copy-ok` on a line to skip it when the wording is on purpose.
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { join, relative, extname, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
-const SKIP_DIRS = new Set(['node_modules', 'dist', '.git', 'assets', 'reference']);
+const SKIP_DIRS = new Set(['node_modules', 'dist', '.git', 'assets', 'reference', 'test-results', 'playwright-report']);
 const SKIP_FILES = new Set(['docs/STYLE.md', 'scripts/lint-copy.mjs', 'src/data/recipes.json']);
 const EXTS = new Set(['.md', '.html', '.js', '.mjs', '.cjs', '.css', '.yml', '.webmanifest']);
 

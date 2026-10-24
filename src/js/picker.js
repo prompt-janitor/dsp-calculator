@@ -51,7 +51,17 @@ function renderGrid() {
   $('#pickGrid').innerHTML = html || `<p class="hintp no-match">No item matches “${esc(query)}”.</p>`;
 }
 
+// The height the on-screen keyboard covers, so the picker dialog can end above it.
+function trackKeyboard() {
+  const view = window.visualViewport;
+  if (!view) return;
+  const set = () => document.documentElement.style.setProperty('--kb', Math.max(0, window.innerHeight - view.height) + 'px');
+  view.addEventListener('resize', set);
+  set();
+}
+
 export function wirePicker() {
+  trackKeyboard();
   $('#pickSearch').addEventListener('input', renderGrid);
   $('#pickCats').addEventListener('click', (e) => {
     const chip = e.target.closest('[data-cat]');

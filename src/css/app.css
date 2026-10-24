@@ -193,7 +193,9 @@ a.row { color: inherit; text-decoration: none; }
 .tier .lab { font-size: 13px; color: var(--muted); margin-bottom: 8px; }
 .tiers { display: grid; grid-template-columns: repeat(var(--n, 3), minmax(0, 1fr)); gap: 8px; }
 .topt { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 8px 4px 7px; border-radius: 12px; border: 1px solid var(--line); background: var(--panel2);
-  font-size: 12.5px; font-weight: 500; line-height: 1.15; text-align: center; min-height: 72px; justify-content: center; }
+  font-size: 12.5px; font-weight: 500; line-height: 1.15; text-align: center; min-height: 72px; justify-content: flex-start; }
+.topt span { -webkit-hyphens: auto; hyphens: auto; }
+.topt.long span { font-size: 10.5px; }
 .topt small { font: 11px var(--f-mono); color: var(--muted); }
 .topt[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
 .topt[aria-pressed="true"] small { color: var(--accent); }
@@ -305,7 +307,7 @@ a.row { color: inherit; text-decoration: none; }
 .selrow + .selrow::before { content: ""; position: absolute; top: 0; left: 14px; right: 0; border-top: 1px solid var(--sep); }
 .selrow > span { flex: none; width: 96px; color: var(--muted); font-size: 14px; }
 .selrow select { flex: 1; min-width: 0; appearance: none; -webkit-appearance: none; background: transparent; border: 0; text-align: right; text-align-last: right;
-  font-size: 16px; color: var(--accent); padding: 12px 18px 12px 0; background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%), linear-gradient(-45deg, transparent 50%, var(--muted) 50%);
+  font-size: 16px; color: var(--accent); padding: 12px 18px 12px 0; text-overflow: ellipsis; white-space: nowrap; overflow: hidden; background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%), linear-gradient(-45deg, transparent 50%, var(--muted) 50%);
   background-size: 5px 5px; background-position: right 7px center, right 2px center; background-repeat: no-repeat; }
 .hintp { font-size: 13px; color: var(--muted); margin: 8px 4px 0; }
 .hintp.no-match { padding: 20px 0; text-align: center; }
@@ -378,8 +380,22 @@ textarea { width: 100%; min-height: 240px; border-radius: 12px; border: 1px soli
   .sheet.inspector .grab::before { display: none; }
   .sheet.inspector .grab { padding-top: 14px; cursor: default; }
   .sheet.inspector .sh-body { padding-bottom: calc(var(--sab) + 18px); }
+  .sheet.inspector .sh-head h3, .sheet.inspector .sh-head h3 small { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .selrow > span { width: 80px; }
   .sheet.picker, .sheet.export { left: calc(var(--rail-w) + var(--sal)); padding-left: 0; }
   .picker { height: calc(100% - var(--sat) - 8px); }
+  /* Little height is left, so the picker puts search and Cancel in one row
+     and the share sheet keeps its buttons on screen. */
+  .picker .grab { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0 8px; align-items: center; padding-top: 8px; }
+  .picker .grab::before { display: none; }
+  .picker .sh-head { display: contents; }
+  .picker .sh-head h3 { display: none; }
+  .picker .search { grid-area: 1 / 1; margin-top: 0; }
+  .picker .chips { grid-column: 1 / -1; padding-top: 6px; }
+  .export .grab::before { display: none; }
+  .export .grab { padding-top: 10px; }
+  textarea { min-height: 72px; height: calc(100vh - 290px); }
+  .export .sh-actions { position: sticky; bottom: 0; background: var(--panel); padding: 8px 0; margin-top: 4px; }
   .toast { left: calc(50% + var(--rail-w) / 2); bottom: calc(var(--sab) + 12px); }
 }
 
@@ -413,13 +429,24 @@ textarea { width: 100%; min-height: 240px; border-radius: 12px; border: 1px soli
   .bsec { display: block !important; }
   #buildBody { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); align-content: start; gap: 0 4px; padding: 0 8px calc(var(--sab) + 28px); }
   #buildBody > .warnbox { grid-column: 1 / -1; }
-  textarea { font-size: 13px; }
   .sheet.picker, .sheet.export { left: 50%; top: 50%; bottom: auto; width: min(760px, calc(100% - 64px)); height: min(720px, calc(100% - 64px)); border-radius: 18px;
     transform: translate(-50%, -45%); opacity: 0; transition: transform .25s, opacity .2s; pointer-events: none; --drag: 0; }
   .sheet.picker.on, .sheet.export.on { transform: translate(-50%, -50%); opacity: 1; pointer-events: auto; }
   .sheet.picker .grab::before, .sheet.export .grab::before { display: none; }
   .sheet.picker .grab, .sheet.export .grab { padding-top: 16px; cursor: default; }
   .igrid { grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); }
+}
+
+/* A smaller plan code with a mouse. Touch screens keep 16 px, or iOS zooms on focus. */
+@media (min-width: 600px) and (min-height: 500px) and (pointer: fine) {
+  textarea { font-size: 13px; }
+}
+
+/* The keyboard covers the lower part of the screen, so on touch screens the
+   item picker sits near the top instead of in the middle. */
+@media (min-width: 600px) and (min-height: 500px) and (pointer: coarse) {
+  .sheet.picker { top: calc(var(--sat) + 24px); transform: translate(-50%, 4%); height: min(720px, calc(100% - var(--sat) - 48px - var(--kb, 0px))); }
+  .sheet.picker.on { transform: translate(-50%, 0); }
 }
 
 /* Narrow split view (iPad in portrait): step details as a sheet under the map. */
@@ -434,6 +461,10 @@ textarea { width: 100%; min-height: 240px; border-radius: 12px; border: 1px soli
   /* The sidebar is too narrow for the rate field next to the item icon. */
   .target .pick { grid-row: auto; }
   .target .stepper { grid-column: 1 / -1; }
+  /* Two lines, so long names such as Assembling Machine Mk.III can be told apart. */
+  .target .nm span { white-space: normal; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+  /* The sidebar tiles already show these numbers. */
+  #miniStats { visibility: hidden; }
   .sheet.inspector { left: calc(var(--side-w) + var(--sal)); max-height: 50%; padding-left: 0; }
   .sheet.inspector .sh-body { padding-bottom: calc(var(--sab) + 18px); }
 }

@@ -28,7 +28,7 @@ export const CLASS_COLOR = {
 };
 export const TIER_LABEL = {
   'arc-smelter': 'Arc', 'plane-smelter': 'Plane', 'df-negentropy-smelter': 'Negentropy',
-  'assembling-machine-1': 'Mk.I', 'assembling-machine-2': 'Mk.II', 'assembling-machine-3': 'Mk.III', 'df-recomposing-assembler': 'Re-composing',
+  'assembling-machine-1': 'Mk.I', 'assembling-machine-2': 'Mk.II', 'assembling-machine-3': 'Mk.III', 'df-recomposing-assembler': 'Recomposing',
   'chemical-plant': 'Chemical', 'quantum-chemical-plant': 'Quantum', 'matrix-lab': 'Matrix', 'df-self-evolution-lab': 'Self-evolution',
   'mining-machine': 'Standard', 'advanced-mining-machine': 'Advanced'
 };

@@ -21,7 +21,9 @@ const chevron = () => svg('i-chev', 18, 'chev');
 
 // One choice in a row of tiers. attrs holds the data attributes that say what it sets.
 function tierButton(attrs, pressed, iconHTML, label, note) {
-  return `<button type="button" class="topt" ${attrs} aria-pressed="${pressed}">${iconHTML}<span>${esc(label)}</span>${sub(note)}</button>`;
+  // Long names such as Recomposing get a smaller font, so they fit the narrow cards on one line.
+  const cls = label.length > 10 ? 'topt long' : 'topt';
+  return `<button type="button" class="${cls}" ${attrs} aria-pressed="${pressed}">${iconHTML}<span>${esc(label)}</span>${sub(note)}</button>`;
 }
 
 const tierRow = (label, buttons, n) => `

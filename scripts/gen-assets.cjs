@@ -35,15 +35,20 @@ body{margin:0;width:${w}px;height:${h}px;background:#0a1117;display:grid;place-i
 .c{display:flex;flex-direction:column;align-items:center;gap:${Math.round(s * 0.03)}px}
 b{font-weight:600;font-size:${Math.max(15, Math.round(s * 0.05))}px;letter-spacing:.14em;text-transform:uppercase}
 small{font:${Math.max(11, Math.round(s * 0.032))}px -apple-system,system-ui,sans-serif;color:#8ea2b2;letter-spacing:0}
-</style></head><body><div class="c">${ART(Math.round(s * 0.36))}<b>Dyson Sphere Calculator</b></div></body></html>`;
+</style></head><body><div class="c">${ART(Math.round(s * 0.36))}<b>DSP Calculator</b></div></body></html>`;
 };
 
-// CSS points and pixel ratio for current iPhones and iPads
+// CSS points and pixel ratio for current iPhones and iPads. Sizes that
+// several models share are listed once: 402x874 is also the iPhone 17 and
+// 17 Pro, 440x956 the 17 Pro Max, 390x844 the 17e, 1032x1376 the iPad Pro
+// 13 (M4, M5), 1024x1366 the iPad Air 13, 820x1180 the iPad Air 11 and iPad (A16).
+// The iPhone Duo is the size the iOS Simulator gives it when open.
 const DEVICES = [
   ['iphone-16-pro-max', 440, 956, 3], ['iphone-16-pro', 402, 874, 3], ['iphone-15-16', 393, 852, 3], ['iphone-plus-pro-max', 430, 932, 3],
+  ['iphone-air', 420, 912, 3], ['iphone-duo', 466, 678, 3, ['portrait', 'landscape']],
   ['iphone-12-14', 390, 844, 3], ['iphone-13-pro-max', 428, 926, 3], ['iphone-mini-x', 375, 812, 3], ['iphone-se', 375, 667, 2],
-  ['ipad-pro-13-m4', 1032, 1376, 2], ['ipad-pro-12-9', 1024, 1366, 2], ['ipad-pro-11', 834, 1194, 2], ['ipad-air-11', 820, 1180, 2],
-  ['ipad-mini', 744, 1133, 2], ['ipad-10-2', 810, 1080, 2]
+  ['ipad-pro-13-m4', 1032, 1376, 2], ['ipad-pro-12-9', 1024, 1366, 2], ['ipad-pro-11-m4', 834, 1210, 2], ['ipad-pro-11', 834, 1194, 2],
+  ['ipad-air-11', 820, 1180, 2], ['ipad-mini', 744, 1133, 2], ['ipad-10-2', 810, 1080, 2]
 ];
 
 (async () => {
@@ -58,8 +63,8 @@ const DEVICES = [
     await p.close();
   }
   const links = [];
-  for (const [name, w, h, dpr] of DEVICES) {
-    const orients = name.startsWith('ipad') ? ['portrait', 'landscape'] : ['portrait'];
+  for (const [name, w, h, dpr, both] of DEVICES) {
+    const orients = both || (name.startsWith('ipad') ? ['portrait', 'landscape'] : ['portrait']);
     for (const o of orients) {
       const vw = o === 'portrait' ? w : h, vh = o === 'portrait' ? h : w;
       const ctx = await b.newContext({ viewport: { width: vw, height: vh }, deviceScaleFactor: dpr });

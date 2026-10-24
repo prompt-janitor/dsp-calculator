@@ -1,0 +1,68 @@
+{
+ "ok": true,
+ "iterations": 1,
+ "nodes": {
+  "hydrogen": {
+   "item": "hydrogen",
+   "recipe": "gas-giant-hydrogen",
+   "machine": "orbital-collector",
+   "machineData": "orbital-collector",
+   "spray": null,
+   "runs": 1.3020833333333335,
+   "kind": "source",
+   "machineCount": 2.3674242424242427,
+   "built": 3,
+   "outRate": {
+    "hydrogen": 10
+   },
+   "inRate": {},
+   "power": 0,
+   "powerAvg": 0
+  },
+  "__target_hydrogen": {
+   "item": "hydrogen",
+   "kind": "target",
+   "rate": 10,
+   "id": "__target_hydrogen"
+  }
+ },
+ "edges": [
+  {
+   "from": "hydrogen",
+   "to": "__target_hydrogen",
+   "item": "hydrogen",
+   "flow": 10,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.3333333333333333
+  }
+ ],
+ "totals": {
+  "power": 0,
+  "built": {
+   "orbital-collector": 3
+  },
+  "machineCount": {
+   "orbital-collector": 2.3674242424242427
+  },
+  "belts": 1,
+  "beltsByItem": {
+   "hydrogen": 1
+  },
+  "raw": {
+   "hydrogen": 10
+  },
+  "surplus": {},
+  "proliferator": {}
+ },
+ "demand": {
+  "hydrogen": 10
+ },
+ "supply": {},
+ "beltCapacity": 30,
+ "order": [
+  "hydrogen"
+ ]
+}

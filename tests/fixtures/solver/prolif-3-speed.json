@@ -1,0 +1,1275 @@
+{
+ "ok": true,
+ "iterations": 65,
+ "nodes": {
+  "information-matrix": {
+   "item": "information-matrix",
+   "recipe": "information-matrix",
+   "machine": "matrix-lab",
+   "machineData": "matrix-lab",
+   "spray": {
+    "level": 3,
+    "mode": "speed",
+    "item": "proliferator-3",
+    "sprays": 60,
+    "productivity": 0,
+    "speed": 1,
+    "consumption": 1.5
+   },
+   "runs": 1,
+   "kind": "craft",
+   "machineCount": 5,
+   "built": 5,
+   "outRate": {
+    "information-matrix": 1
+   },
+   "inRate": {
+    "particle-broadband": 1,
+    "processor": 2
+   },
+   "power": 6000,
+   "powerAvg": 6000
+  },
+  "proliferator-3": {
+   "item": "proliferator-3",
+   "recipe": "proliferator-3",
+   "machine": "assembling-machine-3",
+   "machineData": "assembling-machine-3",
+   "spray": null,
+   "runs": 2.160919540106509,
+   "kind": "craft",
+   "machineCount": 2.8812260534753453,
+   "built": 3,
+   "outRate": {
+    "proliferator-3": 2.160919540106509
+   },
+   "inRate": {
+    "carbon-nanotube": 2.160919540106509,
+    "proliferator-2": 4.321839080213018
+   },
+   "power": 3240,
+   "powerAvg": 3111.724137753373
+  },
+  "proliferator-2": {
+   "item": "proliferator-2",
+   "recipe": "proliferator-2",
+   "machine": "assembling-machine-3",
+   "machineData": "assembling-machine-3",
+   "spray": null,
+   "runs": 4.321839080102113,
+   "kind": "craft",
+   "machineCount": 2.881226053401409,
+   "built": 3,
+   "outRate": {
+    "proliferator-2": 4.321839080102113
+   },
+   "inRate": {
+    "diamond": 4.321839080102113,
+    "proliferator-1": 8.643678160204226
+   },
+   "power": 3240,
+   "powerAvg": 3111.7241376735215
+  },
+  "proliferator-1": {
+   "item": "proliferator-1",
+   "recipe": "proliferator-1",
+   "machine": "assembling-machine-3",
+   "machineData": "assembling-machine-3",
+   "spray": null,
+   "runs": 8.643678159882558,
+   "kind": "craft",
+   "machineCount": 2.8812260532941862,
+   "built": 3,
+   "outRate": {
+    "proliferator-1": 8.643678159882558
+   },
+   "inRate": {
+    "coal": 8.643678159882558
+   },
+   "power": 3240,
+   "powerAvg": 3111.724137557721
+  },
+  "coal": {
+   "item": "coal",
+   "recipe": "coal-vein",
+   "machine": "mining-machine",
+   "machineData": "mining-machine",
+   "spray": null,
+   "runs": 38.01149424674111,
+   "kind": "source",
+   "machineCount": 9.502873561685277,
+   "built": 10,
+   "outRate": {
+    "coal": 38.01149424674111
+   },
+   "inRate": {},
+   "power": 0,
+   "powerAvg": 0
+  },
+  "diamond": {
+   "item": "diamond",
+   "recipe": "diamond",
+   "machine": "plane-smelter",
+   "machineData": "plane-smelter",
+   "spray": {
+    "level": 3,
+    "mode": "speed",
+    "item": "proliferator-3",
+    "sprays": 60,
+    "productivity": 0,
+    "speed": 1,
+    "consumption": 1.5
+   },
+   "runs": 4.321839079941279,
+   "kind": "craft",
+   "machineCount": 2.1609195399706396,
+   "built": 3,
+   "outRate": {
+    "diamond": 4.321839079941279
+   },
+   "inRate": {
+    "energetic-graphite": 4.321839079941279
+   },
+   "power": 10800,
+   "powerAvg": 7779.310343894303
+  },
+  "energetic-graphite": {
+   "item": "energetic-graphite",
+   "recipe": "energetic-graphite",
+   "machine": "plane-smelter",
+   "machineData": "plane-smelter",
+   "spray": {
+    "level": 3,
+    "mode": "speed",
+    "item": "proliferator-3",
+    "sprays": 60,
+    "productivity": 0,
+    "speed": 1,
+    "consumption": 1.5
+   },
+   "runs": 14.683908044379915,
+   "kind": "craft",
+   "machineCount": 7.341954022189958,
+   "built": 8,
+   "outRate": {
+    "energetic-graphite": 14.683908044379915
+   },
+   "inRate": {
+    "coal": 29.36781608875983
+   },
+   "power": 28800,
+   "powerAvg": 26431.03447988385
+  },
+  "carbon-nanotube": {
+   "item": "carbon-nanotube",
+   "recipe": "carbon-nanotube",
+   "machine": "chemical-plant",
+   "machineData": "chemical-plant",
+   "spray": {
+    "level": 3,
+    "mode": "speed",
+    "item": "proliferator-3",
+    "sprays": 60,
+    "productivity": 0,
+    "speed": 1,
+    "consumption": 1.5
+   },
+   "runs": 2.080459770025528,
+   "kind": "craft",
+   "machineCount": 4.160919540051056,
+   "built": 5,
+   "outRate": {
+    "carbon-nanotube": 4.160919540051056
+   },
+   "inRate": {
+    "graphene": 6.241379310076584,
+    "titanium-ingot": 2.080459770025528
+   },
+   "power": 9000,
+   "powerAvg": 7489.6551720919015
+  },
+  "titanium-ingot": {
+   "item": "titanium-ingot",
+   "recipe": "titanium-ingot",
+   "machine": "plane-smelter",
+   "machineData": "plane-smelter",
+   "spray": {
+    "level": 3,
+    "mode": "speed",
+    "item": "proliferator-3",
+    "sprays": 60,
+    "productivity": 0,
+    "speed": 1,
+    "consumption": 1.5
+   },
+   "runs": 2.08045976998532,
+   "kind": "craft",
+   "machineCount": 1.04022988499266,
+   "built": 2,
+   "outRate": {
+    "titanium-ingot": 2.08045976998532
+   },
+   "inRate": {
+    "titanium-ore": 4.16091953997064
+   },
+   "power": 7200,
+   "powerAvg": 3744.8275859735754
+  },
+  "titanium-ore": {
+   "item": "titanium-ore",
+   "recipe": "titanium-vein",
+   "machine": "mining-machine",
+   "machineData": "mining-machine",
+   "spray": null,
+   "runs": 4.160919539854097,
+   "kind": "source",
+   "machineCount": 1.0402298849635243,
+   "built": 2,
+   "outRate": {
+    "titanium-ore": 4.160919539854097
+   },
+   "inRate": {},
+   "power": 0,
+   "powerAvg": 0
+  },
+  "graphene": {
+   "item": "graphene",
+   "recipe": "graphene",
+   "machine": "chemical-plant",
+   "machineData": "chemical-plant",
+   "spray": {
+    "level": 3,
+    "mode": "speed",
+    "item": "proliferator-3",
+    "sprays": 60,
+    "productivity": 0,
+    "speed": 1,
+    "consumption": 1.5
+   },
+   "runs": 3.12068965497798,
+   "kind": "craft",
+   "machineCount": 4.68103448246697,
+   "built": 5,
+   "outRate": {
+    "graphene": 6.24137930995596
+   },
+   "inRate": {
+    "energetic-graphite": 9.36206896493394,
+    "sulfuric-acid": 3.12068965497798
+   },
+   "power": 9000,
+   "powerAvg": 8425.862068440545
+  },
+  "sulfuric-acid": {
+   "item": "sulfuric-acid",
+   "recipe": "sulphuric-acid-vein",
+   "machine": "water-pump",
+   "machineData": "water-pump",
+   "spray": null,
+   "runs": 3.120689654890573,
+   "kind": "source",
+   "machineCount": 3.7448275858686872,
+   "built": 4,
+   "outRate": {
+    "sulfuric-acid": 3.120689654890573
+   },
+   "inRate": {},
+   "power": 1200,
+   "powerAvg": 1123.448275760606
+  },
+  "processor": {
+   "item": "processor",
+   "recipe": "processor",
+   "machine": "assembling-machine-3",
+   "machineData": "assembling-machine-3",
+   "spray": {
+    "level": 3,
+    "mode": "speed",
+    "item": "proliferator-3",
+    "sprays": 60,
+    "productivity": 0,
+    "speed": 1,
+    "consumption": 1.5
+   },
+   "runs": 2,
+   "kind": "craft",
+   "machineCount": 2,
+   "built": 2,
+   "outRate": {
+    "processor": 2
+   },
+   "inRate": {
+    "circuit-board": 4,
+    "microcrystalline-component": 4
+   },
+   "power": 5400,
+   "powerAvg": 5400
+  },
+  "microcrystalline-component": {
+   "item": "microcrystalline-component",
+   "recipe": "microcrystalline-component",
+   "machine": "assembling-machine-3",
+   "machineData": "assembling-machine-3",
+   "spray": {
+    "level": 3,
+    "mode": "speed",
+    "item": "proliferator-3",
+    "sprays": 60,
+    "productivity": 0,
+    "speed": 1,
+    "consumption": 1.5
+   },
+   "runs": 4,
+   "kind": "craft",
+   "machineCount": 2.6666666666666665,
+   "built": 3,
+   "outRate": {
+    "microcrystalline-component": 4
+   },
+   "inRate": {
+    "copper-ingot": 4,
+    "high-purity-silicon": 8
+   },
+   "power": 8100,
+   "powerAvg": 7200
+  },
+  "high-purity-silicon": {
+   "item": "high-purity-silicon",
+   "recipe": "high-purity-silicon",
+   "machine": "plane-smelter",
+   "machineData": "plane-smelter",
+   "spray": {
+    "level": 3,
+    "mode": "speed",
+    "item": "proliferator-3",
+    "sprays": 60,
+    "productivity": 0,
+    "speed": 1,
+    "consumption": 1.5
+   },
+   "runs": 10,
+   "kind": "craft",
+   "machineCount": 5,
+   "built": 5,
+   "outRate": {
+    "high-purity-silicon": 10
+   },
+   "inRate": {
+    "silicon-ore": 20
+   },
+   "power": 18000,
+   "powerAvg": 18000
+  },
+  "silicon-ore": {
+   "item": "silicon-ore",
+   "recipe": "silicium-vein",
+   "machine": "mining-machine",
+   "machineData": "mining-machine",
+   "spray": null,
+   "runs": 20,
+   "kind": "source",
+   "machineCount": 5,
+   "built": 5,
+   "outRate": {
+    "silicon-ore": 20
+   },
+   "inRate": {},
+   "power": 0,
+   "powerAvg": 0
+  },
+  "copper-ingot": {
+   "item": "copper-ingot",
+   "recipe": "copper-ingot",
+   "machine": "plane-smelter",
+   "machineData": "plane-smelter",
+   "spray": {
+    "level": 3,
+    "mode": "speed",
+    "item": "proliferator-3",
+    "sprays": 60,
+    "productivity": 0,
+    "speed": 1,
+    "consumption": 1.5
+   },
+   "runs": 6,
+   "kind": "craft",
+   "machineCount": 1.5,
+   "built": 2,
+   "outRate": {
+    "copper-ingot": 6
+   },
+   "inRate": {
+    "copper-ore": 6
+   },
+   "power": 7200,
+   "powerAvg": 5400
+  },
+  "copper-ore": {
+   "item": "copper-ore",
+   "recipe": "copper-vein",
+   "machine": "mining-machine",
+   "machineData": "mining-machine",
+   "spray": null,
+   "runs": 6,
+   "kind": "source",
+   "machineCount": 1.5,
+   "built": 2,
+   "outRate": {
+    "copper-ore": 6
+   },
+   "inRate": {},
+   "power": 0,
+   "powerAvg": 0
+  },
+  "circuit-board": {
+   "item": "circuit-board",
+   "recipe": "circuit-board",
+   "machine": "assembling-machine-3",
+   "machineData": "assembling-machine-3",
+   "spray": {
+    "level": 3,
+    "mode": "speed",
+    "item": "proliferator-3",
+    "sprays": 60,
+    "productivity": 0,
+    "speed": 1,
+    "consumption": 1.5
+   },
+   "runs": 2,
+   "kind": "craft",
+   "machineCount": 0.6666666666666666,
+   "built": 1,
+   "outRate": {
+    "circuit-board": 4
+   },
+   "inRate": {
+    "copper-ingot": 2,
+    "iron-ingot": 4
+   },
+   "power": 2700,
+   "powerAvg": 1800
+  },
+  "iron-ingot": {
+   "item": "iron-ingot",
+   "recipe": "iron-ingot",
+   "machine": "plane-smelter",
+   "machineData": "plane-smelter",
+   "spray": {
+    "level": 3,
+    "mode": "speed",
+    "item": "proliferator-3",
+    "sprays": 60,
+    "productivity": 0,
+    "speed": 1,
+    "consumption": 1.5
+   },
+   "runs": 4,
+   "kind": "craft",
+   "machineCount": 1,
+   "built": 1,
+   "outRate": {
+    "iron-ingot": 4
+   },
+   "inRate": {
+    "iron-ore": 4
+   },
+   "power": 3600,
+   "powerAvg": 3600
+  },
+  "iron-ore": {
+   "item": "iron-ore",
+   "recipe": "iron-vein",
+   "machine": "mining-machine",
+   "machineData": "mining-machine",
+   "spray": null,
+   "runs": 4,
+   "kind": "source",
+   "machineCount": 1,
+   "built": 1,
+   "outRate": {
+    "iron-ore": 4
+   },
+   "inRate": {},
+   "power": 0,
+   "powerAvg": 0
+  },
+  "particle-broadband": {
+   "item": "particle-broadband",
+   "recipe": "particle-broadband",
+   "machine": "assembling-machine-3",
+   "machineData": "assembling-machine-3",
+   "spray": {
+    "level": 3,
+    "mode": "speed",
+    "item": "proliferator-3",
+    "sprays": 60,
+    "productivity": 0,
+    "speed": 1,
+    "consumption": 1.5
+   },
+   "runs": 1,
+   "kind": "craft",
+   "machineCount": 2.6666666666666665,
+   "built": 3,
+   "outRate": {
+    "particle-broadband": 1
+   },
+   "inRate": {
+    "carbon-nanotube": 2,
+    "crystal-silicon": 2,
+    "plastic": 1
+   },
+   "power": 8100,
+   "powerAvg": 7200
+  },
+  "plastic": {
+   "item": "plastic",
+   "recipe": "plastic",
+   "machine": "chemical-plant",
+   "machineData": "chemical-plant",
+   "spray": {
+    "level": 3,
+    "mode": "speed",
+    "item": "proliferator-3",
+    "sprays": 60,
+    "productivity": 0,
+    "speed": 1,
+    "consumption": 1.5
+   },
+   "runs": 1,
+   "kind": "craft",
+   "machineCount": 1.5,
+   "built": 2,
+   "outRate": {
+    "plastic": 1
+   },
+   "inRate": {
+    "energetic-graphite": 1,
+    "refined-oil": 2
+   },
+   "power": 3600,
+   "powerAvg": 2700
+  },
+  "refined-oil": {
+   "item": "refined-oil",
+   "recipe": "plasma-refining",
+   "machine": "oil-refinery",
+   "machineData": "oil-refinery",
+   "spray": {
+    "level": 3,
+    "mode": "speed",
+    "item": "proliferator-3",
+    "sprays": 60,
+    "productivity": 0,
+    "speed": 1,
+    "consumption": 1.5
+   },
+   "runs": 1,
+   "kind": "craft",
+   "machineCount": 2,
+   "built": 2,
+   "outRate": {
+    "hydrogen": 1,
+    "refined-oil": 2
+   },
+   "inRate": {
+    "crude-oil": 2
+   },
+   "power": 4800,
+   "powerAvg": 4800
+  },
+  "crude-oil": {
+   "item": "crude-oil",
+   "recipe": "crude-oil-seep",
+   "machine": "oil-extractor",
+   "machineData": "oil-extractor",
+   "spray": null,
+   "runs": 2,
+   "kind": "source",
+   "machineCount": 2,
+   "built": 2,
+   "outRate": {
+    "crude-oil": 2
+   },
+   "inRate": {},
+   "power": 1680,
+   "powerAvg": 1680
+  },
+  "crystal-silicon": {
+   "item": "crystal-silicon",
+   "recipe": "crystal-silicon",
+   "machine": "plane-smelter",
+   "machineData": "plane-smelter",
+   "spray": {
+    "level": 3,
+    "mode": "speed",
+    "item": "proliferator-3",
+    "sprays": 60,
+    "productivity": 0,
+    "speed": 1,
+    "consumption": 1.5
+   },
+   "runs": 2,
+   "kind": "craft",
+   "machineCount": 1,
+   "built": 1,
+   "outRate": {
+    "crystal-silicon": 2
+   },
+   "inRate": {
+    "high-purity-silicon": 2
+   },
+   "power": 3600,
+   "powerAvg": 3600
+  },
+  "__target_information-matrix": {
+   "item": "information-matrix",
+   "kind": "target",
+   "rate": 1,
+   "id": "__target_information-matrix"
+  }
+ },
+ "edges": [
+  {
+   "from": "particle-broadband",
+   "to": "information-matrix",
+   "item": "particle-broadband",
+   "flow": 1,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.03333333333333333
+  },
+  {
+   "from": "processor",
+   "to": "information-matrix",
+   "item": "processor",
+   "flow": 2,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.06666666666666667
+  },
+  {
+   "from": "proliferator-3",
+   "to": "information-matrix",
+   "item": "proliferator-3",
+   "flow": 0.05,
+   "kind": "spray",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.0016666666666666668
+  },
+  {
+   "from": "proliferator-3",
+   "to": "diamond",
+   "item": "proliferator-3",
+   "flow": 0.07203065133235466,
+   "kind": "spray",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.0024010217110784888
+  },
+  {
+   "from": "proliferator-3",
+   "to": "energetic-graphite",
+   "item": "proliferator-3",
+   "flow": 0.4894636014793305,
+   "kind": "spray",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.01631545338264435
+  },
+  {
+   "from": "proliferator-3",
+   "to": "carbon-nanotube",
+   "item": "proliferator-3",
+   "flow": 0.13869731800170187,
+   "kind": "spray",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.004623243933390062
+  },
+  {
+   "from": "proliferator-3",
+   "to": "titanium-ingot",
+   "item": "proliferator-3",
+   "flow": 0.06934865899951066,
+   "kind": "spray",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.0023116219666503555
+  },
+  {
+   "from": "proliferator-3",
+   "to": "graphene",
+   "item": "proliferator-3",
+   "flow": 0.208045976998532,
+   "kind": "spray",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.006934865899951067
+  },
+  {
+   "from": "proliferator-3",
+   "to": "processor",
+   "item": "proliferator-3",
+   "flow": 0.13333333333333333,
+   "kind": "spray",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.0044444444444444444
+  },
+  {
+   "from": "proliferator-3",
+   "to": "microcrystalline-component",
+   "item": "proliferator-3",
+   "flow": 0.2,
+   "kind": "spray",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.006666666666666667
+  },
+  {
+   "from": "proliferator-3",
+   "to": "high-purity-silicon",
+   "item": "proliferator-3",
+   "flow": 0.3333333333333333,
+   "kind": "spray",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.01111111111111111
+  },
+  {
+   "from": "proliferator-3",
+   "to": "copper-ingot",
+   "item": "proliferator-3",
+   "flow": 0.1,
+   "kind": "spray",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.0033333333333333335
+  },
+  {
+   "from": "proliferator-3",
+   "to": "circuit-board",
+   "item": "proliferator-3",
+   "flow": 0.1,
+   "kind": "spray",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.0033333333333333335
+  },
+  {
+   "from": "proliferator-3",
+   "to": "iron-ingot",
+   "item": "proliferator-3",
+   "flow": 0.06666666666666667,
+   "kind": "spray",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.0022222222222222222
+  },
+  {
+   "from": "proliferator-3",
+   "to": "particle-broadband",
+   "item": "proliferator-3",
+   "flow": 0.08333333333333333,
+   "kind": "spray",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.0027777777777777775
+  },
+  {
+   "from": "proliferator-3",
+   "to": "plastic",
+   "item": "proliferator-3",
+   "flow": 0.05,
+   "kind": "spray",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.0016666666666666668
+  },
+  {
+   "from": "proliferator-3",
+   "to": "refined-oil",
+   "item": "proliferator-3",
+   "flow": 0.03333333333333333,
+   "kind": "spray",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.0011111111111111111
+  },
+  {
+   "from": "proliferator-3",
+   "to": "crystal-silicon",
+   "item": "proliferator-3",
+   "flow": 0.03333333333333333,
+   "kind": "spray",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.0011111111111111111
+  },
+  {
+   "from": "carbon-nanotube",
+   "to": "proliferator-3",
+   "item": "carbon-nanotube",
+   "flow": 2.160919540106509,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.07203065133688363
+  },
+  {
+   "from": "carbon-nanotube",
+   "to": "particle-broadband",
+   "item": "carbon-nanotube",
+   "flow": 2,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.06666666666666667
+  },
+  {
+   "from": "proliferator-2",
+   "to": "proliferator-3",
+   "item": "proliferator-2",
+   "flow": 4.321839080213018,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.14406130267376727
+  },
+  {
+   "from": "diamond",
+   "to": "proliferator-2",
+   "item": "diamond",
+   "flow": 4.321839080102113,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.14406130267007045
+  },
+  {
+   "from": "proliferator-1",
+   "to": "proliferator-2",
+   "item": "proliferator-1",
+   "flow": 8.643678160204226,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.2881226053401409
+  },
+  {
+   "from": "coal",
+   "to": "proliferator-1",
+   "item": "coal",
+   "flow": 8.643678159882558,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.28812260532941864
+  },
+  {
+   "from": "coal",
+   "to": "energetic-graphite",
+   "item": "coal",
+   "flow": 29.36781608875983,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.978927202958661
+  },
+  {
+   "from": "energetic-graphite",
+   "to": "diamond",
+   "item": "energetic-graphite",
+   "flow": 4.321839079941279,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.14406130266470932
+  },
+  {
+   "from": "energetic-graphite",
+   "to": "graphene",
+   "item": "energetic-graphite",
+   "flow": 9.36206896493394,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.312068965497798
+  },
+  {
+   "from": "energetic-graphite",
+   "to": "plastic",
+   "item": "energetic-graphite",
+   "flow": 1,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.03333333333333333
+  },
+  {
+   "from": "graphene",
+   "to": "carbon-nanotube",
+   "item": "graphene",
+   "flow": 6.241379310076584,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.2080459770025528
+  },
+  {
+   "from": "titanium-ingot",
+   "to": "carbon-nanotube",
+   "item": "titanium-ingot",
+   "flow": 2.080459770025528,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.06934865900085094
+  },
+  {
+   "from": "titanium-ore",
+   "to": "titanium-ingot",
+   "item": "titanium-ore",
+   "flow": 4.16091953997064,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.13869731799902132
+  },
+  {
+   "from": "sulfuric-acid",
+   "to": "graphene",
+   "item": "sulfuric-acid",
+   "flow": 3.12068965497798,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": true,
+   "belts": 0,
+   "beltFill": 0
+  },
+  {
+   "from": "circuit-board",
+   "to": "processor",
+   "item": "circuit-board",
+   "flow": 4,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.13333333333333333
+  },
+  {
+   "from": "microcrystalline-component",
+   "to": "processor",
+   "item": "microcrystalline-component",
+   "flow": 4,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.13333333333333333
+  },
+  {
+   "from": "copper-ingot",
+   "to": "microcrystalline-component",
+   "item": "copper-ingot",
+   "flow": 4,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.13333333333333333
+  },
+  {
+   "from": "copper-ingot",
+   "to": "circuit-board",
+   "item": "copper-ingot",
+   "flow": 2,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.06666666666666667
+  },
+  {
+   "from": "high-purity-silicon",
+   "to": "microcrystalline-component",
+   "item": "high-purity-silicon",
+   "flow": 8,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.26666666666666666
+  },
+  {
+   "from": "high-purity-silicon",
+   "to": "crystal-silicon",
+   "item": "high-purity-silicon",
+   "flow": 2,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.06666666666666667
+  },
+  {
+   "from": "silicon-ore",
+   "to": "high-purity-silicon",
+   "item": "silicon-ore",
+   "flow": 20,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.6666666666666666
+  },
+  {
+   "from": "copper-ore",
+   "to": "copper-ingot",
+   "item": "copper-ore",
+   "flow": 6,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.2
+  },
+  {
+   "from": "iron-ingot",
+   "to": "circuit-board",
+   "item": "iron-ingot",
+   "flow": 4,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.13333333333333333
+  },
+  {
+   "from": "iron-ore",
+   "to": "iron-ingot",
+   "item": "iron-ore",
+   "flow": 4,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.13333333333333333
+  },
+  {
+   "from": "crystal-silicon",
+   "to": "particle-broadband",
+   "item": "crystal-silicon",
+   "flow": 2,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.06666666666666667
+  },
+  {
+   "from": "plastic",
+   "to": "particle-broadband",
+   "item": "plastic",
+   "flow": 1,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.03333333333333333
+  },
+  {
+   "from": "refined-oil",
+   "to": "plastic",
+   "item": "refined-oil",
+   "flow": 2,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": true,
+   "belts": 0,
+   "beltFill": 0
+  },
+  {
+   "from": "crude-oil",
+   "to": "refined-oil",
+   "item": "crude-oil",
+   "flow": 2,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": true,
+   "belts": 0,
+   "beltFill": 0
+  },
+  {
+   "from": "information-matrix",
+   "to": "__target_information-matrix",
+   "item": "information-matrix",
+   "flow": 1,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.03333333333333333
+  }
+ ],
+ "totals": {
+  "power": 148500,
+  "built": {
+   "matrix-lab": 5,
+   "assembling-machine-3": 18,
+   "mining-machine": 20,
+   "plane-smelter": 22,
+   "chemical-plant": 12,
+   "water-pump": 4,
+   "oil-refinery": 2,
+   "oil-extractor": 2
+  },
+  "machineCount": {
+   "matrix-lab": 5,
+   "assembling-machine-3": 16.64367816017094,
+   "mining-machine": 18.0431034466488,
+   "plane-smelter": 19.043103447153257,
+   "chemical-plant": 10.341954022518026,
+   "water-pump": 3.7448275858686872,
+   "oil-refinery": 2,
+   "oil-extractor": 2
+  },
+  "belts": 44,
+  "beltsByItem": {
+   "particle-broadband": 1,
+   "processor": 1,
+   "proliferator-3": 16,
+   "carbon-nanotube": 2,
+   "proliferator-2": 1,
+   "diamond": 1,
+   "proliferator-1": 1,
+   "coal": 2,
+   "energetic-graphite": 3,
+   "graphene": 1,
+   "titanium-ingot": 1,
+   "titanium-ore": 1,
+   "circuit-board": 1,
+   "microcrystalline-component": 1,
+   "copper-ingot": 2,
+   "high-purity-silicon": 2,
+   "silicon-ore": 1,
+   "copper-ore": 1,
+   "iron-ingot": 1,
+   "iron-ore": 1,
+   "crystal-silicon": 1,
+   "plastic": 1,
+   "information-matrix": 1
+  },
+  "raw": {
+   "coal": 38.01149424674111,
+   "titanium-ore": 4.160919539854097,
+   "sulfuric-acid": 3.120689654890573,
+   "silicon-ore": 20,
+   "copper-ore": 6,
+   "iron-ore": 4,
+   "crude-oil": 2
+  },
+  "surplus": {
+   "hydrogen": 1
+  },
+  "proliferator": {
+   "proliferator-3": 2.160919540106509
+  }
+ },
+ "demand": {
+  "information-matrix": 1,
+  "particle-broadband": 1,
+  "processor": 2,
+  "proliferator-3": 2.160919540106509,
+  "carbon-nanotube": 4.160919540051056,
+  "proliferator-2": 4.321839080102113,
+  "diamond": 4.321839079941279,
+  "proliferator-1": 8.643678159882558,
+  "coal": 38.01149424674111,
+  "energetic-graphite": 14.683908044379915,
+  "graphene": 6.24137930995596,
+  "titanium-ingot": 2.08045976998532,
+  "titanium-ore": 4.160919539854097,
+  "sulfuric-acid": 3.120689654890573,
+  "circuit-board": 4,
+  "microcrystalline-component": 4,
+  "copper-ingot": 6,
+  "high-purity-silicon": 10,
+  "silicon-ore": 20,
+  "copper-ore": 6,
+  "iron-ingot": 4,
+  "iron-ore": 4,
+  "crystal-silicon": 2,
+  "plastic": 1,
+  "refined-oil": 2,
+  "crude-oil": 2
+ },
+ "supply": {
+  "hydrogen": 1
+ },
+ "beltCapacity": 30,
+ "order": [
+  "information-matrix",
+  "proliferator-3",
+  "proliferator-2",
+  "proliferator-1",
+  "coal",
+  "diamond",
+  "energetic-graphite",
+  "carbon-nanotube",
+  "titanium-ingot",
+  "titanium-ore",
+  "graphene",
+  "sulfuric-acid",
+  "processor",
+  "microcrystalline-component",
+  "high-purity-silicon",
+  "silicon-ore",
+  "copper-ingot",
+  "copper-ore",
+  "circuit-board",
+  "iron-ingot",
+  "iron-ore",
+  "particle-broadband",
+  "plastic",
+  "refined-oil",
+  "crude-oil",
+  "crystal-silicon"
+ ]
+}

@@ -1,0 +1,2922 @@
+{
+ "width": 3428,
+ "height": 2139.9380952380952,
+ "nodes": [
+  {
+   "id": "universe-matrix",
+   "x": 2880,
+   "y": 954.1134259259259,
+   "height": 86
+  },
+  {
+   "id": "proliferator-3",
+   "x": 1280,
+   "y": 1845,
+   "height": 86
+  },
+  {
+   "id": "proliferator-2",
+   "x": 960,
+   "y": 1916.2444444444445,
+   "height": 86
+  },
+  {
+   "id": "proliferator-1",
+   "x": 320,
+   "y": 2053.9380952380952,
+   "height": 86
+  },
+  {
+   "id": "coal",
+   "x": 0,
+   "y": 1656.652380952381,
+   "height": 86
+  },
+  {
+   "id": "diamond",
+   "x": 640,
+   "y": 1665.3666666666668,
+   "height": 86
+  },
+  {
+   "id": "energetic-graphite",
+   "x": 320,
+   "y": 1405.9380952380952,
+   "height": 86
+  },
+  {
+   "id": "carbon-nanotube",
+   "x": 960,
+   "y": 1808.2444444444445,
+   "height": 86
+  },
+  {
+   "id": "titanium-ingot",
+   "x": 320,
+   "y": 1945.9380952380952,
+   "height": 86
+  },
+  {
+   "id": "titanium-ore",
+   "x": 0,
+   "y": 1872.652380952381,
+   "height": 86
+  },
+  {
+   "id": "graphene",
+   "x": 640,
+   "y": 1222.3666666666668,
+   "height": 86
+  },
+  {
+   "id": "sulfuric-acid",
+   "x": 320,
+   "y": 1513.9380952380952,
+   "height": 86
+  },
+  {
+   "id": "structure-matrix",
+   "x": 960,
+   "y": 1700.2444444444445,
+   "height": 86
+  },
+  {
+   "id": "titanium-crystal",
+   "x": 640,
+   "y": 1557.3666666666668,
+   "height": 86
+  },
+  {
+   "id": "organic-crystal",
+   "x": 320,
+   "y": 1837.9380952380952,
+   "height": 86
+  },
+  {
+   "id": "information-matrix",
+   "x": 1600,
+   "y": 1661,
+   "height": 86
+  },
+  {
+   "id": "processor",
+   "x": 960,
+   "y": 1468.2444444444445,
+   "height": 86
+  },
+  {
+   "id": "microcrystalline-component",
+   "x": 640,
+   "y": 1098.3666666666668,
+   "height": 86
+  },
+  {
+   "id": "high-purity-silicon",
+   "x": 320,
+   "y": 1189.9380952380952,
+   "height": 86
+  },
+  {
+   "id": "silicon-ore",
+   "x": 0,
+   "y": 1224.652380952381,
+   "height": 86
+  },
+  {
+   "id": "copper-ingot",
+   "x": 320,
+   "y": 973.9380952380952,
+   "height": 86
+  },
+  {
+   "id": "copper-ore",
+   "x": 0,
+   "y": 1008.6523809523809,
+   "height": 86
+  },
+  {
+   "id": "circuit-board",
+   "x": 640,
+   "y": 894.3666666666667,
+   "height": 86
+  },
+  {
+   "id": "iron-ingot",
+   "x": 320,
+   "y": 757.9380952380952,
+   "height": 86
+  },
+  {
+   "id": "iron-ore",
+   "x": 0,
+   "y": 792.6523809523809,
+   "height": 86
+  },
+  {
+   "id": "particle-broadband",
+   "x": 1280,
+   "y": 1686.5,
+   "height": 86
+  },
+  {
+   "id": "plastic",
+   "x": 640,
+   "y": 1773.3666666666668,
+   "height": 86
+  },
+  {
+   "id": "refined-oil",
+   "x": 320,
+   "y": 1081.9380952380952,
+   "height": 86
+  },
+  {
+   "id": "crude-oil",
+   "x": 0,
+   "y": 1116.652380952381,
+   "height": 86
+  },
+  {
+   "id": "crystal-silicon",
+   "x": 640,
+   "y": 1449.3666666666668,
+   "height": 86
+  },
+  {
+   "id": "gravity-matrix",
+   "x": 2560,
+   "y": 1273.1805555555557,
+   "height": 86
+  },
+  {
+   "id": "quantum-chip",
+   "x": 1600,
+   "y": 1517.75,
+   "height": 86
+  },
+  {
+   "id": "plane-filter",
+   "x": 1280,
+   "y": 1584.5,
+   "height": 86
+  },
+  {
+   "id": "titanium-glass",
+   "x": 640,
+   "y": 1341.3666666666668,
+   "height": 86
+  },
+  {
+   "id": "water",
+   "x": 320,
+   "y": 1729.9380952380952,
+   "height": 86
+  },
+  {
+   "id": "glass",
+   "x": 320,
+   "y": 1621.9380952380952,
+   "height": 86
+  },
+  {
+   "id": "stone",
+   "x": 0,
+   "y": 1548.652380952381,
+   "height": 86
+  },
+  {
+   "id": "casimir-crystal",
+   "x": 960,
+   "y": 1576.2444444444445,
+   "height": 86
+  },
+  {
+   "id": "hydrogen",
+   "x": 320,
+   "y": 865.9380952380952,
+   "height": 86
+  },
+  {
+   "id": "graviton-lens",
+   "x": 2240,
+   "y": 1028.611111111111,
+   "height": 86
+  },
+  {
+   "id": "strange-matter",
+   "x": 1920,
+   "y": 657.2222222222223,
+   "height": 86
+  },
+  {
+   "id": "particle-container",
+   "x": 1600,
+   "y": 794.6666666666666,
+   "height": 86
+  },
+  {
+   "id": "electromagnetic-turbine",
+   "x": 1280,
+   "y": 645.0000000000001,
+   "height": 86
+  },
+  {
+   "id": "magnetic-coil",
+   "x": 640,
+   "y": 678.3666666666667,
+   "height": 86
+  },
+  {
+   "id": "magnet",
+   "x": 320,
+   "y": 541.9380952380952,
+   "height": 86
+  },
+  {
+   "id": "electric-motor",
+   "x": 960,
+   "y": 673.2444444444445,
+   "height": 86
+  },
+  {
+   "id": "gear",
+   "x": 640,
+   "y": 996.3666666666667,
+   "height": 86
+  },
+  {
+   "id": "deuterium",
+   "x": 640,
+   "y": 786.3666666666667,
+   "height": 86
+  },
+  {
+   "id": "energy-matrix",
+   "x": 640,
+   "y": 576.3666666666667,
+   "height": 86
+  },
+  {
+   "id": "electromagnetic-matrix",
+   "x": 960,
+   "y": 538.2444444444445,
+   "height": 86
+  },
+  {
+   "id": "antimatter",
+   "x": 320,
+   "y": 649.9380952380952,
+   "height": 86
+  },
+  {
+   "id": "critical-photon",
+   "x": 0,
+   "y": 684.6523809523809,
+   "height": 86
+  },
+  {
+   "id": "__target_universe-matrix",
+   "x": 3200,
+   "y": 965.1134259259259,
+   "height": 64
+  }
+ ],
+ "paths": [
+  {
+   "edge": {
+    "from": "antimatter",
+    "to": "universe-matrix",
+    "item": "antimatter",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     548,
+     665.9
+    ],
+    "to": [
+     2880,
+     970.1
+    ]
+   },
+   "d": "M548.0,665.9C651.0,665.9 651.0,268.4 754.0,268.4C914.0,268.4 914.0,20.2 1074.0,20.2C1234.0,20.2 1234.0,3.0 1394.0,3.0C1554.0,3.0 1554.0,3.0 1714.0,3.0C1874.0,3.0 1874.0,3.0 2034.0,3.0C2194.0,3.0 2194.0,3.0 2354.0,3.0C2514.0,3.0 2514.0,3.0 2674.0,3.0C2777.0,3.0 2777.0,970.1 2880.0,970.1",
+   "labelX": 2777,
+   "labelY": 486.55671296296293,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "electromagnetic-matrix",
+    "to": "universe-matrix",
+    "item": "electromagnetic-matrix",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     1188,
+     581.2
+    ],
+    "to": [
+     2880,
+     980.9
+    ]
+   },
+   "d": "M1188.0,581.2C1291.0,581.2 1291.0,564.0 1394.0,564.0C1554.0,564.0 1554.0,564.0 1714.0,564.0C1874.0,564.0 1874.0,564.0 2034.0,564.0C2194.0,564.0 2194.0,564.0 2354.0,564.0C2514.0,564.0 2514.0,564.0 2674.0,564.0C2777.0,564.0 2777.0,980.9 2880.0,980.9",
+   "labelX": 2777,
+   "labelY": 772.4567129629629,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "energy-matrix",
+    "to": "universe-matrix",
+    "item": "energy-matrix",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     868,
+     619.4
+    ],
+    "to": [
+     2880,
+     991.7
+    ]
+   },
+   "d": "M868.0,619.4C971.0,619.4 971.0,632.2 1074.0,632.2C1234.0,632.2 1234.0,615.0 1394.0,615.0C1554.0,615.0 1554.0,615.0 1714.0,615.0C1874.0,615.0 1874.0,615.0 2034.0,615.0C2194.0,615.0 2194.0,615.0 2354.0,615.0C2514.0,615.0 2514.0,615.0 2674.0,615.0C2777.0,615.0 2777.0,991.7 2880.0,991.7",
+   "labelX": 2777,
+   "labelY": 803.356712962963,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "gravity-matrix",
+    "to": "universe-matrix",
+    "item": "gravity-matrix",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     2788,
+     1316.2
+    ],
+    "to": [
+     2880,
+     1002.5
+    ]
+   },
+   "d": "M2788.0,1316.2C2834.0,1316.2 2834.0,1002.5 2880.0,1002.5",
+   "labelX": 2834,
+   "labelY": 1159.3469907407407,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "information-matrix",
+    "to": "universe-matrix",
+    "item": "information-matrix",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     1828,
+     1704
+    ],
+    "to": [
+     2880,
+     1013.3
+    ]
+   },
+   "d": "M1828.0,1704.0C1931.0,1704.0 1931.0,1704.0 2034.0,1704.0C2194.0,1704.0 2194.0,1704.0 2354.0,1704.0C2514.0,1704.0 2514.0,1704.0 2674.0,1704.0C2777.0,1704.0 2777.0,1013.3 2880.0,1013.3",
+   "labelX": 2777,
+   "labelY": 1358.656712962963,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "structure-matrix",
+    "to": "universe-matrix",
+    "item": "structure-matrix",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     1188,
+     1743.2
+    ],
+    "to": [
+     2880,
+     1024.1
+    ]
+   },
+   "d": "M1188.0,1743.2C1291.0,1743.2 1291.0,1780.5 1394.0,1780.5C1554.0,1780.5 1554.0,1780.5 1714.0,1780.5C1874.0,1780.5 1874.0,1780.5 2034.0,1780.5C2194.0,1780.5 2194.0,1780.5 2354.0,1780.5C2514.0,1780.5 2514.0,1780.5 2674.0,1780.5C2777.0,1780.5 2777.0,1024.1 2880.0,1024.1",
+   "labelX": 2777,
+   "labelY": 1402.306712962963,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "carbon-nanotube",
+    "to": "proliferator-3",
+    "item": "carbon-nanotube",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     1188,
+     1878.2
+    ],
+    "to": [
+     1280,
+     1861
+    ]
+   },
+   "d": "M1188.0,1878.2C1234.0,1878.2 1234.0,1861.0 1280.0,1861.0",
+   "labelX": 1234,
+   "labelY": 1869.6222222222223,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "carbon-nanotube",
+    "to": "particle-broadband",
+    "item": "carbon-nanotube",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     1188,
+     1824.2
+    ],
+    "to": [
+     1280,
+     1756.5
+    ]
+   },
+   "d": "M1188.0,1824.2C1234.0,1824.2 1234.0,1756.5 1280.0,1756.5",
+   "labelX": 1234,
+   "labelY": 1790.3722222222223,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "proliferator-2",
+    "to": "proliferator-3",
+    "item": "proliferator-2",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     1188,
+     1959.2
+    ],
+    "to": [
+     1280,
+     1915
+    ]
+   },
+   "d": "M1188.0,1959.2C1234.0,1959.2 1234.0,1915.0 1280.0,1915.0",
+   "labelX": 1234,
+   "labelY": 1937.1222222222223,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "diamond",
+    "to": "proliferator-2",
+    "item": "diamond",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     868,
+     1735.4
+    ],
+    "to": [
+     960,
+     1932.2
+    ]
+   },
+   "d": "M868.0,1735.4C914.0,1735.4 914.0,1932.2 960.0,1932.2",
+   "labelX": 914,
+   "labelY": 1833.8055555555557,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "diamond",
+    "to": "structure-matrix",
+    "item": "diamond",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     868,
+     1708.4
+    ],
+    "to": [
+     960,
+     1770.2
+    ]
+   },
+   "d": "M868.0,1708.4C914.0,1708.4 914.0,1770.2 960.0,1770.2",
+   "labelX": 914,
+   "labelY": 1739.3055555555557,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "diamond",
+    "to": "graviton-lens",
+    "item": "diamond",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     868,
+     1681.4
+    ],
+    "to": [
+     2240,
+     1098.6
+    ]
+   },
+   "d": "M868.0,1681.4C971.0,1681.4 971.0,1460.2 1074.0,1460.2C1234.0,1460.2 1234.0,1443.0 1394.0,1443.0C1554.0,1443.0 1554.0,1443.0 1714.0,1443.0C1874.0,1443.0 1874.0,1443.0 2034.0,1443.0C2137.0,1443.0 2137.0,1098.6 2240.0,1098.6",
+   "labelX": 2137,
+   "labelY": 1270.8055555555557,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "proliferator-1",
+    "to": "proliferator-2",
+    "item": "proliferator-1",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     548,
+     2096.9
+    ],
+    "to": [
+     960,
+     1986.2
+    ]
+   },
+   "d": "M548.0,2096.9C651.0,2096.9 651.0,1878.4 754.0,1878.4C857.0,1878.4 857.0,1986.2 960.0,1986.2",
+   "labelX": 857,
+   "labelY": 1932.3055555555557,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "coal",
+    "to": "proliferator-1",
+    "item": "coal",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     228,
+     1726.7
+    ],
+    "to": [
+     320,
+     2096.9
+    ]
+   },
+   "d": "M228.0,1726.7C274.0,1726.7 274.0,2096.9 320.0,2096.9",
+   "labelX": 274,
+   "labelY": 1911.7952380952381,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "coal",
+    "to": "energetic-graphite",
+    "item": "coal",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     228,
+     1672.7
+    ],
+    "to": [
+     320,
+     1448.9
+    ]
+   },
+   "d": "M228.0,1672.7C274.0,1672.7 274.0,1448.9 320.0,1448.9",
+   "labelX": 274,
+   "labelY": 1560.7952380952381,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "energetic-graphite",
+    "to": "diamond",
+    "item": "energetic-graphite",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     548,
+     1457.9
+    ],
+    "to": [
+     640,
+     1708.4
+    ]
+   },
+   "d": "M548.0,1457.9C594.0,1457.9 594.0,1708.4 640.0,1708.4",
+   "labelX": 594,
+   "labelY": 1583.152380952381,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "energetic-graphite",
+    "to": "graphene",
+    "item": "energetic-graphite",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     548,
+     1439.9
+    ],
+    "to": [
+     640,
+     1238.4
+    ]
+   },
+   "d": "M548.0,1439.9C594.0,1439.9 594.0,1238.4 640.0,1238.4",
+   "labelX": 594,
+   "labelY": 1339.152380952381,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "energetic-graphite",
+    "to": "plastic",
+    "item": "energetic-graphite",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     548,
+     1475.9
+    ],
+    "to": [
+     640,
+     1843.4
+    ]
+   },
+   "d": "M548.0,1475.9C594.0,1475.9 594.0,1843.4 640.0,1843.4",
+   "labelX": 594,
+   "labelY": 1659.652380952381,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "energetic-graphite",
+    "to": "energy-matrix",
+    "item": "energetic-graphite",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     548,
+     1421.9
+    ],
+    "to": [
+     640,
+     646.4
+    ]
+   },
+   "d": "M548.0,1421.9C594.0,1421.9 594.0,646.4 640.0,646.4",
+   "labelX": 594,
+   "labelY": 1034.152380952381,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "graphene",
+    "to": "carbon-nanotube",
+    "item": "graphene",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     868,
+     1292.4
+    ],
+    "to": [
+     960,
+     1824.2
+    ]
+   },
+   "d": "M868.0,1292.4C914.0,1292.4 914.0,1824.2 960.0,1824.2",
+   "labelX": 914,
+   "labelY": 1558.3055555555557,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "graphene",
+    "to": "casimir-crystal",
+    "item": "graphene",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     868,
+     1265.4
+    ],
+    "to": [
+     960,
+     1632.7
+    ]
+   },
+   "d": "M868.0,1265.4C914.0,1265.4 914.0,1632.7 960.0,1632.7",
+   "labelX": 914,
+   "labelY": 1449.0555555555557,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "graphene",
+    "to": "particle-container",
+    "item": "graphene",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     868,
+     1238.4
+    ],
+    "to": [
+     1600,
+     864.7
+    ]
+   },
+   "d": "M868.0,1238.4C971.0,1238.4 971.0,1017.2 1074.0,1017.2C1234.0,1017.2 1234.0,1000.0 1394.0,1000.0C1497.0,1000.0 1497.0,864.7 1600.0,864.7",
+   "labelX": 1497,
+   "labelY": 932.3333333333333,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "titanium-ingot",
+    "to": "carbon-nanotube",
+    "item": "titanium-ingot",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     548,
+     2015.9
+    ],
+    "to": [
+     960,
+     1878.2
+    ]
+   },
+   "d": "M548.0,2015.9C651.0,2015.9 651.0,1867.4 754.0,1867.4C857.0,1867.4 857.0,1878.2 960.0,1878.2",
+   "labelX": 857,
+   "labelY": 1872.8055555555557,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "titanium-ingot",
+    "to": "titanium-crystal",
+    "item": "titanium-ingot",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     548,
+     1988.9
+    ],
+    "to": [
+     640,
+     1627.4
+    ]
+   },
+   "d": "M548.0,1988.9C594.0,1988.9 594.0,1627.4 640.0,1627.4",
+   "labelX": 594,
+   "labelY": 1808.152380952381,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "titanium-ingot",
+    "to": "titanium-glass",
+    "item": "titanium-ingot",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     548,
+     1961.9
+    ],
+    "to": [
+     640,
+     1411.4
+    ]
+   },
+   "d": "M548.0,1961.9C594.0,1961.9 594.0,1411.4 640.0,1411.4",
+   "labelX": 594,
+   "labelY": 1686.652380952381,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "titanium-ore",
+    "to": "titanium-ingot",
+    "item": "titanium-ore",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     228,
+     1915.7
+    ],
+    "to": [
+     320,
+     1988.9
+    ]
+   },
+   "d": "M228.0,1915.7C274.0,1915.7 274.0,1988.9 320.0,1988.9",
+   "labelX": 274,
+   "labelY": 1952.2952380952381,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "sulfuric-acid",
+    "to": "graphene",
+    "item": "sulfuric-acid",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     548,
+     1556.9
+    ],
+    "to": [
+     640,
+     1292.4
+    ]
+   },
+   "d": "M548.0,1556.9C594.0,1556.9 594.0,1292.4 640.0,1292.4",
+   "labelX": 594,
+   "labelY": 1424.652380952381,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "titanium-crystal",
+    "to": "structure-matrix",
+    "item": "titanium-crystal",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     868,
+     1627.4
+    ],
+    "to": [
+     960,
+     1716.2
+    ]
+   },
+   "d": "M868.0,1627.4C914.0,1627.4 914.0,1716.2 960.0,1716.2",
+   "labelX": 914,
+   "labelY": 1671.8055555555557,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "titanium-crystal",
+    "to": "casimir-crystal",
+    "item": "titanium-crystal",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     868,
+     1573.4
+    ],
+    "to": [
+     960,
+     1646.2
+    ]
+   },
+   "d": "M868.0,1573.4C914.0,1573.4 914.0,1646.2 960.0,1646.2",
+   "labelX": 914,
+   "labelY": 1609.8055555555557,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "organic-crystal",
+    "to": "titanium-crystal",
+    "item": "organic-crystal",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     548,
+     1880.9
+    ],
+    "to": [
+     640,
+     1573.4
+    ]
+   },
+   "d": "M548.0,1880.9C594.0,1880.9 594.0,1573.4 640.0,1573.4",
+   "labelX": 594,
+   "labelY": 1727.152380952381,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "particle-broadband",
+    "to": "information-matrix",
+    "item": "particle-broadband",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     1508,
+     1729.5
+    ],
+    "to": [
+     1600,
+     1731
+    ]
+   },
+   "d": "M1508.0,1729.5C1554.0,1729.5 1554.0,1731.0 1600.0,1731.0",
+   "labelX": 1554,
+   "labelY": 1730.25,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "processor",
+    "to": "information-matrix",
+    "item": "processor",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     1188,
+     1538.2
+    ],
+    "to": [
+     1600,
+     1677
+    ]
+   },
+   "d": "M1188.0,1538.2C1291.0,1538.2 1291.0,1678.5 1394.0,1678.5C1497.0,1678.5 1497.0,1677.0 1600.0,1677.0",
+   "labelX": 1497,
+   "labelY": 1677.75,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "processor",
+    "to": "quantum-chip",
+    "item": "processor",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     1188,
+     1484.2
+    ],
+    "to": [
+     1600,
+     1533.8
+    ]
+   },
+   "d": "M1188.0,1484.2C1291.0,1484.2 1291.0,1494.0 1394.0,1494.0C1497.0,1494.0 1497.0,1533.8 1600.0,1533.8",
+   "labelX": 1497,
+   "labelY": 1513.875,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "circuit-board",
+    "to": "processor",
+    "item": "circuit-board",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     868,
+     964.4
+    ],
+    "to": [
+     960,
+     1484.2
+    ]
+   },
+   "d": "M868.0,964.4C914.0,964.4 914.0,1484.2 960.0,1484.2",
+   "labelX": 914,
+   "labelY": 1224.3055555555557,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "circuit-board",
+    "to": "electromagnetic-matrix",
+    "item": "circuit-board",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     868,
+     910.4
+    ],
+    "to": [
+     960,
+     608.2
+    ]
+   },
+   "d": "M868.0,910.4C914.0,910.4 914.0,608.2 960.0,608.2",
+   "labelX": 914,
+   "labelY": 759.3055555555557,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "microcrystalline-component",
+    "to": "processor",
+    "item": "microcrystalline-component",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     868,
+     1141.4
+    ],
+    "to": [
+     960,
+     1538.2
+    ]
+   },
+   "d": "M868.0,1141.4C914.0,1141.4 914.0,1538.2 960.0,1538.2",
+   "labelX": 914,
+   "labelY": 1339.8055555555557,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "copper-ingot",
+    "to": "microcrystalline-component",
+    "item": "copper-ingot",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     548,
+     1043.9
+    ],
+    "to": [
+     640,
+     1114.4
+    ]
+   },
+   "d": "M548.0,1043.9C594.0,1043.9 594.0,1114.4 640.0,1114.4",
+   "labelX": 594,
+   "labelY": 1079.152380952381,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "copper-ingot",
+    "to": "circuit-board",
+    "item": "copper-ingot",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     548,
+     1007.9
+    ],
+    "to": [
+     640,
+     964.4
+    ]
+   },
+   "d": "M548.0,1007.9C594.0,1007.9 594.0,964.4 640.0,964.4",
+   "labelX": 594,
+   "labelY": 986.152380952381,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "copper-ingot",
+    "to": "particle-container",
+    "item": "copper-ingot",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     548,
+     1025.9
+    ],
+    "to": [
+     1600,
+     837.7
+    ]
+   },
+   "d": "M548.0,1025.9C651.0,1025.9 651.0,1090.4 754.0,1090.4C914.0,1090.4 914.0,842.2 1074.0,842.2C1234.0,842.2 1234.0,825.0 1394.0,825.0C1497.0,825.0 1497.0,837.7 1600.0,837.7",
+   "labelX": 1497,
+   "labelY": 831.3333333333334,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "copper-ingot",
+    "to": "magnetic-coil",
+    "item": "copper-ingot",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     548,
+     989.9
+    ],
+    "to": [
+     640,
+     748.4
+    ]
+   },
+   "d": "M548.0,989.9C594.0,989.9 594.0,748.4 640.0,748.4",
+   "labelX": 594,
+   "labelY": 869.152380952381,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "high-purity-silicon",
+    "to": "microcrystalline-component",
+    "item": "high-purity-silicon",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     548,
+     1205.9
+    ],
+    "to": [
+     640,
+     1168.4
+    ]
+   },
+   "d": "M548.0,1205.9C594.0,1205.9 594.0,1168.4 640.0,1168.4",
+   "labelX": 594,
+   "labelY": 1187.152380952381,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "high-purity-silicon",
+    "to": "crystal-silicon",
+    "item": "high-purity-silicon",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     548,
+     1259.9
+    ],
+    "to": [
+     640,
+     1492.4
+    ]
+   },
+   "d": "M548.0,1259.9C594.0,1259.9 594.0,1492.4 640.0,1492.4",
+   "labelX": 594,
+   "labelY": 1376.152380952381,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "silicon-ore",
+    "to": "high-purity-silicon",
+    "item": "silicon-ore",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     228,
+     1267.7
+    ],
+    "to": [
+     320,
+     1232.9
+    ]
+   },
+   "d": "M228.0,1267.7C274.0,1267.7 274.0,1232.9 320.0,1232.9",
+   "labelX": 274,
+   "labelY": 1250.2952380952381,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "copper-ore",
+    "to": "copper-ingot",
+    "item": "copper-ore",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     228,
+     1051.7
+    ],
+    "to": [
+     320,
+     1016.9
+    ]
+   },
+   "d": "M228.0,1051.7C274.0,1051.7 274.0,1016.9 320.0,1016.9",
+   "labelX": 274,
+   "labelY": 1034.2952380952381,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "iron-ingot",
+    "to": "circuit-board",
+    "item": "iron-ingot",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     548,
+     791.9
+    ],
+    "to": [
+     640,
+     910.4
+    ]
+   },
+   "d": "M548.0,791.9C594.0,791.9 594.0,910.4 640.0,910.4",
+   "labelX": 594,
+   "labelY": 851.152380952381,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "iron-ingot",
+    "to": "strange-matter",
+    "item": "iron-ingot",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     548,
+     773.9
+    ],
+    "to": [
+     1920,
+     673.2
+    ]
+   },
+   "d": "M548.0,773.9C651.0,773.9 651.0,670.4 754.0,670.4C914.0,670.4 914.0,643.2 1074.0,643.2C1234.0,643.2 1234.0,626.0 1394.0,626.0C1554.0,626.0 1554.0,626.0 1714.0,626.0C1817.0,626.0 1817.0,673.2 1920.0,673.2",
+   "labelX": 1817,
+   "labelY": 649.6111111111112,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "iron-ingot",
+    "to": "electric-motor",
+    "item": "iron-ingot",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     548,
+     809.9
+    ],
+    "to": [
+     960,
+     716.2
+    ]
+   },
+   "d": "M548.0,809.9C651.0,809.9 651.0,988.4 754.0,988.4C857.0,988.4 857.0,716.2 960.0,716.2",
+   "labelX": 857,
+   "labelY": 852.3055555555557,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "iron-ingot",
+    "to": "gear",
+    "item": "iron-ingot",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     548,
+     827.9
+    ],
+    "to": [
+     640,
+     1039.4
+    ]
+   },
+   "d": "M548.0,827.9C594.0,827.9 594.0,1039.4 640.0,1039.4",
+   "labelX": 594,
+   "labelY": 933.652380952381,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "iron-ore",
+    "to": "iron-ingot",
+    "item": "iron-ore",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     228,
+     862.7
+    ],
+    "to": [
+     320,
+     800.9
+    ]
+   },
+   "d": "M228.0,862.7C274.0,862.7 274.0,800.9 320.0,800.9",
+   "labelX": 274,
+   "labelY": 831.7952380952381,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "iron-ore",
+    "to": "magnet",
+    "item": "iron-ore",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     228,
+     808.7
+    ],
+    "to": [
+     320,
+     584.9
+    ]
+   },
+   "d": "M228.0,808.7C274.0,808.7 274.0,584.9 320.0,584.9",
+   "labelX": 274,
+   "labelY": 696.7952380952381,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "crystal-silicon",
+    "to": "particle-broadband",
+    "item": "crystal-silicon",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     868,
+     1492.4
+    ],
+    "to": [
+     1280,
+     1702.5
+    ]
+   },
+   "d": "M868.0,1492.4C971.0,1492.4 971.0,1681.2 1074.0,1681.2C1177.0,1681.2 1177.0,1702.5 1280.0,1702.5",
+   "labelX": 1177,
+   "labelY": 1691.8722222222223,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "plastic",
+    "to": "particle-broadband",
+    "item": "plastic",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     868,
+     1816.4
+    ],
+    "to": [
+     1280,
+     1729.5
+    ]
+   },
+   "d": "M868.0,1816.4C971.0,1816.4 971.0,1692.2 1074.0,1692.2C1177.0,1692.2 1177.0,1729.5 1280.0,1729.5",
+   "labelX": 1177,
+   "labelY": 1710.8722222222223,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "refined-oil",
+    "to": "plastic",
+    "item": "refined-oil",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     548,
+     1151.9
+    ],
+    "to": [
+     640,
+     1789.4
+    ]
+   },
+   "d": "M548.0,1151.9C594.0,1151.9 594.0,1789.4 640.0,1789.4",
+   "labelX": 594,
+   "labelY": 1470.652380952381,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "crude-oil",
+    "to": "refined-oil",
+    "item": "crude-oil",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     228,
+     1159.7
+    ],
+    "to": [
+     320,
+     1124.9
+    ]
+   },
+   "d": "M228.0,1159.7C274.0,1159.7 274.0,1124.9 320.0,1124.9",
+   "labelX": 274,
+   "labelY": 1142.2952380952381,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "graviton-lens",
+    "to": "gravity-matrix",
+    "item": "graviton-lens",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     2468,
+     1071.6
+    ],
+    "to": [
+     2560,
+     1289.2
+    ]
+   },
+   "d": "M2468.0,1071.6C2514.0,1071.6 2514.0,1289.2 2560.0,1289.2",
+   "labelX": 2514,
+   "labelY": 1180.3958333333335,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "quantum-chip",
+    "to": "gravity-matrix",
+    "item": "quantum-chip",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     1828,
+     1560.8
+    ],
+    "to": [
+     2560,
+     1343.2
+    ]
+   },
+   "d": "M1828.0,1560.8C1931.0,1560.8 1931.0,1560.8 2034.0,1560.8C2194.0,1560.8 2194.0,1560.8 2354.0,1560.8C2457.0,1560.8 2457.0,1343.2 2560.0,1343.2",
+   "labelX": 2457,
+   "labelY": 1451.9652777777778,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "plane-filter",
+    "to": "quantum-chip",
+    "item": "plane-filter",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     1508,
+     1627.5
+    ],
+    "to": [
+     1600,
+     1587.8
+    ]
+   },
+   "d": "M1508.0,1627.5C1554.0,1627.5 1554.0,1587.8 1600.0,1587.8",
+   "labelX": 1554,
+   "labelY": 1607.625,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "casimir-crystal",
+    "to": "plane-filter",
+    "item": "casimir-crystal",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     1188,
+     1619.2
+    ],
+    "to": [
+     1280,
+     1600.5
+    ]
+   },
+   "d": "M1188.0,1619.2C1234.0,1619.2 1234.0,1600.5 1280.0,1600.5",
+   "labelX": 1234,
+   "labelY": 1609.8722222222223,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "titanium-glass",
+    "to": "plane-filter",
+    "item": "titanium-glass",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     868,
+     1384.4
+    ],
+    "to": [
+     1280,
+     1654.5
+    ]
+   },
+   "d": "M868.0,1384.4C971.0,1384.4 971.0,1670.2 1074.0,1670.2C1177.0,1670.2 1177.0,1654.5 1280.0,1654.5",
+   "labelX": 1177,
+   "labelY": 1662.3722222222223,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "glass",
+    "to": "titanium-glass",
+    "item": "glass",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     548,
+     1664.9
+    ],
+    "to": [
+     640,
+     1357.4
+    ]
+   },
+   "d": "M548.0,1664.9C594.0,1664.9 594.0,1357.4 640.0,1357.4",
+   "labelX": 594,
+   "labelY": 1511.152380952381,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "water",
+    "to": "titanium-glass",
+    "item": "water",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     548,
+     1772.9
+    ],
+    "to": [
+     640,
+     1384.4
+    ]
+   },
+   "d": "M548.0,1772.9C594.0,1772.9 594.0,1384.4 640.0,1384.4",
+   "labelX": 594,
+   "labelY": 1578.652380952381,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "stone",
+    "to": "glass",
+    "item": "stone",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     228,
+     1591.7
+    ],
+    "to": [
+     320,
+     1664.9
+    ]
+   },
+   "d": "M228.0,1591.7C274.0,1591.7 274.0,1664.9 320.0,1664.9",
+   "labelX": 274,
+   "labelY": 1628.2952380952381,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "hydrogen",
+    "to": "casimir-crystal",
+    "item": "hydrogen",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     548,
+     935.9
+    ],
+    "to": [
+     960,
+     1605.7
+    ]
+   },
+   "d": "M548.0,935.9C651.0,935.9 651.0,1203.4 754.0,1203.4C857.0,1203.4 857.0,1605.7 960.0,1605.7",
+   "labelX": 857,
+   "labelY": 1404.5555555555557,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "refined-oil",
+    "to": "casimir-crystal",
+    "item": "hydrogen",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     548,
+     1133.9
+    ],
+    "to": [
+     960,
+     1619.2
+    ]
+   },
+   "d": "M548.0,1133.9C651.0,1133.9 651.0,1214.4 754.0,1214.4C857.0,1214.4 857.0,1619.2 960.0,1619.2",
+   "labelX": 857,
+   "labelY": 1416.8055555555557,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "antimatter",
+    "to": "casimir-crystal",
+    "item": "hydrogen",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     548,
+     719.9
+    ],
+    "to": [
+     960,
+     1592.2
+    ]
+   },
+   "d": "M548.0,719.9C651.0,719.9 651.0,1192.4 754.0,1192.4C857.0,1192.4 857.0,1592.2 960.0,1592.2",
+   "labelX": 857,
+   "labelY": 1392.3055555555557,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "hydrogen",
+    "to": "deuterium",
+    "item": "hydrogen",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     548,
+     908.9
+    ],
+    "to": [
+     640,
+     829.4
+    ]
+   },
+   "d": "M548.0,908.9C594.0,908.9 594.0,829.4 640.0,829.4",
+   "labelX": 594,
+   "labelY": 869.152380952381,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "refined-oil",
+    "to": "deuterium",
+    "item": "hydrogen",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     548,
+     1115.9
+    ],
+    "to": [
+     640,
+     856.4
+    ]
+   },
+   "d": "M548.0,1115.9C594.0,1115.9 594.0,856.4 640.0,856.4",
+   "labelX": 594,
+   "labelY": 986.152380952381,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "antimatter",
+    "to": "deuterium",
+    "item": "hydrogen",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     548,
+     701.9
+    ],
+    "to": [
+     640,
+     802.4
+    ]
+   },
+   "d": "M548.0,701.9C594.0,701.9 594.0,802.4 640.0,802.4",
+   "labelX": 594,
+   "labelY": 752.152380952381,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "hydrogen",
+    "to": "energy-matrix",
+    "item": "hydrogen",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     548,
+     881.9
+    ],
+    "to": [
+     640,
+     610.4
+    ]
+   },
+   "d": "M548.0,881.9C594.0,881.9 594.0,610.4 640.0,610.4",
+   "labelX": 594,
+   "labelY": 746.152380952381,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "refined-oil",
+    "to": "energy-matrix",
+    "item": "hydrogen",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     548,
+     1097.9
+    ],
+    "to": [
+     640,
+     628.4
+    ]
+   },
+   "d": "M548.0,1097.9C594.0,1097.9 594.0,628.4 640.0,628.4",
+   "labelX": 594,
+   "labelY": 863.152380952381,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "antimatter",
+    "to": "energy-matrix",
+    "item": "hydrogen",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     548,
+     683.9
+    ],
+    "to": [
+     640,
+     592.4
+    ]
+   },
+   "d": "M548.0,683.9C594.0,683.9 594.0,592.4 640.0,592.4",
+   "labelX": 594,
+   "labelY": 638.152380952381,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "strange-matter",
+    "to": "graviton-lens",
+    "item": "strange-matter",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     2148,
+     700.2
+    ],
+    "to": [
+     2240,
+     1044.6
+    ]
+   },
+   "d": "M2148.0,700.2C2194.0,700.2 2194.0,1044.6 2240.0,1044.6",
+   "labelX": 2194,
+   "labelY": 872.4166666666667,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "deuterium",
+    "to": "strange-matter",
+    "item": "deuterium",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     868,
+     829.4
+    ],
+    "to": [
+     1920,
+     700.2
+    ]
+   },
+   "d": "M868.0,829.4C971.0,829.4 971.0,654.2 1074.0,654.2C1234.0,654.2 1234.0,637.0 1394.0,637.0C1554.0,637.0 1554.0,637.0 1714.0,637.0C1817.0,637.0 1817.0,700.2 1920.0,700.2",
+   "labelX": 1817,
+   "labelY": 668.6111111111112,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "particle-container",
+    "to": "strange-matter",
+    "item": "particle-container",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     1828,
+     837.7
+    ],
+    "to": [
+     1920,
+     727.2
+    ]
+   },
+   "d": "M1828.0,837.7C1874.0,837.7 1874.0,727.2 1920.0,727.2",
+   "labelX": 1874,
+   "labelY": 782.4444444444445,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "electromagnetic-turbine",
+    "to": "particle-container",
+    "item": "electromagnetic-turbine",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     1508,
+     688
+    ],
+    "to": [
+     1600,
+     810.7
+    ]
+   },
+   "d": "M1508.0,688.0C1554.0,688.0 1554.0,810.7 1600.0,810.7",
+   "labelX": 1554,
+   "labelY": 749.3333333333334,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "electric-motor",
+    "to": "electromagnetic-turbine",
+    "item": "electric-motor",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     1188,
+     716.2
+    ],
+    "to": [
+     1280,
+     715
+    ]
+   },
+   "d": "M1188.0,716.2C1234.0,716.2 1234.0,715.0 1280.0,715.0",
+   "labelX": 1234,
+   "labelY": 715.6222222222223,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "magnetic-coil",
+    "to": "electromagnetic-turbine",
+    "item": "magnetic-coil",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     868,
+     721.4
+    ],
+    "to": [
+     1280,
+     661
+    ]
+   },
+   "d": "M868.0,721.4C971.0,721.4 971.0,665.2 1074.0,665.2C1177.0,665.2 1177.0,661.0 1280.0,661.0",
+   "labelX": 1177,
+   "labelY": 663.1222222222223,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "magnetic-coil",
+    "to": "electric-motor",
+    "item": "magnetic-coil",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     868,
+     748.4
+    ],
+    "to": [
+     960,
+     689.2
+    ]
+   },
+   "d": "M868.0,748.4C914.0,748.4 914.0,689.2 960.0,689.2",
+   "labelX": 914,
+   "labelY": 718.8055555555557,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "magnetic-coil",
+    "to": "electromagnetic-matrix",
+    "item": "magnetic-coil",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     868,
+     694.4
+    ],
+    "to": [
+     960,
+     554.2
+    ]
+   },
+   "d": "M868.0,694.4C914.0,694.4 914.0,554.2 960.0,554.2",
+   "labelX": 914,
+   "labelY": 624.3055555555557,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "magnet",
+    "to": "magnetic-coil",
+    "item": "magnet",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     548,
+     584.9
+    ],
+    "to": [
+     640,
+     694.4
+    ]
+   },
+   "d": "M548.0,584.9C594.0,584.9 594.0,694.4 640.0,694.4",
+   "labelX": 594,
+   "labelY": 639.652380952381,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "gear",
+    "to": "electric-motor",
+    "item": "gear",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     868,
+     1039.4
+    ],
+    "to": [
+     960,
+     743.2
+    ]
+   },
+   "d": "M868.0,1039.4C914.0,1039.4 914.0,743.2 960.0,743.2",
+   "labelX": 914,
+   "labelY": 891.3055555555557,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "critical-photon",
+    "to": "antimatter",
+    "item": "critical-photon",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     228,
+     727.7
+    ],
+    "to": [
+     320,
+     692.9
+    ]
+   },
+   "d": "M228.0,727.7C274.0,727.7 274.0,692.9 320.0,692.9",
+   "labelX": 274,
+   "labelY": 710.2952380952381,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "universe-matrix",
+    "to": "__target_universe-matrix",
+    "item": "universe-matrix",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     3108,
+     997.1
+    ],
+    "to": [
+     3200,
+     997.1
+    ]
+   },
+   "d": "M3108.0,997.1C3154.0,997.1 3154.0,997.1 3200.0,997.1",
+   "labelX": 3154,
+   "labelY": 997.1134259259259,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "proliferator-3",
+    "to": "universe-matrix",
+    "item": "proliferator-3",
+    "kind": "spray"
+   },
+   "ports": {
+    "from": [
+     1508,
+     1888
+    ],
+    "to": [
+     2880,
+     997.1134259259259
+    ]
+   },
+   "d": "M1508,1888C2194,1888 2194,997.1134259259259 2880,997.1134259259259",
+   "labelX": 2194,
+   "labelY": 1442.556712962963,
+   "spray": true
+  },
+  {
+   "edge": {
+    "from": "proliferator-3",
+    "to": "diamond",
+    "item": "proliferator-3",
+    "kind": "spray"
+   },
+   "ports": {
+    "from": [
+     1280,
+     1888
+    ],
+    "to": [
+     868,
+     1708.3666666666668
+    ]
+   },
+   "d": "M1280,1888C1074,1888 1074,1708.3666666666668 868,1708.3666666666668",
+   "labelX": 1074,
+   "labelY": 1798.1833333333334,
+   "spray": true
+  },
+  {
+   "edge": {
+    "from": "proliferator-3",
+    "to": "energetic-graphite",
+    "item": "proliferator-3",
+    "kind": "spray"
+   },
+   "ports": {
+    "from": [
+     1280,
+     1888
+    ],
+    "to": [
+     548,
+     1448.9380952380952
+    ]
+   },
+   "d": "M1280,1888C914,1888 914,1448.9380952380952 548,1448.9380952380952",
+   "labelX": 914,
+   "labelY": 1668.4690476190476,
+   "spray": true
+  },
+  {
+   "edge": {
+    "from": "proliferator-3",
+    "to": "carbon-nanotube",
+    "item": "proliferator-3",
+    "kind": "spray"
+   },
+   "ports": {
+    "from": [
+     1280,
+     1888
+    ],
+    "to": [
+     1188,
+     1851.2444444444445
+    ]
+   },
+   "d": "M1280,1888C1234,1888 1234,1851.2444444444445 1188,1851.2444444444445",
+   "labelX": 1234,
+   "labelY": 1869.6222222222223,
+   "spray": true
+  },
+  {
+   "edge": {
+    "from": "proliferator-3",
+    "to": "titanium-ingot",
+    "item": "proliferator-3",
+    "kind": "spray"
+   },
+   "ports": {
+    "from": [
+     1280,
+     1888
+    ],
+    "to": [
+     548,
+     1988.9380952380952
+    ]
+   },
+   "d": "M1280,1888C914,1888 914,1988.9380952380952 548,1988.9380952380952",
+   "labelX": 914,
+   "labelY": 1938.4690476190476,
+   "spray": true
+  },
+  {
+   "edge": {
+    "from": "proliferator-3",
+    "to": "graphene",
+    "item": "proliferator-3",
+    "kind": "spray"
+   },
+   "ports": {
+    "from": [
+     1280,
+     1888
+    ],
+    "to": [
+     868,
+     1265.3666666666668
+    ]
+   },
+   "d": "M1280,1888C1074,1888 1074,1265.3666666666668 868,1265.3666666666668",
+   "labelX": 1074,
+   "labelY": 1576.6833333333334,
+   "spray": true
+  },
+  {
+   "edge": {
+    "from": "proliferator-3",
+    "to": "structure-matrix",
+    "item": "proliferator-3",
+    "kind": "spray"
+   },
+   "ports": {
+    "from": [
+     1280,
+     1888
+    ],
+    "to": [
+     1188,
+     1743.2444444444445
+    ]
+   },
+   "d": "M1280,1888C1234,1888 1234,1743.2444444444445 1188,1743.2444444444445",
+   "labelX": 1234,
+   "labelY": 1815.6222222222223,
+   "spray": true
+  },
+  {
+   "edge": {
+    "from": "proliferator-3",
+    "to": "titanium-crystal",
+    "item": "proliferator-3",
+    "kind": "spray"
+   },
+   "ports": {
+    "from": [
+     1280,
+     1888
+    ],
+    "to": [
+     868,
+     1600.3666666666668
+    ]
+   },
+   "d": "M1280,1888C1074,1888 1074,1600.3666666666668 868,1600.3666666666668",
+   "labelX": 1074,
+   "labelY": 1744.1833333333334,
+   "spray": true
+  },
+  {
+   "edge": {
+    "from": "proliferator-3",
+    "to": "information-matrix",
+    "item": "proliferator-3",
+    "kind": "spray"
+   },
+   "ports": {
+    "from": [
+     1508,
+     1888
+    ],
+    "to": [
+     1600,
+     1704
+    ]
+   },
+   "d": "M1508,1888C1554,1888 1554,1704 1600,1704",
+   "labelX": 1554,
+   "labelY": 1796,
+   "spray": true
+  },
+  {
+   "edge": {
+    "from": "proliferator-3",
+    "to": "processor",
+    "item": "proliferator-3",
+    "kind": "spray"
+   },
+   "ports": {
+    "from": [
+     1280,
+     1888
+    ],
+    "to": [
+     1188,
+     1511.2444444444445
+    ]
+   },
+   "d": "M1280,1888C1234,1888 1234,1511.2444444444445 1188,1511.2444444444445",
+   "labelX": 1234,
+   "labelY": 1699.6222222222223,
+   "spray": true
+  },
+  {
+   "edge": {
+    "from": "proliferator-3",
+    "to": "microcrystalline-component",
+    "item": "proliferator-3",
+    "kind": "spray"
+   },
+   "ports": {
+    "from": [
+     1280,
+     1888
+    ],
+    "to": [
+     868,
+     1141.3666666666668
+    ]
+   },
+   "d": "M1280,1888C1074,1888 1074,1141.3666666666668 868,1141.3666666666668",
+   "labelX": 1074,
+   "labelY": 1514.6833333333334,
+   "spray": true
+  },
+  {
+   "edge": {
+    "from": "proliferator-3",
+    "to": "high-purity-silicon",
+    "item": "proliferator-3",
+    "kind": "spray"
+   },
+   "ports": {
+    "from": [
+     1280,
+     1888
+    ],
+    "to": [
+     548,
+     1232.9380952380952
+    ]
+   },
+   "d": "M1280,1888C914,1888 914,1232.9380952380952 548,1232.9380952380952",
+   "labelX": 914,
+   "labelY": 1560.4690476190476,
+   "spray": true
+  },
+  {
+   "edge": {
+    "from": "proliferator-3",
+    "to": "copper-ingot",
+    "item": "proliferator-3",
+    "kind": "spray"
+   },
+   "ports": {
+    "from": [
+     1280,
+     1888
+    ],
+    "to": [
+     548,
+     1016.9380952380952
+    ]
+   },
+   "d": "M1280,1888C914,1888 914,1016.9380952380952 548,1016.9380952380952",
+   "labelX": 914,
+   "labelY": 1452.4690476190476,
+   "spray": true
+  },
+  {
+   "edge": {
+    "from": "proliferator-3",
+    "to": "circuit-board",
+    "item": "proliferator-3",
+    "kind": "spray"
+   },
+   "ports": {
+    "from": [
+     1280,
+     1888
+    ],
+    "to": [
+     868,
+     937.3666666666667
+    ]
+   },
+   "d": "M1280,1888C1074,1888 1074,937.3666666666667 868,937.3666666666667",
+   "labelX": 1074,
+   "labelY": 1412.6833333333334,
+   "spray": true
+  },
+  {
+   "edge": {
+    "from": "proliferator-3",
+    "to": "iron-ingot",
+    "item": "proliferator-3",
+    "kind": "spray"
+   },
+   "ports": {
+    "from": [
+     1280,
+     1888
+    ],
+    "to": [
+     548,
+     800.9380952380952
+    ]
+   },
+   "d": "M1280,1888C914,1888 914,800.9380952380952 548,800.9380952380952",
+   "labelX": 914,
+   "labelY": 1344.4690476190476,
+   "spray": true
+  },
+  {
+   "edge": {
+    "from": "proliferator-3",
+    "to": "particle-broadband",
+    "item": "proliferator-3",
+    "kind": "spray"
+   },
+   "ports": {
+    "from": [
+     1280,
+     1888
+    ],
+    "to": [
+     1508,
+     1729.5
+    ]
+   },
+   "d": "M1280,1888C1166,1888 1622,1729.5 1508,1729.5",
+   "labelX": 1394,
+   "labelY": 1808.75,
+   "spray": true
+  },
+  {
+   "edge": {
+    "from": "proliferator-3",
+    "to": "plastic",
+    "item": "proliferator-3",
+    "kind": "spray"
+   },
+   "ports": {
+    "from": [
+     1280,
+     1888
+    ],
+    "to": [
+     868,
+     1816.3666666666668
+    ]
+   },
+   "d": "M1280,1888C1074,1888 1074,1816.3666666666668 868,1816.3666666666668",
+   "labelX": 1074,
+   "labelY": 1852.1833333333334,
+   "spray": true
+  },
+  {
+   "edge": {
+    "from": "proliferator-3",
+    "to": "refined-oil",
+    "item": "proliferator-3",
+    "kind": "spray"
+   },
+   "ports": {
+    "from": [
+     1280,
+     1888
+    ],
+    "to": [
+     548,
+     1124.9380952380952
+    ]
+   },
+   "d": "M1280,1888C914,1888 914,1124.9380952380952 548,1124.9380952380952",
+   "labelX": 914,
+   "labelY": 1506.4690476190476,
+   "spray": true
+  },
+  {
+   "edge": {
+    "from": "proliferator-3",
+    "to": "crystal-silicon",
+    "item": "proliferator-3",
+    "kind": "spray"
+   },
+   "ports": {
+    "from": [
+     1280,
+     1888
+    ],
+    "to": [
+     868,
+     1492.3666666666668
+    ]
+   },
+   "d": "M1280,1888C1074,1888 1074,1492.3666666666668 868,1492.3666666666668",
+   "labelX": 1074,
+   "labelY": 1690.1833333333334,
+   "spray": true
+  },
+  {
+   "edge": {
+    "from": "proliferator-3",
+    "to": "gravity-matrix",
+    "item": "proliferator-3",
+    "kind": "spray"
+   },
+   "ports": {
+    "from": [
+     1508,
+     1888
+    ],
+    "to": [
+     2560,
+     1316.1805555555557
+    ]
+   },
+   "d": "M1508,1888C2034,1888 2034,1316.1805555555557 2560,1316.1805555555557",
+   "labelX": 2034,
+   "labelY": 1602.0902777777778,
+   "spray": true
+  },
+  {
+   "edge": {
+    "from": "proliferator-3",
+    "to": "quantum-chip",
+    "item": "proliferator-3",
+    "kind": "spray"
+   },
+   "ports": {
+    "from": [
+     1508,
+     1888
+    ],
+    "to": [
+     1600,
+     1560.75
+    ]
+   },
+   "d": "M1508,1888C1554,1888 1554,1560.75 1600,1560.75",
+   "labelX": 1554,
+   "labelY": 1724.375,
+   "spray": true
+  },
+  {
+   "edge": {
+    "from": "proliferator-3",
+    "to": "plane-filter",
+    "item": "proliferator-3",
+    "kind": "spray"
+   },
+   "ports": {
+    "from": [
+     1280,
+     1888
+    ],
+    "to": [
+     1508,
+     1627.5
+    ]
+   },
+   "d": "M1280,1888C1166,1888 1622,1627.5 1508,1627.5",
+   "labelX": 1394,
+   "labelY": 1757.75,
+   "spray": true
+  },
+  {
+   "edge": {
+    "from": "proliferator-3",
+    "to": "titanium-glass",
+    "item": "proliferator-3",
+    "kind": "spray"
+   },
+   "ports": {
+    "from": [
+     1280,
+     1888
+    ],
+    "to": [
+     868,
+     1384.3666666666668
+    ]
+   },
+   "d": "M1280,1888C1074,1888 1074,1384.3666666666668 868,1384.3666666666668",
+   "labelX": 1074,
+   "labelY": 1636.1833333333334,
+   "spray": true
+  },
+  {
+   "edge": {
+    "from": "proliferator-3",
+    "to": "glass",
+    "item": "proliferator-3",
+    "kind": "spray"
+   },
+   "ports": {
+    "from": [
+     1280,
+     1888
+    ],
+    "to": [
+     548,
+     1664.9380952380952
+    ]
+   },
+   "d": "M1280,1888C914,1888 914,1664.9380952380952 548,1664.9380952380952",
+   "labelX": 914,
+   "labelY": 1776.4690476190476,
+   "spray": true
+  },
+  {
+   "edge": {
+    "from": "proliferator-3",
+    "to": "casimir-crystal",
+    "item": "proliferator-3",
+    "kind": "spray"
+   },
+   "ports": {
+    "from": [
+     1280,
+     1888
+    ],
+    "to": [
+     1188,
+     1619.2444444444445
+    ]
+   },
+   "d": "M1280,1888C1234,1888 1234,1619.2444444444445 1188,1619.2444444444445",
+   "labelX": 1234,
+   "labelY": 1753.6222222222223,
+   "spray": true
+  },
+  {
+   "edge": {
+    "from": "proliferator-3",
+    "to": "graviton-lens",
+    "item": "proliferator-3",
+    "kind": "spray"
+   },
+   "ports": {
+    "from": [
+     1508,
+     1888
+    ],
+    "to": [
+     2240,
+     1071.611111111111
+    ]
+   },
+   "d": "M1508,1888C1874,1888 1874,1071.611111111111 2240,1071.611111111111",
+   "labelX": 1874,
+   "labelY": 1479.8055555555557,
+   "spray": true
+  },
+  {
+   "edge": {
+    "from": "proliferator-3",
+    "to": "strange-matter",
+    "item": "proliferator-3",
+    "kind": "spray"
+   },
+   "ports": {
+    "from": [
+     1508,
+     1888
+    ],
+    "to": [
+     1920,
+     700.2222222222223
+    ]
+   },
+   "d": "M1508,1888C1714,1888 1714,700.2222222222223 1920,700.2222222222223",
+   "labelX": 1714,
+   "labelY": 1294.111111111111,
+   "spray": true
+  },
+  {
+   "edge": {
+    "from": "proliferator-3",
+    "to": "particle-container",
+    "item": "proliferator-3",
+    "kind": "spray"
+   },
+   "ports": {
+    "from": [
+     1508,
+     1888
+    ],
+    "to": [
+     1600,
+     837.6666666666666
+    ]
+   },
+   "d": "M1508,1888C1554,1888 1554,837.6666666666666 1600,837.6666666666666",
+   "labelX": 1554,
+   "labelY": 1362.8333333333333,
+   "spray": true
+  },
+  {
+   "edge": {
+    "from": "proliferator-3",
+    "to": "electromagnetic-turbine",
+    "item": "proliferator-3",
+    "kind": "spray"
+   },
+   "ports": {
+    "from": [
+     1280,
+     1888
+    ],
+    "to": [
+     1508,
+     688.0000000000001
+    ]
+   },
+   "d": "M1280,1888C1166,1888 1622,688.0000000000001 1508,688.0000000000001",
+   "labelX": 1394,
+   "labelY": 1288,
+   "spray": true
+  },
+  {
+   "edge": {
+    "from": "proliferator-3",
+    "to": "magnetic-coil",
+    "item": "proliferator-3",
+    "kind": "spray"
+   },
+   "ports": {
+    "from": [
+     1280,
+     1888
+    ],
+    "to": [
+     868,
+     721.3666666666667
+    ]
+   },
+   "d": "M1280,1888C1074,1888 1074,721.3666666666667 868,721.3666666666667",
+   "labelX": 1074,
+   "labelY": 1304.6833333333334,
+   "spray": true
+  },
+  {
+   "edge": {
+    "from": "proliferator-3",
+    "to": "magnet",
+    "item": "proliferator-3",
+    "kind": "spray"
+   },
+   "ports": {
+    "from": [
+     1280,
+     1888
+    ],
+    "to": [
+     548,
+     584.9380952380952
+    ]
+   },
+   "d": "M1280,1888C914,1888 914,584.9380952380952 548,584.9380952380952",
+   "labelX": 914,
+   "labelY": 1236.4690476190476,
+   "spray": true
+  },
+  {
+   "edge": {
+    "from": "proliferator-3",
+    "to": "electric-motor",
+    "item": "proliferator-3",
+    "kind": "spray"
+   },
+   "ports": {
+    "from": [
+     1280,
+     1888
+    ],
+    "to": [
+     1188,
+     716.2444444444445
+    ]
+   },
+   "d": "M1280,1888C1234,1888 1234,716.2444444444445 1188,716.2444444444445",
+   "labelX": 1234,
+   "labelY": 1302.1222222222223,
+   "spray": true
+  },
+  {
+   "edge": {
+    "from": "proliferator-3",
+    "to": "gear",
+    "item": "proliferator-3",
+    "kind": "spray"
+   },
+   "ports": {
+    "from": [
+     1280,
+     1888
+    ],
+    "to": [
+     868,
+     1039.3666666666668
+    ]
+   },
+   "d": "M1280,1888C1074,1888 1074,1039.3666666666668 868,1039.3666666666668",
+   "labelX": 1074,
+   "labelY": 1463.6833333333334,
+   "spray": true
+  },
+  {
+   "edge": {
+    "from": "proliferator-3",
+    "to": "energy-matrix",
+    "item": "proliferator-3",
+    "kind": "spray"
+   },
+   "ports": {
+    "from": [
+     1280,
+     1888
+    ],
+    "to": [
+     868,
+     619.3666666666667
+    ]
+   },
+   "d": "M1280,1888C1074,1888 1074,619.3666666666667 868,619.3666666666667",
+   "labelX": 1074,
+   "labelY": 1253.6833333333334,
+   "spray": true
+  },
+  {
+   "edge": {
+    "from": "proliferator-3",
+    "to": "electromagnetic-matrix",
+    "item": "proliferator-3",
+    "kind": "spray"
+   },
+   "ports": {
+    "from": [
+     1280,
+     1888
+    ],
+    "to": [
+     1188,
+     581.2444444444445
+    ]
+   },
+   "d": "M1280,1888C1234,1888 1234,581.2444444444445 1188,581.2444444444445",
+   "labelX": 1234,
+   "labelY": 1234.6222222222223,
+   "spray": true
+  }
+ ]
+}

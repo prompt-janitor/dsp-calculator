@@ -1,0 +1,780 @@
+{
+ "ok": true,
+ "iterations": 9,
+ "nodes": {
+  "space-warper": {
+   "item": "space-warper",
+   "recipe": "space-warper",
+   "machine": "assembling-machine-3",
+   "machineData": "assembling-machine-3",
+   "spray": null,
+   "runs": 0.5,
+   "kind": "craft",
+   "machineCount": 3.3333333333333335,
+   "built": 4,
+   "outRate": {
+    "space-warper": 0.5
+   },
+   "inRate": {
+    "graviton-lens": 0.5
+   },
+   "power": 4320,
+   "powerAvg": 3600
+  },
+  "graviton-lens": {
+   "item": "graviton-lens",
+   "recipe": "graviton-lens",
+   "machine": "assembling-machine-3",
+   "machineData": "assembling-machine-3",
+   "spray": null,
+   "runs": 0.5,
+   "kind": "craft",
+   "machineCount": 2,
+   "built": 2,
+   "outRate": {
+    "graviton-lens": 0.5
+   },
+   "inRate": {
+    "diamond": 2,
+    "strange-matter": 0.5
+   },
+   "power": 2160,
+   "powerAvg": 2160
+  },
+  "strange-matter": {
+   "item": "strange-matter",
+   "recipe": "strange-matter",
+   "machine": "miniature-particle-collider",
+   "machineData": "miniature-particle-collider",
+   "spray": null,
+   "runs": 0.5,
+   "kind": "craft",
+   "machineCount": 4,
+   "built": 4,
+   "outRate": {
+    "strange-matter": 0.5
+   },
+   "inRate": {
+    "deuterium": 5,
+    "iron-ingot": 1,
+    "particle-container": 1
+   },
+   "power": 48000,
+   "powerAvg": 48000
+  },
+  "particle-container": {
+   "item": "particle-container",
+   "recipe": "particle-container",
+   "machine": "assembling-machine-3",
+   "machineData": "assembling-machine-3",
+   "spray": null,
+   "runs": 1,
+   "kind": "craft",
+   "machineCount": 2.6666666666666665,
+   "built": 3,
+   "outRate": {
+    "particle-container": 1
+   },
+   "inRate": {
+    "copper-ingot": 2,
+    "electromagnetic-turbine": 2,
+    "graphene": 2
+   },
+   "power": 3240,
+   "powerAvg": 2880
+  },
+  "graphene": {
+   "item": "graphene",
+   "recipe": "graphene",
+   "machine": "chemical-plant",
+   "machineData": "chemical-plant",
+   "spray": null,
+   "runs": 1,
+   "kind": "craft",
+   "machineCount": 3,
+   "built": 3,
+   "outRate": {
+    "graphene": 2
+   },
+   "inRate": {
+    "energetic-graphite": 3,
+    "sulfuric-acid": 1
+   },
+   "power": 2160,
+   "powerAvg": 2160
+  },
+  "sulfuric-acid": {
+   "item": "sulfuric-acid",
+   "recipe": "sulphuric-acid-vein",
+   "machine": "water-pump",
+   "machineData": "water-pump",
+   "spray": null,
+   "runs": 1,
+   "kind": "source",
+   "machineCount": 1.2,
+   "built": 2,
+   "outRate": {
+    "sulfuric-acid": 1
+   },
+   "inRate": {},
+   "power": 600,
+   "powerAvg": 360
+  },
+  "energetic-graphite": {
+   "item": "energetic-graphite",
+   "recipe": "energetic-graphite",
+   "machine": "plane-smelter",
+   "machineData": "plane-smelter",
+   "spray": null,
+   "runs": 5,
+   "kind": "craft",
+   "machineCount": 5,
+   "built": 5,
+   "outRate": {
+    "energetic-graphite": 5
+   },
+   "inRate": {
+    "coal": 10
+   },
+   "power": 7200,
+   "powerAvg": 7200
+  },
+  "coal": {
+   "item": "coal",
+   "recipe": "coal-vein",
+   "machine": "mining-machine",
+   "machineData": "mining-machine",
+   "spray": null,
+   "runs": 10,
+   "kind": "source",
+   "machineCount": 2.5,
+   "built": 3,
+   "outRate": {
+    "coal": 10
+   },
+   "inRate": {},
+   "power": 0,
+   "powerAvg": 0
+  },
+  "electromagnetic-turbine": {
+   "item": "electromagnetic-turbine",
+   "recipe": "electromagnetic-turbine",
+   "machine": "assembling-machine-3",
+   "machineData": "assembling-machine-3",
+   "spray": null,
+   "runs": 2,
+   "kind": "craft",
+   "machineCount": 2.6666666666666665,
+   "built": 3,
+   "outRate": {
+    "electromagnetic-turbine": 2
+   },
+   "inRate": {
+    "electric-motor": 4,
+    "magnetic-coil": 4
+   },
+   "power": 3240,
+   "powerAvg": 2880
+  },
+  "magnetic-coil": {
+   "item": "magnetic-coil",
+   "recipe": "magnetic-coil",
+   "machine": "assembling-machine-3",
+   "machineData": "assembling-machine-3",
+   "spray": null,
+   "runs": 4,
+   "kind": "craft",
+   "machineCount": 2.6666666666666665,
+   "built": 3,
+   "outRate": {
+    "magnetic-coil": 8
+   },
+   "inRate": {
+    "copper-ingot": 4,
+    "magnet": 8
+   },
+   "power": 3240,
+   "powerAvg": 2880
+  },
+  "magnet": {
+   "item": "magnet",
+   "recipe": "magnet",
+   "machine": "plane-smelter",
+   "machineData": "plane-smelter",
+   "spray": null,
+   "runs": 8,
+   "kind": "craft",
+   "machineCount": 6,
+   "built": 6,
+   "outRate": {
+    "magnet": 8
+   },
+   "inRate": {
+    "iron-ore": 8
+   },
+   "power": 8640,
+   "powerAvg": 8640
+  },
+  "iron-ore": {
+   "item": "iron-ore",
+   "recipe": "iron-vein",
+   "machine": "mining-machine",
+   "machineData": "mining-machine",
+   "spray": null,
+   "runs": 21,
+   "kind": "source",
+   "machineCount": 5.25,
+   "built": 6,
+   "outRate": {
+    "iron-ore": 21
+   },
+   "inRate": {},
+   "power": 0,
+   "powerAvg": 0
+  },
+  "copper-ingot": {
+   "item": "copper-ingot",
+   "recipe": "copper-ingot",
+   "machine": "plane-smelter",
+   "machineData": "plane-smelter",
+   "spray": null,
+   "runs": 6,
+   "kind": "craft",
+   "machineCount": 3,
+   "built": 3,
+   "outRate": {
+    "copper-ingot": 6
+   },
+   "inRate": {
+    "copper-ore": 6
+   },
+   "power": 4320,
+   "powerAvg": 4320
+  },
+  "copper-ore": {
+   "item": "copper-ore",
+   "recipe": "copper-vein",
+   "machine": "mining-machine",
+   "machineData": "mining-machine",
+   "spray": null,
+   "runs": 6,
+   "kind": "source",
+   "machineCount": 1.5,
+   "built": 2,
+   "outRate": {
+    "copper-ore": 6
+   },
+   "inRate": {},
+   "power": 0,
+   "powerAvg": 0
+  },
+  "electric-motor": {
+   "item": "electric-motor",
+   "recipe": "electric-motor",
+   "machine": "assembling-machine-3",
+   "machineData": "assembling-machine-3",
+   "spray": null,
+   "runs": 4,
+   "kind": "craft",
+   "machineCount": 5.333333333333333,
+   "built": 6,
+   "outRate": {
+    "electric-motor": 4
+   },
+   "inRate": {
+    "gear": 4,
+    "iron-ingot": 8,
+    "magnetic-coil": 4
+   },
+   "power": 6480,
+   "powerAvg": 5760
+  },
+  "iron-ingot": {
+   "item": "iron-ingot",
+   "recipe": "iron-ingot",
+   "machine": "plane-smelter",
+   "machineData": "plane-smelter",
+   "spray": null,
+   "runs": 13,
+   "kind": "craft",
+   "machineCount": 6.5,
+   "built": 7,
+   "outRate": {
+    "iron-ingot": 13
+   },
+   "inRate": {
+    "iron-ore": 13
+   },
+   "power": 10080,
+   "powerAvg": 9360
+  },
+  "gear": {
+   "item": "gear",
+   "recipe": "gear",
+   "machine": "assembling-machine-3",
+   "machineData": "assembling-machine-3",
+   "spray": null,
+   "runs": 4,
+   "kind": "craft",
+   "machineCount": 2.6666666666666665,
+   "built": 3,
+   "outRate": {
+    "gear": 4
+   },
+   "inRate": {
+    "iron-ingot": 4
+   },
+   "power": 3240,
+   "powerAvg": 2880
+  },
+  "deuterium": {
+   "item": "deuterium",
+   "recipe": "deuterium-fractionation",
+   "machine": "fractionator",
+   "machineData": "fractionator",
+   "spray": null,
+   "runs": 500,
+   "kind": "craft",
+   "machineCount": 16.666666666666668,
+   "built": 17,
+   "outRate": {
+    "deuterium": 5
+   },
+   "inRate": {
+    "hydrogen": 5
+   },
+   "power": 12240,
+   "powerAvg": 12000
+  },
+  "hydrogen": {
+   "item": "hydrogen",
+   "recipe": "gas-giant-hydrogen",
+   "machine": "orbital-collector",
+   "machineData": "orbital-collector",
+   "spray": null,
+   "runs": 0.6510416666666667,
+   "kind": "source",
+   "machineCount": 1.1837121212121213,
+   "built": 2,
+   "outRate": {
+    "hydrogen": 5
+   },
+   "inRate": {},
+   "power": 0,
+   "powerAvg": 0
+  },
+  "diamond": {
+   "item": "diamond",
+   "recipe": "diamond",
+   "machine": "plane-smelter",
+   "machineData": "plane-smelter",
+   "spray": null,
+   "runs": 2,
+   "kind": "craft",
+   "machineCount": 2,
+   "built": 2,
+   "outRate": {
+    "diamond": 2
+   },
+   "inRate": {
+    "energetic-graphite": 2
+   },
+   "power": 2880,
+   "powerAvg": 2880
+  },
+  "__target_space-warper": {
+   "item": "space-warper",
+   "kind": "target",
+   "rate": 0.5,
+   "id": "__target_space-warper"
+  }
+ },
+ "edges": [
+  {
+   "from": "graviton-lens",
+   "to": "space-warper",
+   "item": "graviton-lens",
+   "flow": 0.5,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.016666666666666666
+  },
+  {
+   "from": "diamond",
+   "to": "graviton-lens",
+   "item": "diamond",
+   "flow": 2,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.06666666666666667
+  },
+  {
+   "from": "strange-matter",
+   "to": "graviton-lens",
+   "item": "strange-matter",
+   "flow": 0.5,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.016666666666666666
+  },
+  {
+   "from": "deuterium",
+   "to": "strange-matter",
+   "item": "deuterium",
+   "flow": 5,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.16666666666666666
+  },
+  {
+   "from": "iron-ingot",
+   "to": "strange-matter",
+   "item": "iron-ingot",
+   "flow": 1,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.03333333333333333
+  },
+  {
+   "from": "iron-ingot",
+   "to": "electric-motor",
+   "item": "iron-ingot",
+   "flow": 8,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.26666666666666666
+  },
+  {
+   "from": "iron-ingot",
+   "to": "gear",
+   "item": "iron-ingot",
+   "flow": 4,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.13333333333333333
+  },
+  {
+   "from": "particle-container",
+   "to": "strange-matter",
+   "item": "particle-container",
+   "flow": 1,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.03333333333333333
+  },
+  {
+   "from": "copper-ingot",
+   "to": "particle-container",
+   "item": "copper-ingot",
+   "flow": 2,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.06666666666666667
+  },
+  {
+   "from": "copper-ingot",
+   "to": "magnetic-coil",
+   "item": "copper-ingot",
+   "flow": 4,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.13333333333333333
+  },
+  {
+   "from": "electromagnetic-turbine",
+   "to": "particle-container",
+   "item": "electromagnetic-turbine",
+   "flow": 2,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.06666666666666667
+  },
+  {
+   "from": "graphene",
+   "to": "particle-container",
+   "item": "graphene",
+   "flow": 2,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.06666666666666667
+  },
+  {
+   "from": "energetic-graphite",
+   "to": "graphene",
+   "item": "energetic-graphite",
+   "flow": 3,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.1
+  },
+  {
+   "from": "energetic-graphite",
+   "to": "diamond",
+   "item": "energetic-graphite",
+   "flow": 2,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.06666666666666667
+  },
+  {
+   "from": "sulfuric-acid",
+   "to": "graphene",
+   "item": "sulfuric-acid",
+   "flow": 1,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": true,
+   "belts": 0,
+   "beltFill": 0
+  },
+  {
+   "from": "coal",
+   "to": "energetic-graphite",
+   "item": "coal",
+   "flow": 10,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.3333333333333333
+  },
+  {
+   "from": "electric-motor",
+   "to": "electromagnetic-turbine",
+   "item": "electric-motor",
+   "flow": 4,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.13333333333333333
+  },
+  {
+   "from": "magnetic-coil",
+   "to": "electromagnetic-turbine",
+   "item": "magnetic-coil",
+   "flow": 4,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.13333333333333333
+  },
+  {
+   "from": "magnetic-coil",
+   "to": "electric-motor",
+   "item": "magnetic-coil",
+   "flow": 4,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.13333333333333333
+  },
+  {
+   "from": "magnet",
+   "to": "magnetic-coil",
+   "item": "magnet",
+   "flow": 8,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.26666666666666666
+  },
+  {
+   "from": "iron-ore",
+   "to": "magnet",
+   "item": "iron-ore",
+   "flow": 8,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.26666666666666666
+  },
+  {
+   "from": "iron-ore",
+   "to": "iron-ingot",
+   "item": "iron-ore",
+   "flow": 13,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.43333333333333335
+  },
+  {
+   "from": "copper-ore",
+   "to": "copper-ingot",
+   "item": "copper-ore",
+   "flow": 6,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.2
+  },
+  {
+   "from": "gear",
+   "to": "electric-motor",
+   "item": "gear",
+   "flow": 4,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.13333333333333333
+  },
+  {
+   "from": "hydrogen",
+   "to": "deuterium",
+   "item": "hydrogen",
+   "flow": 5,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.16666666666666666
+  },
+  {
+   "from": "space-warper",
+   "to": "__target_space-warper",
+   "item": "space-warper",
+   "flow": 0.5,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.016666666666666666
+  }
+ ],
+ "totals": {
+  "power": 122040,
+  "built": {
+   "assembling-machine-3": 24,
+   "miniature-particle-collider": 4,
+   "chemical-plant": 3,
+   "water-pump": 2,
+   "plane-smelter": 23,
+   "mining-machine": 11,
+   "fractionator": 17,
+   "orbital-collector": 2
+  },
+  "machineCount": {
+   "assembling-machine-3": 21.333333333333332,
+   "miniature-particle-collider": 4,
+   "chemical-plant": 3,
+   "water-pump": 1.2,
+   "plane-smelter": 22.5,
+   "mining-machine": 9.25,
+   "fractionator": 16.666666666666668,
+   "orbital-collector": 1.1837121212121213
+  },
+  "belts": 25,
+  "beltsByItem": {
+   "graviton-lens": 1,
+   "diamond": 1,
+   "strange-matter": 1,
+   "deuterium": 1,
+   "iron-ingot": 3,
+   "particle-container": 1,
+   "copper-ingot": 2,
+   "electromagnetic-turbine": 1,
+   "graphene": 1,
+   "energetic-graphite": 2,
+   "coal": 1,
+   "electric-motor": 1,
+   "magnetic-coil": 2,
+   "magnet": 1,
+   "iron-ore": 2,
+   "copper-ore": 1,
+   "gear": 1,
+   "hydrogen": 1,
+   "space-warper": 1
+  },
+  "raw": {
+   "sulfuric-acid": 1,
+   "coal": 10,
+   "iron-ore": 21,
+   "copper-ore": 6,
+   "hydrogen": 5
+  },
+  "surplus": {},
+  "proliferator": {}
+ },
+ "demand": {
+  "space-warper": 0.5,
+  "graviton-lens": 0.5,
+  "diamond": 2,
+  "strange-matter": 0.5,
+  "deuterium": 5,
+  "iron-ingot": 13,
+  "particle-container": 1,
+  "copper-ingot": 6,
+  "electromagnetic-turbine": 2,
+  "graphene": 2,
+  "energetic-graphite": 5,
+  "sulfuric-acid": 1,
+  "coal": 10,
+  "electric-motor": 4,
+  "magnetic-coil": 8,
+  "magnet": 8,
+  "iron-ore": 21,
+  "copper-ore": 6,
+  "gear": 4,
+  "hydrogen": 5
+ },
+ "supply": {},
+ "beltCapacity": 30,
+ "order": [
+  "space-warper",
+  "graviton-lens",
+  "strange-matter",
+  "particle-container",
+  "graphene",
+  "sulfuric-acid",
+  "energetic-graphite",
+  "coal",
+  "electromagnetic-turbine",
+  "magnetic-coil",
+  "magnet",
+  "iron-ore",
+  "copper-ingot",
+  "copper-ore",
+  "electric-motor",
+  "iron-ingot",
+  "gear",
+  "deuterium",
+  "hydrogen",
+  "diamond"
+ ]
+}

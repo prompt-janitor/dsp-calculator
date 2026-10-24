@@ -1,9 +1,10 @@
-/* Dyson Sphere Calculator service worker: offline app shell, cache-first. */
+/* DSP Calculator service worker: offline app shell, cache-first. */
 const CACHE = 'dsp-calc-__VERSION__';
 const SHELL = __ASSETS__;
 
 self.addEventListener('install', (e) => {
-  e.waitUntil(caches.open(CACHE).then((c) => c.addAll(SHELL)));
+  // cache: 'reload' skips the HTTP cache, so the new cache gets the new files.
+  e.waitUntil(caches.open(CACHE).then((c) => c.addAll(SHELL.map((url) => new Request(url, { cache: 'reload' })))));
 });
 self.addEventListener('activate', (e) => {
   e.waitUntil(
@@ -12,17 +13,21 @@ self.addEventListener('activate', (e) => {
   );
 });
 self.addEventListener('message', (e) => { if (e.data === 'skip') self.skipWaiting(); });
+// Only this version's cache is read, so a page never mixes files from two
+// builds while a new worker waits.
 self.addEventListener('fetch', (e) => {
   const req = e.request;
   if (req.method !== 'GET') return;
   const url = new URL(req.url);
   if (url.origin !== self.location.origin) return;
-  if (req.mode === 'navigate') {
-    e.respondWith(caches.match('index.html').then((r) => r || fetch(req)));
+  // Only the app's own page gets index.html. Other pages, such as the
+  // license files, are served as they are.
+  if (req.mode === 'navigate' && (url.pathname.endsWith('/') || url.pathname.endsWith('/index.html'))) {
+    e.respondWith(caches.match('index.html', { cacheName: CACHE }).then((r) => r || fetch(req)));
     return;
   }
   e.respondWith(
-    caches.match(req, { ignoreSearch: true }).then((hit) => hit || fetch(req).then((res) => {
+    caches.match(req, { cacheName: CACHE, ignoreSearch: true }).then((hit) => hit || fetch(req).then((res) => {
       if (res.ok) { const copy = res.clone(); caches.open(CACHE).then((c) => c.put(req, copy)); }
       return res;
     }))

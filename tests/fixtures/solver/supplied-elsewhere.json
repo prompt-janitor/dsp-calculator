@@ -1,0 +1,579 @@
+{
+ "ok": true,
+ "iterations": 6,
+ "nodes": {
+  "information-matrix": {
+   "item": "information-matrix",
+   "recipe": "information-matrix",
+   "machine": "matrix-lab",
+   "machineData": "matrix-lab",
+   "spray": null,
+   "runs": 1,
+   "kind": "craft",
+   "machineCount": 10,
+   "built": 10,
+   "outRate": {
+    "information-matrix": 1
+   },
+   "inRate": {
+    "particle-broadband": 1,
+    "processor": 2
+   },
+   "power": 4800,
+   "powerAvg": 4800
+  },
+  "particle-broadband": {
+   "item": "particle-broadband",
+   "recipe": "particle-broadband",
+   "machine": "assembling-machine-3",
+   "machineData": "assembling-machine-3",
+   "spray": null,
+   "runs": 1,
+   "kind": "craft",
+   "machineCount": 5.333333333333333,
+   "built": 6,
+   "outRate": {
+    "particle-broadband": 1
+   },
+   "inRate": {
+    "carbon-nanotube": 2,
+    "crystal-silicon": 2,
+    "plastic": 1
+   },
+   "power": 6480,
+   "powerAvg": 5760
+  },
+  "plastic": {
+   "item": "plastic",
+   "recipe": "plastic",
+   "machine": "chemical-plant",
+   "machineData": "chemical-plant",
+   "spray": null,
+   "runs": 1,
+   "kind": "craft",
+   "machineCount": 3,
+   "built": 3,
+   "outRate": {
+    "plastic": 1
+   },
+   "inRate": {
+    "energetic-graphite": 1,
+    "refined-oil": 2
+   },
+   "power": 2160,
+   "powerAvg": 2160
+  },
+  "refined-oil": {
+   "item": "refined-oil",
+   "recipe": "plasma-refining",
+   "machine": "oil-refinery",
+   "machineData": "oil-refinery",
+   "spray": null,
+   "runs": 1,
+   "kind": "craft",
+   "machineCount": 4,
+   "built": 4,
+   "outRate": {
+    "hydrogen": 1,
+    "refined-oil": 2
+   },
+   "inRate": {
+    "crude-oil": 2
+   },
+   "power": 3840,
+   "powerAvg": 3840
+  },
+  "crude-oil": {
+   "item": "crude-oil",
+   "recipe": "crude-oil-seep",
+   "machine": "oil-extractor",
+   "machineData": "oil-extractor",
+   "spray": null,
+   "runs": 2,
+   "kind": "source",
+   "machineCount": 2,
+   "built": 2,
+   "outRate": {
+    "crude-oil": 2
+   },
+   "inRate": {},
+   "power": 1680,
+   "powerAvg": 1680
+  },
+  "energetic-graphite": {
+   "item": "energetic-graphite",
+   "recipe": "energetic-graphite",
+   "machine": "plane-smelter",
+   "machineData": "plane-smelter",
+   "spray": null,
+   "runs": 5.5,
+   "kind": "craft",
+   "machineCount": 5.5,
+   "built": 6,
+   "outRate": {
+    "energetic-graphite": 5.5
+   },
+   "inRate": {
+    "coal": 11
+   },
+   "power": 8640,
+   "powerAvg": 7920
+  },
+  "coal": {
+   "item": "coal",
+   "recipe": "coal-vein",
+   "machine": "mining-machine",
+   "machineData": "mining-machine",
+   "spray": null,
+   "runs": 11,
+   "kind": "source",
+   "machineCount": 2.75,
+   "built": 3,
+   "outRate": {
+    "coal": 11
+   },
+   "inRate": {},
+   "power": 0,
+   "powerAvg": 0
+  },
+  "crystal-silicon": {
+   "item": "crystal-silicon",
+   "recipe": "crystal-silicon",
+   "machine": "plane-smelter",
+   "machineData": "plane-smelter",
+   "spray": null,
+   "runs": 2,
+   "kind": "craft",
+   "machineCount": 2,
+   "built": 2,
+   "outRate": {
+    "crystal-silicon": 2
+   },
+   "inRate": {
+    "high-purity-silicon": 2
+   },
+   "power": 2880,
+   "powerAvg": 2880
+  },
+  "high-purity-silicon": {
+   "item": "high-purity-silicon",
+   "recipe": "high-purity-silicon",
+   "machine": "plane-smelter",
+   "machineData": "plane-smelter",
+   "spray": null,
+   "runs": 2,
+   "kind": "craft",
+   "machineCount": 2,
+   "built": 2,
+   "outRate": {
+    "high-purity-silicon": 2
+   },
+   "inRate": {
+    "silicon-ore": 4
+   },
+   "power": 2880,
+   "powerAvg": 2880
+  },
+  "silicon-ore": {
+   "item": "silicon-ore",
+   "recipe": "silicium-vein",
+   "machine": "mining-machine",
+   "machineData": "mining-machine",
+   "spray": null,
+   "runs": 4,
+   "kind": "source",
+   "machineCount": 1,
+   "built": 1,
+   "outRate": {
+    "silicon-ore": 4
+   },
+   "inRate": {},
+   "power": 0,
+   "powerAvg": 0
+  },
+  "carbon-nanotube": {
+   "item": "carbon-nanotube",
+   "recipe": "carbon-nanotube",
+   "machine": "chemical-plant",
+   "machineData": "chemical-plant",
+   "spray": null,
+   "runs": 1,
+   "kind": "craft",
+   "machineCount": 4,
+   "built": 4,
+   "outRate": {
+    "carbon-nanotube": 2
+   },
+   "inRate": {
+    "graphene": 3,
+    "titanium-ingot": 1
+   },
+   "power": 2880,
+   "powerAvg": 2880
+  },
+  "titanium-ingot": {
+   "item": "titanium-ingot",
+   "recipe": "titanium-ingot",
+   "machine": "plane-smelter",
+   "machineData": "plane-smelter",
+   "spray": null,
+   "runs": 1,
+   "kind": "craft",
+   "machineCount": 1,
+   "built": 1,
+   "outRate": {
+    "titanium-ingot": 1
+   },
+   "inRate": {
+    "titanium-ore": 2
+   },
+   "power": 1440,
+   "powerAvg": 1440
+  },
+  "titanium-ore": {
+   "item": "titanium-ore",
+   "recipe": "titanium-vein",
+   "machine": "mining-machine",
+   "machineData": "mining-machine",
+   "spray": null,
+   "runs": 2,
+   "kind": "source",
+   "machineCount": 0.5,
+   "built": 1,
+   "outRate": {
+    "titanium-ore": 2
+   },
+   "inRate": {},
+   "power": 0,
+   "powerAvg": 0
+  },
+  "graphene": {
+   "item": "graphene",
+   "recipe": "graphene",
+   "machine": "chemical-plant",
+   "machineData": "chemical-plant",
+   "spray": null,
+   "runs": 1.5,
+   "kind": "craft",
+   "machineCount": 4.5,
+   "built": 5,
+   "outRate": {
+    "graphene": 3
+   },
+   "inRate": {
+    "energetic-graphite": 4.5,
+    "sulfuric-acid": 1.5
+   },
+   "power": 3600,
+   "powerAvg": 3240
+  },
+  "sulfuric-acid": {
+   "item": "sulfuric-acid",
+   "recipe": "sulphuric-acid-vein",
+   "machine": "water-pump",
+   "machineData": "water-pump",
+   "spray": null,
+   "runs": 1.5,
+   "kind": "source",
+   "machineCount": 1.7999999999999998,
+   "built": 2,
+   "outRate": {
+    "sulfuric-acid": 1.5
+   },
+   "inRate": {},
+   "power": 600,
+   "powerAvg": 540
+  },
+  "processor": {
+   "item": "processor",
+   "kind": "raw",
+   "runs": 0,
+   "rate": 2
+  },
+  "__target_information-matrix": {
+   "item": "information-matrix",
+   "kind": "target",
+   "rate": 1,
+   "id": "__target_information-matrix"
+  }
+ },
+ "edges": [
+  {
+   "from": "particle-broadband",
+   "to": "information-matrix",
+   "item": "particle-broadband",
+   "flow": 1,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.03333333333333333
+  },
+  {
+   "from": "processor",
+   "to": "information-matrix",
+   "item": "processor",
+   "flow": 2,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.06666666666666667
+  },
+  {
+   "from": "carbon-nanotube",
+   "to": "particle-broadband",
+   "item": "carbon-nanotube",
+   "flow": 2,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.06666666666666667
+  },
+  {
+   "from": "crystal-silicon",
+   "to": "particle-broadband",
+   "item": "crystal-silicon",
+   "flow": 2,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.06666666666666667
+  },
+  {
+   "from": "plastic",
+   "to": "particle-broadband",
+   "item": "plastic",
+   "flow": 1,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.03333333333333333
+  },
+  {
+   "from": "energetic-graphite",
+   "to": "plastic",
+   "item": "energetic-graphite",
+   "flow": 1,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.03333333333333333
+  },
+  {
+   "from": "energetic-graphite",
+   "to": "graphene",
+   "item": "energetic-graphite",
+   "flow": 4.5,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.15
+  },
+  {
+   "from": "refined-oil",
+   "to": "plastic",
+   "item": "refined-oil",
+   "flow": 2,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": true,
+   "belts": 0,
+   "beltFill": 0
+  },
+  {
+   "from": "crude-oil",
+   "to": "refined-oil",
+   "item": "crude-oil",
+   "flow": 2,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": true,
+   "belts": 0,
+   "beltFill": 0
+  },
+  {
+   "from": "coal",
+   "to": "energetic-graphite",
+   "item": "coal",
+   "flow": 11,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.36666666666666664
+  },
+  {
+   "from": "high-purity-silicon",
+   "to": "crystal-silicon",
+   "item": "high-purity-silicon",
+   "flow": 2,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.06666666666666667
+  },
+  {
+   "from": "silicon-ore",
+   "to": "high-purity-silicon",
+   "item": "silicon-ore",
+   "flow": 4,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.13333333333333333
+  },
+  {
+   "from": "graphene",
+   "to": "carbon-nanotube",
+   "item": "graphene",
+   "flow": 3,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.1
+  },
+  {
+   "from": "titanium-ingot",
+   "to": "carbon-nanotube",
+   "item": "titanium-ingot",
+   "flow": 1,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.03333333333333333
+  },
+  {
+   "from": "titanium-ore",
+   "to": "titanium-ingot",
+   "item": "titanium-ore",
+   "flow": 2,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.06666666666666667
+  },
+  {
+   "from": "sulfuric-acid",
+   "to": "graphene",
+   "item": "sulfuric-acid",
+   "flow": 1.5,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": true,
+   "belts": 0,
+   "beltFill": 0
+  },
+  {
+   "from": "information-matrix",
+   "to": "__target_information-matrix",
+   "item": "information-matrix",
+   "flow": 1,
+   "kind": "item",
+   "byproduct": false,
+   "fluid": false,
+   "belts": 1,
+   "beltFill": 0.03333333333333333
+  }
+ ],
+ "totals": {
+  "power": 41880,
+  "built": {
+   "matrix-lab": 10,
+   "assembling-machine-3": 6,
+   "chemical-plant": 12,
+   "oil-refinery": 4,
+   "oil-extractor": 2,
+   "plane-smelter": 11,
+   "mining-machine": 5,
+   "water-pump": 2
+  },
+  "machineCount": {
+   "matrix-lab": 10,
+   "assembling-machine-3": 5.333333333333333,
+   "chemical-plant": 11.5,
+   "oil-refinery": 4,
+   "oil-extractor": 2,
+   "plane-smelter": 10.5,
+   "mining-machine": 4.25,
+   "water-pump": 1.7999999999999998
+  },
+  "belts": 14,
+  "beltsByItem": {
+   "particle-broadband": 1,
+   "processor": 1,
+   "carbon-nanotube": 1,
+   "crystal-silicon": 1,
+   "plastic": 1,
+   "energetic-graphite": 2,
+   "coal": 1,
+   "high-purity-silicon": 1,
+   "silicon-ore": 1,
+   "graphene": 1,
+   "titanium-ingot": 1,
+   "titanium-ore": 1,
+   "information-matrix": 1
+  },
+  "raw": {
+   "crude-oil": 2,
+   "coal": 11,
+   "silicon-ore": 4,
+   "titanium-ore": 2,
+   "sulfuric-acid": 1.5,
+   "processor": 2
+  },
+  "surplus": {
+   "hydrogen": 1
+  },
+  "proliferator": {}
+ },
+ "demand": {
+  "information-matrix": 1,
+  "particle-broadband": 1,
+  "processor": 2,
+  "carbon-nanotube": 2,
+  "crystal-silicon": 2,
+  "plastic": 1,
+  "energetic-graphite": 5.5,
+  "refined-oil": 2,
+  "crude-oil": 2,
+  "coal": 11,
+  "high-purity-silicon": 2,
+  "silicon-ore": 4,
+  "graphene": 3,
+  "titanium-ingot": 1,
+  "titanium-ore": 2,
+  "sulfuric-acid": 1.5
+ },
+ "supply": {
+  "hydrogen": 1
+ },
+ "beltCapacity": 30,
+ "order": [
+  "information-matrix",
+  "particle-broadband",
+  "plastic",
+  "refined-oil",
+  "crude-oil",
+  "energetic-graphite",
+  "coal",
+  "crystal-silicon",
+  "high-purity-silicon",
+  "silicon-ore",
+  "carbon-nanotube",
+  "titanium-ingot",
+  "titanium-ore",
+  "graphene",
+  "sulfuric-acid"
+ ]
+}

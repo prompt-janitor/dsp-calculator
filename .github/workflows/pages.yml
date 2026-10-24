@@ -1,4 +1,6 @@
-name: Deploy to GitHub Pages
+# Builds the app and publishes dist/ to GitHub Pages.
+# Repository settings: Pages > Source = GitHub Actions.
+name: Pages
 
 on:
   push:
@@ -7,12 +9,11 @@ on:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
+# One deploy at a time. A newer run waits instead of cancelling one that has started.
 concurrency:
   group: pages
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   build:
@@ -22,14 +23,23 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+          cache: npm
+      - run: npm ci
       - run: npm test
+      - run: npm run lint:copy -- --strict
+      - run: npm run licenses
       - run: npm run build
+      - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
+
   deploy:
     needs: build
     runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

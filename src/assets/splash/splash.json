@@ -16,6 +16,18 @@
     "media": "screen and (device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)"
   },
   {
+    "file": "iphone-air-portrait.png",
+    "media": "screen and (device-width: 420px) and (device-height: 912px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)"
+  },
+  {
+    "file": "iphone-duo-portrait.png",
+    "media": "screen and (device-width: 466px) and (device-height: 678px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)"
+  },
+  {
+    "file": "iphone-duo-landscape.png",
+    "media": "screen and (device-width: 466px) and (device-height: 678px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)"
+  },
+  {
     "file": "iphone-12-14-portrait.png",
     "media": "screen and (device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)"
   },
@@ -46,6 +58,14 @@
   {
     "file": "ipad-pro-12-9-landscape.png",
     "media": "screen and (device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)"
+  },
+  {
+    "file": "ipad-pro-11-m4-portrait.png",
+    "media": "screen and (device-width: 834px) and (device-height: 1210px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)"
+  },
+  {
+    "file": "ipad-pro-11-m4-landscape.png",
+    "media": "screen and (device-width: 834px) and (device-height: 1210px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)"
   },
   {
     "file": "ipad-pro-11-portrait.png",

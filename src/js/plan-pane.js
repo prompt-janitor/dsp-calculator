@@ -68,7 +68,7 @@ const stat = (value, label, cls = '') => `<div class="stat${cls}"><b>${value}</b
 const sum = (counts) => Object.values(counts).reduce((a, b) => a + b, 0);
 
 function statsHTML(totals) {
-  const sprayed = sum(totals.prolif);
+  const sprayed = sum(totals.proliferator);
   return stat(count(sum(totals.built)), 'Buildings') +
     stat(formatPower(totals.power), 'Power') +
     stat(count(totals.belts), 'Belt lines') +
@@ -83,7 +83,7 @@ function glanceHTML(totals) {
   const rows = top.map((m) => `
     <button class="row" type="button" data-goto="build">
       <span class="ibox">${machineIcon(m, 30)}</span>
-      <span class="main-t"><span class="t">${esc(machineName(m))}</span><span class="s">${formatNumber(totals.exact[m])} exact</span></span>
+      <span class="main-t"><span class="t">${esc(machineName(m))}</span><span class="s">${formatNumber(totals.machineCount[m])} exact</span></span>
       <span class="end"><b>${totals.built[m]}</b></span>
     </button>`).join('');
   return `

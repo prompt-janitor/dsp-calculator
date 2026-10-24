@@ -26,7 +26,7 @@ function summaryText() {
     ...ui.plan.order.map((id) => {
       const node = ui.plan.nodes[id];
       const made = `${itemName(id)}: ${rateStr(node.outRate[id])}${unit}`;
-      return `  ${made} in ${node.built} x ${machineName(node.machine)} (${formatNumber(node.count)} exact)`;
+      return `  ${made} in ${node.built} x ${machineName(node.machine)} (${formatNumber(node.machineCount)} exact)`;
     })
   ];
   return lines.join('\n');

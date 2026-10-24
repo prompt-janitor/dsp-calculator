@@ -97,14 +97,14 @@ function sprayFor(recipe, choice) {
   if (!mod) return null;
   if (mode === 'products' && !recipe.prolif) return null;
   return { level: choice.level, mode: mode, item: mod.proliferator, sprays: mod.sprays,
-    prod: mod.productivity || 0, speed: mod.speed || 0, cons: mod.consumption };
+    productivity: mod.productivity || 0, speed: mod.speed || 0, consumption: mod.consumption };
 }
 
-function outputBoost(node) { return node.prof && node.prof.mode === 'products' ? 1 + node.prof.prod : 1; }
+function outputBoost(node) { return node.spray && node.spray.mode === 'products' ? 1 + node.spray.productivity : 1; }
 
-function sprayUse(node) { return node.runs * sumValues(node.rec.in) / node.prof.sprays; }
+function sprayUse(node) { return node.runs * sumValues(node.recipe.in) / node.spray.sprays; }
 
-function machinesNeeded(node, speed) { return node.runs * node.rec.time / speed; }
+function machinesNeeded(node, speed) { return node.runs * node.recipe.time / speed; }
 
 // Walks from the targets through every input, and picks a recipe for each item.
 // Items with no recipe, or set as external, are supplied from outside.
@@ -134,8 +134,8 @@ function makeSteps(order, recipeOf, cfg, overrides) {
   for (const item of order) {
     const recipe = RECIPES[recipeOf[item]];
     const machine = pickMachine(recipe, cfg, (overrides[item] || {}).machine);
-    nodes[item] = { item: item, rec: recipe, machine: machine, mach: DATA.machines[machine],
-      prof: sprayFor(recipe, sprayChoice(item, cfg, overrides)), runs: 0, kind: recipe.mining ? 'source' : 'craft' };
+    nodes[item] = { item: item, recipe: recipe, machine: machine, machineData: DATA.machines[machine],
+      spray: sprayFor(recipe, sprayChoice(item, cfg, overrides)), runs: 0, kind: recipe.mining ? 'source' : 'craft' };
   }
   return nodes;
 }
@@ -143,14 +143,14 @@ function makeSteps(order, recipeOf, cfg, overrides) {
 // How fast one machine works through the recipe time. 1 means the recipe's own time.
 function machineSpeed(node, cfg, capacity) {
   const mining = cfg.mining;
-  let speed = node.mach.speed || 1;
+  let speed = node.machineData.speed || 1;
   // One fractionator handles a full belt of hydrogen. Source: dsp-wiki.com/Fractionator
   if (node.machine === 'fractionator') speed = capacity;
-  else if (node.rec.mining && (node.machine === 'mining-machine' || node.machine === 'advanced-mining-machine'))
+  else if (node.recipe.mining && (node.machine === 'mining-machine' || node.machine === 'advanced-mining-machine'))
     speed = speed * (mining.veins || 1) * ((mining.speed || DEFAULT_MINING_SPEED) / 100);
   else if (node.machine === 'orbital-collector') speed = speed * ((mining.orbital || DEFAULT_ORBITAL_NET) / 100);
   else if (node.machine === 'oil-extractor') speed = (mining.oil || 1) * ((mining.speed || DEFAULT_MINING_SPEED) / 100);
-  if (node.prof && node.prof.mode === 'speed') speed *= (1 + node.prof.speed);
+  if (node.spray && node.spray.mode === 'speed') speed *= (1 + node.spray.speed);
   return speed;
 }
 
@@ -159,10 +159,10 @@ function tallyFlows(targets, order, nodes, speedOf) {
   const demand = {}, supply = {};
   for (const t of targets) addTo(demand, t.item, t.rate);
   for (const item of order) {
-    const node = nodes[item], recipe = node.rec;
+    const node = nodes[item], recipe = node.recipe;
     for (const input in recipe.in) addTo(demand, input, node.runs * recipe.in[input]);
-    if (node.prof) addTo(demand, node.prof.item, sprayUse(node));
-    const machineUse = node.mach && node.mach.cons;
+    if (node.spray) addTo(demand, node.spray.item, sprayUse(node));
+    const machineUse = node.machineData && node.machineData.cons;
     if (machineUse) {
       const machines = machinesNeeded(node, speedOf(node));
       for (const used in machineUse) addTo(demand, used, machines * machineUse[used]);
@@ -183,7 +183,7 @@ function balance(targets, order, nodes, speedOf) {
     for (const item of order) {
       const node = nodes[item];
       const need = Math.max(0, (flows.demand[item] || 0) - (flows.supply[item] || 0));
-      const runs = need / (node.rec.out[item] * outputBoost(node));
+      const runs = need / (node.recipe.out[item] * outputBoost(node));
       change = Math.max(change, Math.abs(runs - node.runs) / (1 + Math.abs(runs)));
       node.runs = runs;
       if (runs > RUNAWAY_RATE) runaway = true;
@@ -198,24 +198,24 @@ function balance(targets, order, nodes, speedOf) {
 // Sets machine counts, rates and power on each step, and adds up the totals.
 function finishSteps(order, nodes, demand, speedOf, totals) {
   for (const item of order) {
-    const node = nodes[item], recipe = node.rec;
-    node.count = machinesNeeded(node, speedOf(node));
-    node.built = node.count > ROUND_SLACK ? Math.ceil(node.count - ROUND_SLACK) : 0;
+    const node = nodes[item], recipe = node.recipe;
+    node.machineCount = machinesNeeded(node, speedOf(node));
+    node.built = node.machineCount > ROUND_SLACK ? Math.ceil(node.machineCount - ROUND_SLACK) : 0;
     const boost = outputBoost(node);
     node.outRate = {};
     for (const out in recipe.out) node.outRate[out] = node.runs * recipe.out[out] * boost;
     node.inRate = {};
     for (const input in recipe.in) node.inRate[input] = node.runs * recipe.in[input];
-    let power = (node.mach.usage || 0) * (node.prof ? 1 + node.prof.cons : 1);
+    let power = (node.machineData.usage || 0) * (node.spray ? 1 + node.spray.consumption : 1);
     // The data has no reliable power figure for miners.
     if (node.machine === 'mining-machine') power = 0;
     node.power = node.built * power;           // kW if all built machines run
-    node.powerAvg = node.count * power;
+    node.powerAvg = node.machineCount * power;
     totals.power += node.power;
     addTo(totals.built, node.machine, node.built);
-    addTo(totals.exact, node.machine, node.count);
+    addTo(totals.machineCount, node.machine, node.machineCount);
     if (node.kind === 'source') totals.raw[item] = demand[item] || 0;
-    if (node.prof) totals.prolif[node.prof.item] = (demand[node.prof.item] || 0);
+    if (node.spray) totals.proliferator[node.spray.item] = (demand[node.spray.item] || 0);
   }
 }
 
@@ -239,12 +239,12 @@ function addSurplus(demand, supply, totals) {
 // Who uses each item and how much: steps, spray, machine fuel such as lenses, and targets.
 function listUsers(cfg, order, nodes, graphNodes, speedOf) {
   const users = {};
-  function addUse(item, id, amount, kind) { (users[item] = users[item] || []).push({ id: id, amt: amount, kind: kind || 'item' }); }
+  function addUse(item, id, amount, kind) { (users[item] = users[item] || []).push({ id: id, amount: amount, kind: kind || 'item' }); }
   for (const item of order) {
-    const node = nodes[item], recipe = node.rec;
+    const node = nodes[item], recipe = node.recipe;
     for (const input in recipe.in) addUse(input, item, node.runs * recipe.in[input]);
-    if (node.prof) addUse(node.prof.item, item, sprayUse(node), 'spray');
-    const machineUse = node.mach && node.mach.cons;
+    if (node.spray) addUse(node.spray.item, item, sprayUse(node), 'spray');
+    const machineUse = node.machineData && node.machineData.cons;
     if (machineUse) {
       const machines = machinesNeeded(node, speedOf(node));
       for (const used in machineUse) addUse(used, item, machines * machineUse[used], 'lens');
@@ -268,8 +268,8 @@ function byproductMakers(item, fromByproducts, order, nodes) {
   let made = 0;
   for (const id of order) {
     const node = nodes[id];
-    if (id === item || !node.rec.out[item]) continue;
-    const rate = node.runs * node.rec.out[item] * outputBoost(node);
+    if (id === item || !node.recipe.out[item]) continue;
+    const rate = node.runs * node.recipe.out[item] * outputBoost(node);
     if (rate > MIN_FLOW) { makers.push({ id: id, rate: rate }); made += rate; }
   }
   for (const maker of makers) maker.rate = maker.rate / made * fromByproducts;
@@ -282,18 +282,18 @@ function buildEdges(users, supply, order, nodes, graphNodes) {
   const edges = [];
   for (const item of Object.keys(users)) {
     const list = users[item];
-    const total = list.reduce((sum, use) => sum + use.amt, 0);
+    const total = list.reduce((sum, use) => sum + use.amount, 0);
     if (total <= MIN_FLOW) continue;
     const fromByproducts = Math.min(supply[item] || 0, total);
     const fromMain = total - fromByproducts;
     const makers = byproductMakers(item, fromByproducts, order, nodes);
     for (const use of list) {
-      const share = use.amt / total;
+      const share = use.amount / total;
       if (fromMain > MIN_FLOW && graphNodes[item]) {
-        edges.push({ from: item, to: use.id, item: item, flow: fromMain * share, kind: use.kind, by: false });
+        edges.push({ from: item, to: use.id, item: item, flow: fromMain * share, kind: use.kind, byproduct: false });
       }
       for (const maker of makers) {
-        edges.push({ from: maker.id, to: use.id, item: item, flow: maker.rate * share, kind: use.kind, by: true });
+        edges.push({ from: maker.id, to: use.id, item: item, flow: maker.rate * share, kind: use.kind, byproduct: true });
       }
     }
   }
@@ -304,7 +304,7 @@ function countBelts(edges, capacity, totals) {
   for (const edge of edges) {
     edge.fluid = !!FLUIDS[edge.item];
     edge.belts = edge.fluid ? 0 : Math.max(1, Math.ceil(edge.flow / capacity - ROUND_SLACK));
-    edge.util = edge.fluid ? 0 : edge.flow / (edge.belts * capacity);
+    edge.beltFill = edge.fluid ? 0 : edge.flow / (edge.belts * capacity);
     if (!edge.fluid) {
       totals.belts += edge.belts;
       addTo(totals.beltsByItem, edge.item, edge.belts);
@@ -324,7 +324,7 @@ export function solve(cfg) {
   const nodes = makeSteps(order, recipeOf, cfg, overrides);
   const { ok, passes, demand, supply } = balance(activeTargets(cfg), order, nodes, speedOf);
 
-  const totals = { power: 0, built: {}, exact: {}, belts: 0, beltsByItem: {}, raw: {}, surplus: {}, prolif: {} };
+  const totals = { power: 0, built: {}, machineCount: {}, belts: 0, beltsByItem: {}, raw: {}, surplus: {}, proliferator: {} };
   finishSteps(order, nodes, demand, speedOf, totals);
   const outside = externalSteps(external, demand, supply, totals);
   addSurplus(demand, supply, totals);
@@ -335,7 +335,7 @@ export function solve(cfg) {
   countBelts(edges, capacity, totals);
 
   return { ok: ok, iterations: passes, nodes: graphNodes, edges: edges, totals: totals,
-    D: demand, S: supply, cap: capacity, order: order };
+    demand: demand, supply: supply, beltCapacity: capacity, order: order };
 }
 
 /* ---------- Formatting ---------- */

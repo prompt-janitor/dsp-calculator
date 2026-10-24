@@ -4,13 +4,13 @@
  "nodes": {
   "circuit-board": {
    "item": "circuit-board",
-   "rec": "circuit-board",
+   "recipe": "circuit-board",
    "machine": "assembling-machine-3",
-   "mach": "assembling-machine-3",
-   "prof": null,
+   "machineData": "assembling-machine-3",
+   "spray": null,
    "runs": 2,
    "kind": "craft",
-   "count": 1.3333333333333333,
+   "machineCount": 1.3333333333333333,
    "built": 2,
    "outRate": {
     "circuit-board": 4
@@ -24,13 +24,13 @@
   },
   "iron-ingot": {
    "item": "iron-ingot",
-   "rec": "iron-ingot",
+   "recipe": "iron-ingot",
    "machine": "arc-smelter",
-   "mach": "arc-smelter",
-   "prof": null,
+   "machineData": "arc-smelter",
+   "spray": null,
    "runs": 4,
    "kind": "craft",
-   "count": 4,
+   "machineCount": 4,
    "built": 4,
    "outRate": {
     "iron-ingot": 4
@@ -43,13 +43,13 @@
   },
   "iron-ore": {
    "item": "iron-ore",
-   "rec": "iron-vein",
+   "recipe": "iron-vein",
    "machine": "mining-machine",
-   "mach": "mining-machine",
-   "prof": null,
+   "machineData": "mining-machine",
+   "spray": null,
    "runs": 4,
    "kind": "source",
-   "count": 1,
+   "machineCount": 1,
    "built": 1,
    "outRate": {
     "iron-ore": 4
@@ -60,13 +60,13 @@
   },
   "copper-ingot": {
    "item": "copper-ingot",
-   "rec": "copper-ingot",
+   "recipe": "copper-ingot",
    "machine": "plane-smelter",
-   "mach": "plane-smelter",
-   "prof": null,
+   "machineData": "plane-smelter",
+   "spray": null,
    "runs": 2,
    "kind": "craft",
-   "count": 1,
+   "machineCount": 1,
    "built": 1,
    "outRate": {
     "copper-ingot": 2
@@ -79,13 +79,13 @@
   },
   "copper-ore": {
    "item": "copper-ore",
-   "rec": "copper-vein",
+   "recipe": "copper-vein",
    "machine": "mining-machine",
-   "mach": "mining-machine",
-   "prof": null,
+   "machineData": "mining-machine",
+   "spray": null,
    "runs": 2,
    "kind": "source",
-   "count": 0.5,
+   "machineCount": 0.5,
    "built": 1,
    "outRate": {
     "copper-ore": 2
@@ -108,10 +108,10 @@
    "item": "copper-ingot",
    "flow": 2,
    "kind": "item",
-   "by": false,
+   "byproduct": false,
    "fluid": false,
    "belts": 1,
-   "util": 0.06666666666666667
+   "beltFill": 0.06666666666666667
   },
   {
    "from": "iron-ingot",
@@ -119,10 +119,10 @@
    "item": "iron-ingot",
    "flow": 4,
    "kind": "item",
-   "by": false,
+   "byproduct": false,
    "fluid": false,
    "belts": 1,
-   "util": 0.13333333333333333
+   "beltFill": 0.13333333333333333
   },
   {
    "from": "iron-ore",
@@ -130,10 +130,10 @@
    "item": "iron-ore",
    "flow": 4,
    "kind": "item",
-   "by": false,
+   "byproduct": false,
    "fluid": false,
    "belts": 1,
-   "util": 0.13333333333333333
+   "beltFill": 0.13333333333333333
   },
   {
    "from": "copper-ore",
@@ -141,10 +141,10 @@
    "item": "copper-ore",
    "flow": 2,
    "kind": "item",
-   "by": false,
+   "byproduct": false,
    "fluid": false,
    "belts": 1,
-   "util": 0.06666666666666667
+   "beltFill": 0.06666666666666667
   },
   {
    "from": "circuit-board",
@@ -152,10 +152,10 @@
    "item": "circuit-board",
    "flow": 4,
    "kind": "item",
-   "by": false,
+   "byproduct": false,
    "fluid": false,
    "belts": 1,
-   "util": 0.13333333333333333
+   "beltFill": 0.13333333333333333
   }
  ],
  "totals": {
@@ -166,7 +166,7 @@
    "mining-machine": 2,
    "plane-smelter": 1
   },
-  "exact": {
+  "machineCount": {
    "assembling-machine-3": 1.3333333333333333,
    "arc-smelter": 4,
    "mining-machine": 1.5,
@@ -185,17 +185,17 @@
    "copper-ore": 2
   },
   "surplus": {},
-  "prolif": {}
+  "proliferator": {}
  },
- "D": {
+ "demand": {
   "circuit-board": 4,
   "copper-ingot": 2,
   "iron-ingot": 4,
   "iron-ore": 4,
   "copper-ore": 2
  },
- "S": {},
- "cap": 30,
+ "supply": {},
+ "beltCapacity": 30,
  "order": [
   "circuit-board",
   "iron-ingot",

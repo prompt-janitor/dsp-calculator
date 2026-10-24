@@ -21,8 +21,8 @@ export function plainPlan(p) {
   const nodes = {};
   for (const [id, n] of Object.entries(p.nodes)) {
     const copy = { ...n };
-    if (copy.rec) copy.rec = copy.rec.id;
-    if (copy.mach) copy.mach = n.machine;
+    if (copy.recipe) copy.recipe = copy.recipe.id;
+    if (copy.machineData) copy.machineData = n.machine;
     nodes[id] = copy;
   }
   return JSON.parse(JSON.stringify({ ...p, nodes }));
@@ -41,9 +41,9 @@ export function plainLayout(l) {
     height: l.height,
     nodes: l.nodes,
     paths: l.paths.map((p) => ({
-      edge: { from: p.e.from, to: p.e.to, item: p.e.item, kind: p.e.kind },
+      edge: { from: p.edge.from, to: p.edge.to, item: p.edge.item, kind: p.edge.kind },
       ports: endPoints(p.d),
-      d: p.d, lx: p.lx, ly: p.ly, spray: !!p.spray,
+      d: p.d, labelX: p.labelX, labelY: p.labelY, spray: !!p.spray,
     })),
   }));
 }

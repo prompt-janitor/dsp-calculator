@@ -4,13 +4,13 @@
  "nodes": {
   "deuterium": {
    "item": "deuterium",
-   "rec": "deuterium-fractionation",
+   "recipe": "deuterium-fractionation",
    "machine": "fractionator",
-   "mach": "fractionator",
-   "prof": null,
+   "machineData": "fractionator",
+   "spray": null,
    "runs": 100,
    "kind": "craft",
-   "count": 3.3333333333333335,
+   "machineCount": 3.3333333333333335,
    "built": 4,
    "outRate": {
     "deuterium": 1
@@ -23,13 +23,13 @@
   },
   "hydrogen": {
    "item": "hydrogen",
-   "rec": "gas-giant-hydrogen",
+   "recipe": "gas-giant-hydrogen",
    "machine": "orbital-collector",
-   "mach": "orbital-collector",
-   "prof": null,
+   "machineData": "orbital-collector",
+   "spray": null,
    "runs": 13.020833333333334,
    "kind": "source",
-   "count": 23.674242424242422,
+   "machineCount": 23.674242424242422,
    "built": 24,
    "outRate": {
     "hydrogen": 100
@@ -52,10 +52,10 @@
    "item": "hydrogen",
    "flow": 100,
    "kind": "item",
-   "by": false,
+   "byproduct": false,
    "fluid": false,
    "belts": 4,
-   "util": 0.8333333333333334
+   "beltFill": 0.8333333333333334
   },
   {
    "from": "deuterium",
@@ -63,10 +63,10 @@
    "item": "deuterium",
    "flow": 1,
    "kind": "item",
-   "by": false,
+   "byproduct": false,
    "fluid": false,
    "belts": 1,
-   "util": 0.03333333333333333
+   "beltFill": 0.03333333333333333
   }
  ],
  "totals": {
@@ -75,7 +75,7 @@
    "fractionator": 4,
    "orbital-collector": 24
   },
-  "exact": {
+  "machineCount": {
    "fractionator": 3.3333333333333335,
    "orbital-collector": 23.674242424242422
   },
@@ -88,14 +88,14 @@
    "hydrogen": 100
   },
   "surplus": {},
-  "prolif": {}
+  "proliferator": {}
  },
- "D": {
+ "demand": {
   "deuterium": 1,
   "hydrogen": 100
  },
- "S": {},
- "cap": 30,
+ "supply": {},
+ "beltCapacity": 30,
  "order": [
   "deuterium",
   "hydrogen"

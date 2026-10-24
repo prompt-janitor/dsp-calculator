@@ -42,7 +42,7 @@ export function layoutGraph(plan, options) {
 
   const paths = routes.map((route, i) => edgePath(verts, route, portY['o' + i], portY['i' + i]));
   for (const e of sprayEdges) paths.push(sprayPath(verts[e.from], verts[e.to], e));
-  const nodes = ids.map((id) => ({ id, x: verts[id].x, y: verts[id].y, h: verts[id].h }));
+  const nodes = ids.map((id) => ({ id, x: verts[id].x, y: verts[id].y, height: verts[id].height }));
   return { nodes, paths, width, height };
 }
 
@@ -101,8 +101,8 @@ function assignLayers(plan, ids, { preds, succs }, sprayEdges) {
 function addPlaceholders(plan, ids, edges, layer) {
   const verts = {};
   for (const id of ids) {
-    const h = plan.nodes[id].kind === 'target' ? TARGET_HEIGHT : NODE_HEIGHT;
-    verts[id] = { id, layer: layer[id], h, placeholder: false, ins: [], outs: [] };
+    const height = plan.nodes[id].kind === 'target' ? TARGET_HEIGHT : NODE_HEIGHT;
+    verts[id] = { id, layer: layer[id], height, placeholder: false, ins: [], outs: [] };
   }
   let count = 0;
   const routes = edges.map((e) => {
@@ -110,7 +110,7 @@ function addPlaceholders(plan, ids, edges, layer) {
     const chain = [e.from];
     for (let l = a + 1; l < b; l++) {
       const id = '_d' + (count++);
-      verts[id] = { id, layer: l, h: PLACEHOLDER_HEIGHT, placeholder: true, ins: [], outs: [] };
+      verts[id] = { id, layer: l, height: PLACEHOLDER_HEIGHT, placeholder: true, ins: [], outs: [] };
       chain.push(id);
     }
     chain.push(e.to);
@@ -118,7 +118,7 @@ function addPlaceholders(plan, ids, edges, layer) {
       verts[chain[i]].outs.push(chain[i + 1]);
       verts[chain[i + 1]].ins.push(chain[i]);
     }
-    return { e, chain };
+    return { edge: e, chain };
   });
   return { verts, routes };
 }
@@ -174,7 +174,7 @@ function layerRange(top, down) {
   return out;
 }
 
-function centerY(v) { return v.y + v.h / 2; }
+function centerY(v) { return v.y + v.height / 2; }
 
 // Sets x and y on every vertex. Each node moves toward the middle of its
 // neighbours, then the column is pushed apart so nothing overlaps.
@@ -185,7 +185,7 @@ function placeVertices(verts, layers) {
     let y = 0;
     ids.forEach((id, i) => {
       verts[id].y = y;
-      y += verts[id].h + (ids[i + 1] ? gap(id, ids[i + 1]) : 0);
+      y += verts[id].height + (ids[i + 1] ? gap(id, ids[i + 1]) : 0);
     });
   }
 
@@ -198,10 +198,10 @@ function placeVertices(verts, layers) {
         if (!nb.length) return verts[id].y;
         let sum = 0;
         for (const n of nb) sum += centerY(verts[n]);
-        return sum / nb.length - verts[id].h / 2;
+        return sum / nb.length - verts[id].height / 2;
       });
       const ys = want.slice();
-      for (let i = 1; i < ids.length; i++) ys[i] = Math.max(ys[i], ys[i - 1] + verts[ids[i - 1]].h + gap(ids[i - 1], ids[i]));
+      for (let i = 1; i < ids.length; i++) ys[i] = Math.max(ys[i], ys[i - 1] + verts[ids[i - 1]].height + gap(ids[i - 1], ids[i]));
       // Shift the column back by the average push, so it stays centred on what it wanted.
       let shift = 0;
       for (let j = 0; j < ids.length; j++) shift += want[j] - ys[j];
@@ -212,7 +212,7 @@ function placeVertices(verts, layers) {
   for (let r = 0; r < RELAX_ROUNDS; r++) { relax(true); relax(false); relax(true); }
 
   let minY = Infinity, maxY = -Infinity;
-  for (const id in verts) { minY = Math.min(minY, verts[id].y); maxY = Math.max(maxY, verts[id].y + verts[id].h); }
+  for (const id in verts) { minY = Math.min(minY, verts[id].y); maxY = Math.max(maxY, verts[id].y + verts[id].height); }
   for (const id in verts) { verts[id].y -= minY; verts[id].x = verts[id].layer * (NODE_WIDTH + COLUMN_GAP); }
   return { width: (top + 1) * (NODE_WIDTH + COLUMN_GAP) - COLUMN_GAP, height: maxY - minY };
 }
@@ -234,7 +234,7 @@ function assignPorts(verts, routes) {
       list.sort((p, q) => centerY(verts[p.ref]) - centerY(verts[q.ref]) || p.i - q.i);
       const v = verts[id], n = list.length;
       list.forEach((p, k) => {
-        portY[prefix + p.i] = v.y + (n === 1 ? v.h / 2 : PORT_PAD + (v.h - 2 * PORT_PAD) * k / (n - 1));
+        portY[prefix + p.i] = v.y + (n === 1 ? v.height / 2 : PORT_PAD + (v.height - 2 * PORT_PAD) * k / (n - 1));
       });
     }
   }
@@ -247,12 +247,12 @@ const xy = (p) => p[0].toFixed(1) + ',' + p[1].toFixed(1);
 
 // A chain of cubic curves through the placeholder centres. The label point
 // is the middle of the last segment.
-function edgePath(verts, { e, chain }, outY, inY) {
+function edgePath(verts, { edge, chain }, outY, inY) {
   const a = verts[chain[0]], b = verts[chain[chain.length - 1]];
   const pts = [[a.x + NODE_WIDTH, outY]];
   for (let k = 1; k < chain.length - 1; k++) {
     const d = verts[chain[k]];
-    pts.push([d.x + NODE_WIDTH / 2, d.y + d.h / 2]);
+    pts.push([d.x + NODE_WIDTH / 2, d.y + d.height / 2]);
   }
   pts.push([b.x, inY]);
   let d = 'M' + xy(pts[0]);
@@ -262,16 +262,16 @@ function edgePath(verts, { e, chain }, outY, inY) {
     d += 'C' + xy([p[0] + pull, p[1]]) + ' ' + xy([q[0] - pull, q[1]]) + ' ' + xy(q);
   }
   const p0 = pts[pts.length - 2], p1 = pts[pts.length - 1];
-  return { e, d, lx: (p0[0] + p1[0]) / 2, ly: (p0[1] + p1[1]) / 2 };
+  return { edge, d, labelX: (p0[0] + p1[0]) / 2, labelY: (p0[1] + p1[1]) / 2 };
 }
 
 // Spray links go straight from node centre to node centre. A link that runs
 // right to left starts and ends on the other sides and bends the other way.
 function sprayPath(a, b, e) {
   let x1 = a.x + NODE_WIDTH, x2 = b.x;
-  const y1 = a.y + a.h / 2, y2 = b.y + b.h / 2;
+  const y1 = a.y + a.height / 2, y2 = b.y + b.height / 2;
   let pull = Math.max(MIN_SPRAY_CURVE, Math.abs(x2 - x1) / 2);
   if (x2 < x1) { x1 = a.x; x2 = b.x + NODE_WIDTH; pull = -Math.max(MIN_SPRAY_CURVE, Math.abs(x2 - x1) / 2); }
   const d = 'M' + x1 + ',' + y1 + 'C' + (x1 + pull) + ',' + y1 + ' ' + (x2 - pull) + ',' + y2 + ' ' + x2 + ',' + y2;
-  return { e, d, lx: (x1 + x2) / 2, ly: (y1 + y2) / 2, spray: true };
+  return { edge: e, d, labelX: (x1 + x2) / 2, labelY: (y1 + y2) / 2, spray: true };
 }

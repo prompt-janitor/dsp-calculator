@@ -51,9 +51,9 @@ function rawHTML(id, n, pos, sel) {
   return nodeShell({ id, cls: 'node raw' + sel, pos, color: 'var(--c-source)', body });
 }
 
-function sprayBadge(prof) {
-  if (!prof) return '';
-  return `<span class="badge">${prof.mode === 'speed' ? '⚡' : '×'} Mk.${ROMAN[prof.level]}</span>`;
+function sprayBadge(spray) {
+  if (!spray) return '';
+  return `<span class="badge">${spray.mode === 'speed' ? '⚡' : '×'} Mk.${ROMAN[spray.level]}</span>`;
 }
 
 function machineRow(n) {
@@ -66,10 +66,10 @@ function machineRow(n) {
 function craftHTML(id, n, pos, sel) {
   const name = itemName(id);
   const made = n.outRate[id] || 0;
-  const badge = sprayBadge(n.prof);
-  const util = n.built ? n.count / n.built : 0;
+  const badge = sprayBadge(n.spray);
+  const util = n.built ? n.machineCount / n.built : 0;
   const body = badge + `<div class="pic">${itemIcon(id, 34)}</div>` +
-    `<div class="txt"><div class="t1${badge ? ' hb' : ''}" title="${esc(n.rec.name)}">${esc(name)}</div>${rateHTML(made)}</div>` +
+    `<div class="txt"><div class="t1${badge ? ' hb' : ''}" title="${esc(n.recipe.name)}">${esc(name)}</div>${rateHTML(made)}</div>` +
     machineRow(n) +
     `<div class="util"><i style="width:${Math.round(util * 100)}%"></i></div>`;
   return nodeShell({ id, cls: 'node' + sel, pos, color: nodeColor(n), body });
@@ -84,26 +84,26 @@ function nodeHTML(id, pos) {
 }
 
 /* ---------- edges ---------- */
-function edgeWidth(e, cap) {
+function edgeWidth(e, beltCapacity) {
   if (e.fluid) return 3;
-  return Math.min(9, 1.6 + 3.2 * Math.min(1, e.flow / cap) + (e.belts - 1) * 0.9);
+  return Math.min(9, 1.6 + 3.2 * Math.min(1, e.flow / beltCapacity) + (e.belts - 1) * 0.9);
 }
 
 function edgeEnds(e) { return `data-f="${esc(e.from)}" data-t="${esc(e.to)}"`; }
 
-function edgeHTML({ e, d }, cap) {
-  const cls = 'edge' + (e.kind === 'spray' ? ' spray' : '') + (e.by ? ' by' : '') + (e.fluid ? ' fluid' : '');
-  return `<path class="${cls}" ${edgeEnds(e)} d="${d}" stroke="${itemColor(e.item)}" stroke-width="${edgeWidth(e, cap).toFixed(1)}"/>`;
+function edgeHTML({ edge: e, d }, beltCapacity) {
+  const cls = 'edge' + (e.kind === 'spray' ? ' spray' : '') + (e.byproduct ? ' by' : '') + (e.fluid ? ' fluid' : '');
+  return `<path class="${cls}" ${edgeEnds(e)} d="${d}" stroke="${itemColor(e.item)}" stroke-width="${edgeWidth(e, beltCapacity).toFixed(1)}"/>`;
 }
 
-function edgeLabelHTML({ e, lx, ly }) {
+function edgeLabelHTML({ edge: e, labelX, labelY }) {
   const extra = e.fluid ? ' pipe' : e.belts > 1 ? ` · ${e.belts} belts` : '';
-  const at = `x="${lx.toFixed(1)}" y="${(ly + 3.5).toFixed(1)}"`;
+  const at = `x="${labelX.toFixed(1)}" y="${(labelY + 3.5).toFixed(1)}"`;
   return `<text class="elabel" ${edgeEnds(e)} ${at} text-anchor="middle">${rateStr(e.flow)}${extra}</text>`;
 }
 
-function edgesSVG(layout, cap) {
-  const paths = layout.paths.map((p) => edgeHTML(p, cap)).join('');
+function edgesSVG(layout, beltCapacity) {
+  const paths = layout.paths.map((p) => edgeHTML(p, beltCapacity)).join('');
   // Labels go after every path, so no edge is drawn over a label.
   const labels = layout.paths.filter((p) => !p.spray).map(edgeLabelHTML).join('');
   return `<svg width="${layout.width}" height="${layout.height + 10}">${paths}${labels}</svg>`;
@@ -122,7 +122,7 @@ export function renderMap() {
   $('#mapEmpty').hidden = true;
   const layout = ui.layout = layoutGraph(ui.plan, { spray: state.opts.spray });
   const nodes = layout.nodes.filter((box) => ui.plan.nodes[box.id]).map((box) => nodeHTML(box.id, box)).join('');
-  stage.innerHTML = edgesSVG(layout, ui.plan.cap) + nodes;
+  stage.innerHTML = edgesSVG(layout, ui.plan.beltCapacity) + nodes;
   stage.style.width = layout.width + 'px';
   stage.style.height = layout.height + 'px';
   stage.classList.toggle('nolabels', !state.opts.labels);
@@ -226,7 +226,7 @@ export function fitView(all) {
     k = START_ZOOM;
     ui.view.k = k;
     ui.view.x = area.left + area.width - layout.width * k;
-    ui.view.y = target ? area.top + area.height / 2 - (target.y + target.h / 2) * k : area.top;
+    ui.view.y = target ? area.top + area.height / 2 - (target.y + target.height / 2) * k : area.top;
     applyView();
     return;
   }
@@ -274,7 +274,7 @@ export function nearestNode(id, dx, dy) {
   const nodes = ui.layout ? ui.layout.nodes.filter((n) => ui.plan.nodes[n.id]) : [];
   const from = nodes.find((n) => n.id === id);
   if (!from) return null;
-  const cx = (n) => n.x + NODE_WIDTH / 2, cy = (n) => n.y + n.h / 2;
+  const cx = (n) => n.x + NODE_WIDTH / 2, cy = (n) => n.y + n.height / 2;
   let best = null, bestScore = Infinity;
   for (const n of nodes) {
     const along = (cx(n) - cx(from)) * dx + (cy(n) - cy(from)) * dy;

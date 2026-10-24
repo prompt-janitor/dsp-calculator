@@ -30,7 +30,7 @@ export function centerNode(id, zoomIn = true) {
   const k = zoomIn ? Math.max(ui.view.k, isWide() ? 0.75 : 0.9) : ui.view.k;
   ui.view.k = k;
   ui.view.x = area.left + area.width / 2 - (box.x + NODE_WIDTH / 2) * k;
-  ui.view.y = area.top + area.height / 2 - (box.y + box.h / 2) * k;
+  ui.view.y = area.top + area.height / 2 - (box.y + box.height / 2) * k;
   const stage = $('#stage');
   stage.classList.add('anim');
   applyView();
@@ -47,14 +47,14 @@ const rateRow = (item, rate, tag = 'div', attrs = '') => `
 const group = (title, rows) => (rows ? `<div class="gtitle">${title}</div><div class="group">${rows}</div>` : '');
 
 function headHTML(node, item) {
-  const sub = node.kind === 'raw' ? 'Supplied from elsewhere' : `${esc(node.rec.name)} · ${esc(machineName(node.machine))}`;
+  const sub = node.kind === 'raw' ? 'Supplied from elsewhere' : `${esc(node.recipe.name)} · ${esc(machineName(node.machine))}`;
   return `
     <span class="ibox">${itemIcon(item, 34)}</span>
     <h3>${esc(itemName(item))}<small>${sub}</small></h3>
     <button class="btn round small" type="button" id="inspClose" aria-label="Close">${svg('i-x', 18)}</button>`;
 }
 
-const machineOptions = (node) => node.rec.prod.map((m) => optionTag(m, machineName(m), node.machine)).join('');
+const machineOptions = (node) => node.recipe.prod.map((m) => optionTag(m, machineName(m), node.machine)).join('');
 
 function recipeOptions(item, current) {
   return (RECIPES_FOR[item] || []).map((id) => {
@@ -79,7 +79,7 @@ function changeStepHTML(node, item, override) {
   return `
     <div class="gtitle">Change this step</div>
     <div class="group">
-      <label class="selrow"><span>Recipe</span><select id="i_rec">${recipeOptions(item, node.rec.id)}</select></label>
+      <label class="selrow"><span>Recipe</span><select id="i_rec">${recipeOptions(item, node.recipe.id)}</select></label>
       <label class="selrow"><span>Building</span><select id="i_mach">${machineOptions(node)}</select></label>
       <label class="selrow"><span>Proliferator</span><select id="i_pro">${proliferatorOptions(override)}</select></label>
       <label class="togrow"><span>Supplied from elsewhere<small class="hint">Stop building its ingredients</small></span>
@@ -88,17 +88,17 @@ function changeStepHTML(node, item, override) {
 }
 
 function craftBodyHTML(node, item, override) {
-  const busy = node.built ? Math.round(node.count / node.built * 100) : 0;
+  const busy = node.built ? Math.round(node.machineCount / node.built * 100) : 0;
   const inputs = Object.keys(node.inRate).map((i) => rateRow(i, node.inRate[i], 'button', ` data-jump="${esc(i)}"`)).join('');
   const extras = Object.keys(node.outRate).filter((o) => o !== item).map((o) => rateRow(o, node.outRate[o])).join('');
-  const noExtra = state.prolif.level && !node.prof && !node.rec.prolif && state.prolif.mode === 'products';
+  const noExtra = state.prolif.level && !node.spray && !node.recipe.prolif && state.prolif.mode === 'products';
   return `
     <div class="kpis">
       <div class="kpi"><b>${node.built}</b><span>to build</span></div>
       <div class="kpi"><b>${rateStr(node.outRate[item])}</b><span>${unitLabel()} out</span></div>
       <div class="kpi"><b>${busy}%</b><span>busy</span></div>
     </div>
-    <p class="hintp">${formatNumber(node.count)} machines exactly${node.power ? ' · ' + formatPower(node.power) : ''}</p>
+    <p class="hintp">${formatNumber(node.machineCount)} machines exactly${node.power ? ' · ' + formatPower(node.power) : ''}</p>
     ${group('Consumes', inputs)}
     ${group('Also produces', extras)}
     ${changeStepHTML(node, item, override)}

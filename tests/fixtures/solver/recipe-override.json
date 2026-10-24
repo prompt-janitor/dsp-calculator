@@ -4,13 +4,13 @@
  "nodes": {
   "carbon-nanotube": {
    "item": "carbon-nanotube",
-   "rec": "carbon-nanotube",
+   "recipe": "carbon-nanotube",
    "machine": "chemical-plant",
-   "mach": "chemical-plant",
-   "prof": null,
+   "machineData": "chemical-plant",
+   "spray": null,
    "runs": 1,
    "kind": "craft",
-   "count": 4,
+   "machineCount": 4,
    "built": 4,
    "outRate": {
     "carbon-nanotube": 2
@@ -24,13 +24,13 @@
   },
   "titanium-ingot": {
    "item": "titanium-ingot",
-   "rec": "titanium-ingot",
+   "recipe": "titanium-ingot",
    "machine": "plane-smelter",
-   "mach": "plane-smelter",
-   "prof": null,
+   "machineData": "plane-smelter",
+   "spray": null,
    "runs": 1,
    "kind": "craft",
-   "count": 1,
+   "machineCount": 1,
    "built": 1,
    "outRate": {
     "titanium-ingot": 1
@@ -43,13 +43,13 @@
   },
   "titanium-ore": {
    "item": "titanium-ore",
-   "rec": "titanium-vein",
+   "recipe": "titanium-vein",
    "machine": "mining-machine",
-   "mach": "mining-machine",
-   "prof": null,
+   "machineData": "mining-machine",
+   "spray": null,
    "runs": 2,
    "kind": "source",
-   "count": 0.5,
+   "machineCount": 0.5,
    "built": 1,
    "outRate": {
     "titanium-ore": 2
@@ -60,13 +60,13 @@
   },
   "graphene": {
    "item": "graphene",
-   "rec": "graphene-advanced",
+   "recipe": "graphene-advanced",
    "machine": "chemical-plant",
-   "mach": "chemical-plant",
-   "prof": null,
+   "machineData": "chemical-plant",
+   "spray": null,
    "runs": 1.5,
    "kind": "craft",
-   "count": 3,
+   "machineCount": 3,
    "built": 3,
    "outRate": {
     "graphene": 3,
@@ -80,13 +80,13 @@
   },
   "fire-ice": {
    "item": "fire-ice",
-   "rec": "fire-ice-vein",
+   "recipe": "fire-ice-vein",
    "machine": "mining-machine",
-   "mach": "mining-machine",
-   "prof": null,
+   "machineData": "mining-machine",
+   "spray": null,
    "runs": 3,
    "kind": "source",
-   "count": 0.75,
+   "machineCount": 0.75,
    "built": 1,
    "outRate": {
     "fire-ice": 3
@@ -109,10 +109,10 @@
    "item": "graphene",
    "flow": 3,
    "kind": "item",
-   "by": false,
+   "byproduct": false,
    "fluid": false,
    "belts": 1,
-   "util": 0.1
+   "beltFill": 0.1
   },
   {
    "from": "titanium-ingot",
@@ -120,10 +120,10 @@
    "item": "titanium-ingot",
    "flow": 1,
    "kind": "item",
-   "by": false,
+   "byproduct": false,
    "fluid": false,
    "belts": 1,
-   "util": 0.03333333333333333
+   "beltFill": 0.03333333333333333
   },
   {
    "from": "titanium-ore",
@@ -131,10 +131,10 @@
    "item": "titanium-ore",
    "flow": 2,
    "kind": "item",
-   "by": false,
+   "byproduct": false,
    "fluid": false,
    "belts": 1,
-   "util": 0.06666666666666667
+   "beltFill": 0.06666666666666667
   },
   {
    "from": "fire-ice",
@@ -142,10 +142,10 @@
    "item": "fire-ice",
    "flow": 3,
    "kind": "item",
-   "by": false,
+   "byproduct": false,
    "fluid": false,
    "belts": 1,
-   "util": 0.1
+   "beltFill": 0.1
   },
   {
    "from": "carbon-nanotube",
@@ -153,10 +153,10 @@
    "item": "carbon-nanotube",
    "flow": 2,
    "kind": "item",
-   "by": false,
+   "byproduct": false,
    "fluid": false,
    "belts": 1,
-   "util": 0.06666666666666667
+   "beltFill": 0.06666666666666667
   }
  ],
  "totals": {
@@ -166,7 +166,7 @@
    "plane-smelter": 1,
    "mining-machine": 2
   },
-  "exact": {
+  "machineCount": {
    "chemical-plant": 7,
    "plane-smelter": 1,
    "mining-machine": 1.25
@@ -186,19 +186,19 @@
   "surplus": {
    "hydrogen": 1.5
   },
-  "prolif": {}
+  "proliferator": {}
  },
- "D": {
+ "demand": {
   "carbon-nanotube": 2,
   "graphene": 3,
   "titanium-ingot": 1,
   "titanium-ore": 2,
   "fire-ice": 3
  },
- "S": {
+ "supply": {
   "hydrogen": 1.5
  },
- "cap": 30,
+ "beltCapacity": 30,
  "order": [
   "carbon-nanotube",
   "titanium-ingot",

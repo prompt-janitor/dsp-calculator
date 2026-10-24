@@ -4,21 +4,21 @@
  "nodes": {
   "information-matrix": {
    "item": "information-matrix",
-   "rec": "information-matrix",
+   "recipe": "information-matrix",
    "machine": "matrix-lab",
-   "mach": "matrix-lab",
-   "prof": {
+   "machineData": "matrix-lab",
+   "spray": {
     "level": 3,
     "mode": "products",
     "item": "proliferator-3",
     "sprays": 60,
-    "prod": 0.25,
+    "productivity": 0.25,
     "speed": 0,
-    "cons": 1.5
+    "consumption": 1.5
    },
    "runs": 0.8,
    "kind": "craft",
-   "count": 8,
+   "machineCount": 8,
    "built": 8,
    "outRate": {
     "information-matrix": 1
@@ -32,13 +32,13 @@
   },
   "proliferator-3": {
    "item": "proliferator-3",
-   "rec": "proliferator-3",
+   "recipe": "proliferator-3",
    "machine": "assembling-machine-3",
-   "mach": "assembling-machine-3",
-   "prof": null,
+   "machineData": "assembling-machine-3",
+   "spray": null,
    "runs": 0.9052235903754962,
    "kind": "craft",
-   "count": 1.2069647871673281,
+   "machineCount": 1.2069647871673281,
    "built": 2,
    "outRate": {
     "proliferator-3": 0.9052235903754962
@@ -52,13 +52,13 @@
   },
   "proliferator-2": {
    "item": "proliferator-2",
-   "rec": "proliferator-2",
+   "recipe": "proliferator-2",
    "machine": "assembling-machine-3",
-   "mach": "assembling-machine-3",
-   "prof": null,
+   "machineData": "assembling-machine-3",
+   "spray": null,
    "runs": 1.8104471807078086,
    "kind": "craft",
-   "count": 1.2069647871385392,
+   "machineCount": 1.2069647871385392,
    "built": 2,
    "outRate": {
     "proliferator-2": 1.8104471807078086
@@ -72,13 +72,13 @@
   },
   "proliferator-1": {
    "item": "proliferator-1",
-   "rec": "proliferator-1",
+   "recipe": "proliferator-1",
    "machine": "assembling-machine-3",
-   "mach": "assembling-machine-3",
-   "prof": null,
+   "machineData": "assembling-machine-3",
+   "spray": null,
    "runs": 3.6208943612725406,
    "kind": "craft",
-   "count": 1.2069647870908469,
+   "machineCount": 1.2069647870908469,
    "built": 2,
    "outRate": {
     "proliferator-1": 3.6208943612725406
@@ -91,13 +91,13 @@
   },
   "coal": {
    "item": "coal",
-   "rec": "coal-vein",
+   "recipe": "coal-vein",
    "machine": "mining-machine",
-   "mach": "mining-machine",
-   "prof": null,
+   "machineData": "mining-machine",
+   "spray": null,
    "runs": 11.792221903579305,
    "kind": "source",
-   "count": 2.9480554758948263,
+   "machineCount": 2.9480554758948263,
    "built": 3,
    "outRate": {
     "coal": 11.792221903579305
@@ -108,21 +108,21 @@
   },
   "diamond": {
    "item": "diamond",
-   "rec": "diamond",
+   "recipe": "diamond",
    "machine": "plane-smelter",
-   "mach": "plane-smelter",
-   "prof": {
+   "machineData": "plane-smelter",
+   "spray": {
     "level": 3,
     "mode": "products",
     "item": "proliferator-3",
     "sprays": 60,
-    "prod": 0.25,
+    "productivity": 0.25,
     "speed": 0,
-    "cons": 1.5
+    "consumption": 1.5
    },
    "runs": 1.4483577445090163,
    "kind": "craft",
-   "count": 1.4483577445090163,
+   "machineCount": 1.4483577445090163,
    "built": 2,
    "outRate": {
     "diamond": 1.8104471806362703
@@ -135,21 +135,21 @@
   },
   "energetic-graphite": {
    "item": "energetic-graphite",
-   "rec": "energetic-graphite",
+   "recipe": "energetic-graphite",
    "machine": "plane-smelter",
-   "mach": "plane-smelter",
-   "prof": {
+   "machineData": "plane-smelter",
+   "spray": {
     "level": 3,
     "mode": "products",
     "item": "proliferator-3",
     "sprays": 60,
-    "prod": 0.25,
+    "productivity": 0.25,
     "speed": 0,
-    "cons": 1.5
+    "consumption": 1.5
    },
    "runs": 4.0856637715099975,
    "kind": "craft",
-   "count": 4.0856637715099975,
+   "machineCount": 4.0856637715099975,
    "built": 5,
    "outRate": {
     "energetic-graphite": 5.107079714387497
@@ -162,21 +162,21 @@
   },
   "carbon-nanotube": {
    "item": "carbon-nanotube",
-   "rec": "carbon-nanotube",
+   "recipe": "carbon-nanotube",
    "machine": "chemical-plant",
-   "mach": "chemical-plant",
-   "prof": {
+   "machineData": "chemical-plant",
+   "spray": {
     "level": 3,
     "mode": "products",
     "item": "proliferator-3",
     "sprays": 60,
-    "prod": 0.25,
+    "productivity": 0.25,
     "speed": 0,
-    "cons": 1.5
+    "consumption": 1.5
    },
    "runs": 0.8740894361415616,
    "kind": "craft",
-   "count": 3.4963577445662466,
+   "machineCount": 3.4963577445662466,
    "built": 4,
    "outRate": {
     "carbon-nanotube": 2.185223590353904
@@ -190,21 +190,21 @@
   },
   "titanium-ingot": {
    "item": "titanium-ingot",
-   "rec": "titanium-ingot",
+   "recipe": "titanium-ingot",
    "machine": "plane-smelter",
-   "mach": "plane-smelter",
-   "prof": {
+   "machineData": "plane-smelter",
+   "spray": {
     "level": 3,
     "mode": "products",
     "item": "proliferator-3",
     "sprays": 60,
-    "prod": 0.25,
+    "productivity": 0.25,
     "speed": 0,
-    "cons": 1.5
+    "consumption": 1.5
    },
    "runs": 0.6992715489018033,
    "kind": "craft",
-   "count": 0.6992715489018033,
+   "machineCount": 0.6992715489018033,
    "built": 1,
    "outRate": {
     "titanium-ingot": 0.8740894361272542
@@ -217,13 +217,13 @@
   },
   "titanium-ore": {
    "item": "titanium-ore",
-   "rec": "titanium-vein",
+   "recipe": "titanium-vein",
    "machine": "mining-machine",
-   "mach": "mining-machine",
-   "prof": null,
+   "machineData": "mining-machine",
+   "spray": null,
    "runs": 1.398543097765789,
    "kind": "source",
-   "count": 0.3496357744414472,
+   "machineCount": 0.3496357744414472,
    "built": 1,
    "outRate": {
     "titanium-ore": 1.398543097765789
@@ -234,21 +234,21 @@
   },
   "graphene": {
    "item": "graphene",
-   "rec": "graphene",
+   "recipe": "graphene",
    "machine": "chemical-plant",
-   "mach": "chemical-plant",
-   "prof": {
+   "machineData": "chemical-plant",
+   "spray": {
     "level": 3,
     "mode": "products",
     "item": "proliferator-3",
     "sprays": 60,
-    "prod": 0.25,
+    "productivity": 0.25,
     "speed": 0,
-    "cons": 1.5
+    "consumption": 1.5
    },
    "runs": 1.048907323352705,
    "kind": "craft",
-   "count": 3.146721970058115,
+   "machineCount": 3.146721970058115,
    "built": 4,
    "outRate": {
     "graphene": 2.622268308381763
@@ -262,13 +262,13 @@
   },
   "sulfuric-acid": {
    "item": "sulfuric-acid",
-   "rec": "sulphuric-acid-vein",
+   "recipe": "sulphuric-acid-vein",
    "machine": "water-pump",
-   "mach": "water-pump",
-   "prof": null,
+   "machineData": "water-pump",
+   "spray": null,
    "runs": 1.0489073233243418,
    "kind": "source",
-   "count": 1.2586887879892101,
+   "machineCount": 1.2586887879892101,
    "built": 2,
    "outRate": {
     "sulfuric-acid": 1.0489073233243418
@@ -279,21 +279,21 @@
   },
   "processor": {
    "item": "processor",
-   "rec": "processor",
+   "recipe": "processor",
    "machine": "assembling-machine-3",
-   "mach": "assembling-machine-3",
-   "prof": {
+   "machineData": "assembling-machine-3",
+   "spray": {
     "level": 3,
     "mode": "products",
     "item": "proliferator-3",
     "sprays": 60,
-    "prod": 0.25,
+    "productivity": 0.25,
     "speed": 0,
-    "cons": 1.5
+    "consumption": 1.5
    },
    "runs": 1.28,
    "kind": "craft",
-   "count": 2.56,
+   "machineCount": 2.56,
    "built": 3,
    "outRate": {
     "processor": 1.6
@@ -307,21 +307,21 @@
   },
   "microcrystalline-component": {
    "item": "microcrystalline-component",
-   "rec": "microcrystalline-component",
+   "recipe": "microcrystalline-component",
    "machine": "assembling-machine-3",
-   "mach": "assembling-machine-3",
-   "prof": {
+   "machineData": "assembling-machine-3",
+   "spray": {
     "level": 3,
     "mode": "products",
     "item": "proliferator-3",
     "sprays": 60,
-    "prod": 0.25,
+    "productivity": 0.25,
     "speed": 0,
-    "cons": 1.5
+    "consumption": 1.5
    },
    "runs": 2.048,
    "kind": "craft",
-   "count": 2.7306666666666666,
+   "machineCount": 2.7306666666666666,
    "built": 3,
    "outRate": {
     "microcrystalline-component": 2.56
@@ -335,21 +335,21 @@
   },
   "high-purity-silicon": {
    "item": "high-purity-silicon",
-   "rec": "high-purity-silicon",
+   "recipe": "high-purity-silicon",
    "machine": "plane-smelter",
-   "mach": "plane-smelter",
-   "prof": {
+   "machineData": "plane-smelter",
+   "spray": {
     "level": 3,
     "mode": "products",
     "item": "proliferator-3",
     "sprays": 60,
-    "prod": 0.25,
+    "productivity": 0.25,
     "speed": 0,
-    "cons": 1.5
+    "consumption": 1.5
    },
    "runs": 4.096,
    "kind": "craft",
-   "count": 4.096,
+   "machineCount": 4.096,
    "built": 5,
    "outRate": {
     "high-purity-silicon": 5.12
@@ -362,13 +362,13 @@
   },
   "silicon-ore": {
    "item": "silicon-ore",
-   "rec": "silicium-vein",
+   "recipe": "silicium-vein",
    "machine": "mining-machine",
-   "mach": "mining-machine",
-   "prof": null,
+   "machineData": "mining-machine",
+   "spray": null,
    "runs": 8.192,
    "kind": "source",
-   "count": 2.048,
+   "machineCount": 2.048,
    "built": 3,
    "outRate": {
     "silicon-ore": 8.192
@@ -379,21 +379,21 @@
   },
   "copper-ingot": {
    "item": "copper-ingot",
-   "rec": "copper-ingot",
+   "recipe": "copper-ingot",
    "machine": "plane-smelter",
-   "mach": "plane-smelter",
-   "prof": {
+   "machineData": "plane-smelter",
+   "spray": {
     "level": 3,
     "mode": "products",
     "item": "proliferator-3",
     "sprays": 60,
-    "prod": 0.25,
+    "productivity": 0.25,
     "speed": 0,
-    "cons": 1.5
+    "consumption": 1.5
    },
    "runs": 2.4576000000000002,
    "kind": "craft",
-   "count": 1.2288000000000001,
+   "machineCount": 1.2288000000000001,
    "built": 2,
    "outRate": {
     "copper-ingot": 3.072
@@ -406,13 +406,13 @@
   },
   "copper-ore": {
    "item": "copper-ore",
-   "rec": "copper-vein",
+   "recipe": "copper-vein",
    "machine": "mining-machine",
-   "mach": "mining-machine",
-   "prof": null,
+   "machineData": "mining-machine",
+   "spray": null,
    "runs": 2.4576000000000002,
    "kind": "source",
-   "count": 0.6144000000000001,
+   "machineCount": 0.6144000000000001,
    "built": 1,
    "outRate": {
     "copper-ore": 2.4576000000000002
@@ -423,21 +423,21 @@
   },
   "circuit-board": {
    "item": "circuit-board",
-   "rec": "circuit-board",
+   "recipe": "circuit-board",
    "machine": "assembling-machine-3",
-   "mach": "assembling-machine-3",
-   "prof": {
+   "machineData": "assembling-machine-3",
+   "spray": {
     "level": 3,
     "mode": "products",
     "item": "proliferator-3",
     "sprays": 60,
-    "prod": 0.25,
+    "productivity": 0.25,
     "speed": 0,
-    "cons": 1.5
+    "consumption": 1.5
    },
    "runs": 1.024,
    "kind": "craft",
-   "count": 0.6826666666666666,
+   "machineCount": 0.6826666666666666,
    "built": 1,
    "outRate": {
     "circuit-board": 2.56
@@ -451,21 +451,21 @@
   },
   "iron-ingot": {
    "item": "iron-ingot",
-   "rec": "iron-ingot",
+   "recipe": "iron-ingot",
    "machine": "plane-smelter",
-   "mach": "plane-smelter",
-   "prof": {
+   "machineData": "plane-smelter",
+   "spray": {
     "level": 3,
     "mode": "products",
     "item": "proliferator-3",
     "sprays": 60,
-    "prod": 0.25,
+    "productivity": 0.25,
     "speed": 0,
-    "cons": 1.5
+    "consumption": 1.5
    },
    "runs": 1.6384,
    "kind": "craft",
-   "count": 0.8192,
+   "machineCount": 0.8192,
    "built": 1,
    "outRate": {
     "iron-ingot": 2.048
@@ -478,13 +478,13 @@
   },
   "iron-ore": {
    "item": "iron-ore",
-   "rec": "iron-vein",
+   "recipe": "iron-vein",
    "machine": "mining-machine",
-   "mach": "mining-machine",
-   "prof": null,
+   "machineData": "mining-machine",
+   "spray": null,
    "runs": 1.6384,
    "kind": "source",
-   "count": 0.4096,
+   "machineCount": 0.4096,
    "built": 1,
    "outRate": {
     "iron-ore": 1.6384
@@ -495,21 +495,21 @@
   },
   "particle-broadband": {
    "item": "particle-broadband",
-   "rec": "particle-broadband",
+   "recipe": "particle-broadband",
    "machine": "assembling-machine-3",
-   "mach": "assembling-machine-3",
-   "prof": {
+   "machineData": "assembling-machine-3",
+   "spray": {
     "level": 3,
     "mode": "products",
     "item": "proliferator-3",
     "sprays": 60,
-    "prod": 0.25,
+    "productivity": 0.25,
     "speed": 0,
-    "cons": 1.5
+    "consumption": 1.5
    },
    "runs": 0.64,
    "kind": "craft",
-   "count": 3.4133333333333336,
+   "machineCount": 3.4133333333333336,
    "built": 4,
    "outRate": {
     "particle-broadband": 0.8
@@ -524,21 +524,21 @@
   },
   "plastic": {
    "item": "plastic",
-   "rec": "plastic",
+   "recipe": "plastic",
    "machine": "chemical-plant",
-   "mach": "chemical-plant",
-   "prof": {
+   "machineData": "chemical-plant",
+   "spray": {
     "level": 3,
     "mode": "products",
     "item": "proliferator-3",
     "sprays": 60,
-    "prod": 0.25,
+    "productivity": 0.25,
     "speed": 0,
-    "cons": 1.5
+    "consumption": 1.5
    },
    "runs": 0.512,
    "kind": "craft",
-   "count": 1.536,
+   "machineCount": 1.536,
    "built": 2,
    "outRate": {
     "plastic": 0.64
@@ -552,21 +552,21 @@
   },
   "refined-oil": {
    "item": "refined-oil",
-   "rec": "plasma-refining",
+   "recipe": "plasma-refining",
    "machine": "oil-refinery",
-   "mach": "oil-refinery",
-   "prof": {
+   "machineData": "oil-refinery",
+   "spray": {
     "level": 3,
     "mode": "products",
     "item": "proliferator-3",
     "sprays": 60,
-    "prod": 0.25,
+    "productivity": 0.25,
     "speed": 0,
-    "cons": 1.5
+    "consumption": 1.5
    },
    "runs": 0.4096,
    "kind": "craft",
-   "count": 1.6384,
+   "machineCount": 1.6384,
    "built": 2,
    "outRate": {
     "hydrogen": 0.512,
@@ -580,13 +580,13 @@
   },
   "crude-oil": {
    "item": "crude-oil",
-   "rec": "crude-oil-seep",
+   "recipe": "crude-oil-seep",
    "machine": "oil-extractor",
-   "mach": "oil-extractor",
-   "prof": null,
+   "machineData": "oil-extractor",
+   "spray": null,
    "runs": 0.8192,
    "kind": "source",
-   "count": 0.8192,
+   "machineCount": 0.8192,
    "built": 1,
    "outRate": {
     "crude-oil": 0.8192
@@ -597,21 +597,21 @@
   },
   "crystal-silicon": {
    "item": "crystal-silicon",
-   "rec": "crystal-silicon",
+   "recipe": "crystal-silicon",
    "machine": "plane-smelter",
-   "mach": "plane-smelter",
-   "prof": {
+   "machineData": "plane-smelter",
+   "spray": {
     "level": 3,
     "mode": "products",
     "item": "proliferator-3",
     "sprays": 60,
-    "prod": 0.25,
+    "productivity": 0.25,
     "speed": 0,
-    "cons": 1.5
+    "consumption": 1.5
    },
    "runs": 1.024,
    "kind": "craft",
-   "count": 1.024,
+   "machineCount": 1.024,
    "built": 2,
    "outRate": {
     "crystal-silicon": 1.28
@@ -636,10 +636,10 @@
    "item": "particle-broadband",
    "flow": 0.8,
    "kind": "item",
-   "by": false,
+   "byproduct": false,
    "fluid": false,
    "belts": 1,
-   "util": 0.02666666666666667
+   "beltFill": 0.02666666666666667
   },
   {
    "from": "processor",
@@ -647,10 +647,10 @@
    "item": "processor",
    "flow": 1.6,
    "kind": "item",
-   "by": false,
+   "byproduct": false,
    "fluid": false,
    "belts": 1,
-   "util": 0.05333333333333334
+   "beltFill": 0.05333333333333334
   },
   {
    "from": "proliferator-3",
@@ -658,10 +658,10 @@
    "item": "proliferator-3",
    "flow": 0.04000000000000001,
    "kind": "spray",
-   "by": false,
+   "byproduct": false,
    "fluid": false,
    "belts": 1,
-   "util": 0.0013333333333333335
+   "beltFill": 0.0013333333333333335
   },
   {
    "from": "proliferator-3",
@@ -669,10 +669,10 @@
    "item": "proliferator-3",
    "flow": 0.02413929574181694,
    "kind": "spray",
-   "by": false,
+   "byproduct": false,
    "fluid": false,
    "belts": 1,
-   "util": 0.000804643191393898
+   "beltFill": 0.000804643191393898
   },
   {
    "from": "proliferator-3",
@@ -680,10 +680,10 @@
    "item": "proliferator-3",
    "flow": 0.13618879238366657,
    "kind": "spray",
-   "by": false,
+   "byproduct": false,
    "fluid": false,
    "belts": 1,
-   "util": 0.004539626412788886
+   "beltFill": 0.004539626412788886
   },
   {
    "from": "proliferator-3",
@@ -691,10 +691,10 @@
    "item": "proliferator-3",
    "flow": 0.05827262907610411,
    "kind": "spray",
-   "by": false,
+   "byproduct": false,
    "fluid": false,
    "belts": 1,
-   "util": 0.0019424209692034703
+   "beltFill": 0.0019424209692034703
   },
   {
    "from": "proliferator-3",
@@ -702,10 +702,10 @@
    "item": "proliferator-3",
    "flow": 0.02330905163006011,
    "kind": "spray",
-   "by": false,
+   "byproduct": false,
    "fluid": false,
    "belts": 1,
-   "util": 0.0007769683876686703
+   "beltFill": 0.0007769683876686703
   },
   {
    "from": "proliferator-3",
@@ -713,10 +713,10 @@
    "item": "proliferator-3",
    "flow": 0.06992715489018034,
    "kind": "spray",
-   "by": false,
+   "byproduct": false,
    "fluid": false,
    "belts": 1,
-   "util": 0.0023309051630060113
+   "beltFill": 0.0023309051630060113
   },
   {
    "from": "proliferator-3",
@@ -724,10 +724,10 @@
    "item": "proliferator-3",
    "flow": 0.08533333333333333,
    "kind": "spray",
-   "by": false,
+   "byproduct": false,
    "fluid": false,
    "belts": 1,
-   "util": 0.002844444444444444
+   "beltFill": 0.002844444444444444
   },
   {
    "from": "proliferator-3",
@@ -735,10 +735,10 @@
    "item": "proliferator-3",
    "flow": 0.1024,
    "kind": "spray",
-   "by": false,
+   "byproduct": false,
    "fluid": false,
    "belts": 1,
-   "util": 0.0034133333333333333
+   "beltFill": 0.0034133333333333333
   },
   {
    "from": "proliferator-3",
@@ -746,10 +746,10 @@
    "item": "proliferator-3",
    "flow": 0.13653333333333334,
    "kind": "spray",
-   "by": false,
+   "byproduct": false,
    "fluid": false,
    "belts": 1,
-   "util": 0.004551111111111112
+   "beltFill": 0.004551111111111112
   },
   {
    "from": "proliferator-3",
@@ -757,10 +757,10 @@
    "item": "proliferator-3",
    "flow": 0.04096,
    "kind": "spray",
-   "by": false,
+   "byproduct": false,
    "fluid": false,
    "belts": 1,
-   "util": 0.0013653333333333334
+   "beltFill": 0.0013653333333333334
   },
   {
    "from": "proliferator-3",
@@ -768,10 +768,10 @@
    "item": "proliferator-3",
    "flow": 0.0512,
    "kind": "spray",
-   "by": false,
+   "byproduct": false,
    "fluid": false,
    "belts": 1,
-   "util": 0.0017066666666666667
+   "beltFill": 0.0017066666666666667
   },
   {
    "from": "proliferator-3",
@@ -779,10 +779,10 @@
    "item": "proliferator-3",
    "flow": 0.027306666666666667,
    "kind": "spray",
-   "by": false,
+   "byproduct": false,
    "fluid": false,
    "belts": 1,
-   "util": 0.0009102222222222222
+   "beltFill": 0.0009102222222222222
   },
   {
    "from": "proliferator-3",
@@ -790,10 +790,10 @@
    "item": "proliferator-3",
    "flow": 0.05333333333333334,
    "kind": "spray",
-   "by": false,
+   "byproduct": false,
    "fluid": false,
    "belts": 1,
-   "util": 0.0017777777777777779
+   "beltFill": 0.0017777777777777779
   },
   {
    "from": "proliferator-3",
@@ -801,10 +801,10 @@
    "item": "proliferator-3",
    "flow": 0.0256,
    "kind": "spray",
-   "by": false,
+   "byproduct": false,
    "fluid": false,
    "belts": 1,
-   "util": 0.0008533333333333333
+   "beltFill": 0.0008533333333333333
   },
   {
    "from": "proliferator-3",
@@ -812,10 +812,10 @@
    "item": "proliferator-3",
    "flow": 0.013653333333333333,
    "kind": "spray",
-   "by": false,
+   "byproduct": false,
    "fluid": false,
    "belts": 1,
-   "util": 0.0004551111111111111
+   "beltFill": 0.0004551111111111111
   },
   {
    "from": "proliferator-3",
@@ -823,10 +823,10 @@
    "item": "proliferator-3",
    "flow": 0.017066666666666667,
    "kind": "spray",
-   "by": false,
+   "byproduct": false,
    "fluid": false,
    "belts": 1,
-   "util": 0.000568888888888889
+   "beltFill": 0.000568888888888889
   },
   {
    "from": "carbon-nanotube",
@@ -834,10 +834,10 @@
    "item": "carbon-nanotube",
    "flow": 0.9052235903754962,
    "kind": "item",
-   "by": false,
+   "byproduct": false,
    "fluid": false,
    "belts": 1,
-   "util": 0.030174119679183205
+   "beltFill": 0.030174119679183205
   },
   {
    "from": "carbon-nanotube",
@@ -845,10 +845,10 @@
    "item": "carbon-nanotube",
    "flow": 1.28,
    "kind": "item",
-   "by": false,
+   "byproduct": false,
    "fluid": false,
    "belts": 1,
-   "util": 0.042666666666666665
+   "beltFill": 0.042666666666666665
   },
   {
    "from": "proliferator-2",
@@ -856,10 +856,10 @@
    "item": "proliferator-2",
    "flow": 1.8104471807509923,
    "kind": "item",
-   "by": false,
+   "byproduct": false,
    "fluid": false,
    "belts": 1,
-   "util": 0.06034823935836641
+   "beltFill": 0.06034823935836641
   },
   {
    "from": "diamond",
@@ -867,10 +867,10 @@
    "item": "diamond",
    "flow": 1.8104471807078086,
    "kind": "item",
-   "by": false,
+   "byproduct": false,
    "fluid": false,
    "belts": 1,
-   "util": 0.06034823935692695
+   "beltFill": 0.06034823935692695
   },
   {
    "from": "proliferator-1",
@@ -878,10 +878,10 @@
    "item": "proliferator-1",
    "flow": 3.6208943614156173,
    "kind": "item",
-   "by": false,
+   "byproduct": false,
    "fluid": false,
    "belts": 1,
-   "util": 0.1206964787138539
+   "beltFill": 0.1206964787138539
   },
   {
    "from": "coal",
@@ -889,10 +889,10 @@
    "item": "coal",
    "flow": 3.6208943612725406,
    "kind": "item",
-   "by": false,
+   "byproduct": false,
    "fluid": false,
    "belts": 1,
-   "util": 0.12069647870908469
+   "beltFill": 0.12069647870908469
   },
   {
    "from": "coal",
@@ -900,10 +900,10 @@
    "item": "coal",
    "flow": 8.171327543019995,
    "kind": "item",
-   "by": false,
+   "byproduct": false,
    "fluid": false,
    "belts": 1,
-   "util": 0.27237758476733315
+   "beltFill": 0.27237758476733315
   },
   {
    "from": "energetic-graphite",
@@ -911,10 +911,10 @@
    "item": "energetic-graphite",
    "flow": 1.4483577445090163,
    "kind": "item",
-   "by": false,
+   "byproduct": false,
    "fluid": false,
    "belts": 1,
-   "util": 0.04827859148363388
+   "beltFill": 0.04827859148363388
   },
   {
    "from": "energetic-graphite",
@@ -922,10 +922,10 @@
    "item": "energetic-graphite",
    "flow": 3.146721970058115,
    "kind": "item",
-   "by": false,
+   "byproduct": false,
    "fluid": false,
    "belts": 1,
-   "util": 0.1048907323352705
+   "beltFill": 0.1048907323352705
   },
   {
    "from": "energetic-graphite",
@@ -933,10 +933,10 @@
    "item": "energetic-graphite",
    "flow": 0.512,
    "kind": "item",
-   "by": false,
+   "byproduct": false,
    "fluid": false,
    "belts": 1,
-   "util": 0.017066666666666667
+   "beltFill": 0.017066666666666667
   },
   {
    "from": "graphene",
@@ -944,10 +944,10 @@
    "item": "graphene",
    "flow": 2.622268308424685,
    "kind": "item",
-   "by": false,
+   "byproduct": false,
    "fluid": false,
    "belts": 1,
-   "util": 0.08740894361415616
+   "beltFill": 0.08740894361415616
   },
   {
    "from": "titanium-ingot",
@@ -955,10 +955,10 @@
    "item": "titanium-ingot",
    "flow": 0.8740894361415616,
    "kind": "item",
-   "by": false,
+   "byproduct": false,
    "fluid": false,
    "belts": 1,
-   "util": 0.029136314538052054
+   "beltFill": 0.029136314538052054
   },
   {
    "from": "titanium-ore",
@@ -966,10 +966,10 @@
    "item": "titanium-ore",
    "flow": 1.3985430978036066,
    "kind": "item",
-   "by": false,
+   "byproduct": false,
    "fluid": false,
    "belts": 1,
-   "util": 0.04661810326012022
+   "beltFill": 0.04661810326012022
   },
   {
    "from": "sulfuric-acid",
@@ -977,10 +977,10 @@
    "item": "sulfuric-acid",
    "flow": 1.048907323352705,
    "kind": "item",
-   "by": false,
+   "byproduct": false,
    "fluid": true,
    "belts": 0,
-   "util": 0
+   "beltFill": 0
   },
   {
    "from": "circuit-board",
@@ -988,10 +988,10 @@
    "item": "circuit-board",
    "flow": 2.56,
    "kind": "item",
-   "by": false,
+   "byproduct": false,
    "fluid": false,
    "belts": 1,
-   "util": 0.08533333333333333
+   "beltFill": 0.08533333333333333
   },
   {
    "from": "microcrystalline-component",
@@ -999,10 +999,10 @@
    "item": "microcrystalline-component",
    "flow": 2.56,
    "kind": "item",
-   "by": false,
+   "byproduct": false,
    "fluid": false,
    "belts": 1,
-   "util": 0.08533333333333333
+   "beltFill": 0.08533333333333333
   },
   {
    "from": "copper-ingot",
@@ -1010,10 +1010,10 @@
    "item": "copper-ingot",
    "flow": 2.048,
    "kind": "item",
-   "by": false,
+   "byproduct": false,
    "fluid": false,
    "belts": 1,
-   "util": 0.06826666666666667
+   "beltFill": 0.06826666666666667
   },
   {
    "from": "copper-ingot",
@@ -1021,10 +1021,10 @@
    "item": "copper-ingot",
    "flow": 1.024,
    "kind": "item",
-   "by": false,
+   "byproduct": false,
    "fluid": false,
    "belts": 1,
-   "util": 0.034133333333333335
+   "beltFill": 0.034133333333333335
   },
   {
    "from": "high-purity-silicon",
@@ -1032,10 +1032,10 @@
    "item": "high-purity-silicon",
    "flow": 4.096,
    "kind": "item",
-   "by": false,
+   "byproduct": false,
    "fluid": false,
    "belts": 1,
-   "util": 0.13653333333333334
+   "beltFill": 0.13653333333333334
   },
   {
    "from": "high-purity-silicon",
@@ -1043,10 +1043,10 @@
    "item": "high-purity-silicon",
    "flow": 1.024,
    "kind": "item",
-   "by": false,
+   "byproduct": false,
    "fluid": false,
    "belts": 1,
-   "util": 0.034133333333333335
+   "beltFill": 0.034133333333333335
   },
   {
    "from": "silicon-ore",
@@ -1054,10 +1054,10 @@
    "item": "silicon-ore",
    "flow": 8.192,
    "kind": "item",
-   "by": false,
+   "byproduct": false,
    "fluid": false,
    "belts": 1,
-   "util": 0.2730666666666667
+   "beltFill": 0.2730666666666667
   },
   {
    "from": "copper-ore",
@@ -1065,10 +1065,10 @@
    "item": "copper-ore",
    "flow": 2.4576000000000002,
    "kind": "item",
-   "by": false,
+   "byproduct": false,
    "fluid": false,
    "belts": 1,
-   "util": 0.08192
+   "beltFill": 0.08192
   },
   {
    "from": "iron-ingot",
@@ -1076,10 +1076,10 @@
    "item": "iron-ingot",
    "flow": 2.048,
    "kind": "item",
-   "by": false,
+   "byproduct": false,
    "fluid": false,
    "belts": 1,
-   "util": 0.06826666666666667
+   "beltFill": 0.06826666666666667
   },
   {
    "from": "iron-ore",
@@ -1087,10 +1087,10 @@
    "item": "iron-ore",
    "flow": 1.6384,
    "kind": "item",
-   "by": false,
+   "byproduct": false,
    "fluid": false,
    "belts": 1,
-   "util": 0.05461333333333333
+   "beltFill": 0.05461333333333333
   },
   {
    "from": "crystal-silicon",
@@ -1098,10 +1098,10 @@
    "item": "crystal-silicon",
    "flow": 1.28,
    "kind": "item",
-   "by": false,
+   "byproduct": false,
    "fluid": false,
    "belts": 1,
-   "util": 0.042666666666666665
+   "beltFill": 0.042666666666666665
   },
   {
    "from": "plastic",
@@ -1109,10 +1109,10 @@
    "item": "plastic",
    "flow": 0.64,
    "kind": "item",
-   "by": false,
+   "byproduct": false,
    "fluid": false,
    "belts": 1,
-   "util": 0.021333333333333333
+   "beltFill": 0.021333333333333333
   },
   {
    "from": "refined-oil",
@@ -1120,10 +1120,10 @@
    "item": "refined-oil",
    "flow": 1.024,
    "kind": "item",
-   "by": false,
+   "byproduct": false,
    "fluid": true,
    "belts": 0,
-   "util": 0
+   "beltFill": 0
   },
   {
    "from": "crude-oil",
@@ -1131,10 +1131,10 @@
    "item": "crude-oil",
    "flow": 0.8192,
    "kind": "item",
-   "by": false,
+   "byproduct": false,
    "fluid": true,
    "belts": 0,
-   "util": 0
+   "beltFill": 0
   },
   {
    "from": "information-matrix",
@@ -1142,10 +1142,10 @@
    "item": "information-matrix",
    "flow": 1,
    "kind": "item",
-   "by": false,
+   "byproduct": false,
    "fluid": false,
    "belts": 1,
-   "util": 0.03333333333333333
+   "beltFill": 0.03333333333333333
   }
  ],
  "totals": {
@@ -1160,7 +1160,7 @@
    "oil-refinery": 2,
    "oil-extractor": 1
   },
-  "exact": {
+  "machineCount": {
    "matrix-lab": 8,
    "assembling-machine-3": 13.00756102806338,
    "mining-machine": 6.369691250336273,
@@ -1208,11 +1208,11 @@
   "surplus": {
    "hydrogen": 0.512
   },
-  "prolif": {
+  "proliferator": {
    "proliferator-3": 0.9052235903754962
   }
  },
- "D": {
+ "demand": {
   "information-matrix": 1,
   "particle-broadband": 0.8,
   "processor": 1.6,
@@ -1240,10 +1240,10 @@
   "refined-oil": 1.024,
   "crude-oil": 0.8192
  },
- "S": {
+ "supply": {
   "hydrogen": 0.512
  },
- "cap": 30,
+ "beltCapacity": 30,
  "order": [
   "information-matrix",
   "proliferator-3",

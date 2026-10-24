@@ -32,7 +32,7 @@ function buildingsHTML(totals, steps) {
       <div class="row">
         <span class="ibox">${machineIcon(m, 30)}</span>
         <span class="main-t"><span class="t">${esc(machineName(m))}</span>
-          <span class="s">${formatNumber(totals.exact[m])} exact${power ? ' · ' + formatPower(power) : ''}</span></span>
+          <span class="s">${formatNumber(totals.machineCount[m])} exact${power ? ' · ' + formatPower(power) : ''}</span></span>
         ${end(count(totals.built[m]))}
       </div>`;
   }).join('');
@@ -45,9 +45,9 @@ function buildingsHTML(totals, steps) {
 
 function stepRow(node, beltsOut) {
   const id = node.item;
-  const busy = Math.round((node.built ? node.count / node.built : 0) * 100);
+  const busy = Math.round((node.built ? node.machineCount / node.built : 0) * 100);
   const notes = [rateStr(node.outRate[id]) + unitLabel(), esc(machineShortName(node.machine))];
-  if (node.prof) notes.push('Mk.' + ROMAN[node.prof.level]);
+  if (node.spray) notes.push('Mk.' + ROMAN[node.spray.level]);
   if (beltsOut[id]) notes.push(plural(beltsOut[id], 'belt'));
   return `
     <button class="row" type="button" data-sel="${esc(id)}">
@@ -61,7 +61,7 @@ function stepRow(node, beltsOut) {
 function stepsHTML(steps) {
   const beltsOut = {};
   for (const e of ui.plan.edges) if (!e.fluid) beltsOut[e.from] = (beltsOut[e.from] || 0) + e.belts;
-  const sorted = [...steps].sort((a, b) => (b.power - a.power) || (b.count - a.count));
+  const sorted = [...steps].sort((a, b) => (b.power - a.power) || (b.machineCount - a.machineCount));
   return section('steps', `
     ${title('Production steps', sorted.length)}
     <div class="group">${sorted.map((n) => stepRow(n, beltsOut)).join('')}</div>
@@ -79,7 +79,7 @@ function resourcesHTML(totals) {
   const pipes = {};
   for (const e of ui.plan.edges) if (e.fluid) pipes[e.item] = (pipes[e.item] || 0) + e.flow;
   const extra = (counts, note) => Object.keys(counts).map((k) => itemRow(k, note, rateStr(counts[k]), unitLabel())).join('');
-  const more = extra(pipes, 'Pipe flow') + extra(totals.surplus, 'Surplus by-product') + extra(totals.prolif, 'Needed for spraying');
+  const more = extra(pipes, 'Pipe flow') + extra(totals.surplus, 'Surplus by-product') + extra(totals.proliferator, 'Needed for spraying');
   return section('resources', `
     ${title('Raw input')}<div class="group">${raw}</div>
     ${title('Belt lines', totals.belts)}<div class="group">${belts}</div>

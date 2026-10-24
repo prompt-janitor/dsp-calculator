@@ -1,12 +1,13 @@
 /* ---------- Map controls: buttons, options, pan, pinch and tap ---------- */
-import { $, $$, isWide } from './core.js';
+import { $, $$ } from './core.js';
 import { state, ui, update } from './store.js';
-import { applyView, fitView, zoomAt, nearestNode, panIntoView } from './map-view.js';
+import { applyView, fitView, zoomAt, nearestNode, panIntoView, isHidden } from './map-view.js';
 import { selectNode, centerNode, closeInspector } from './inspector.js';
 
 const TAP_MOVE = 8;          // px a pointer can move and still count as a tap
 const DOUBLE_TAP_MS = 300;
 const DOUBLE_TAP_PX = 30;
+const LINE_PX = 16;
 
 // Animates the next change of view, such as a fit or a double-tap zoom.
 function animate(change) {
@@ -16,10 +17,14 @@ function animate(change) {
   setTimeout(() => stage.classList.remove('anim'), 340);
 }
 
-const zoomCenter = (factor) => {
+// Zooms around the middle of the map, for the buttons and the keyboard.
+export function zoomBy(factor) {
   const viewport = $('#viewport');
   zoomAt(viewport.clientWidth / 2, viewport.clientHeight / 2, factor);
-};
+}
+
+export const fitAll = () => animate(() => fitView(true));
+export const ZOOM_STEP = 1.3;
 
 export function syncMapOptions() {
   $('#optSpray').checked = !!state.opts.spray;
@@ -37,19 +42,18 @@ function wireButtons() {
     update((draft) => { draft.opts.labels = e.target.checked; });
     $('#stage').classList.toggle('nolabels', !state.opts.labels);
   });
-  $('#zin').addEventListener('click', () => zoomCenter(1.3));
-  $('#zout').addEventListener('click', () => zoomCenter(0.77));
-  $('#zfit').addEventListener('click', () => animate(() => fitView(true)));
+  $('#zin').addEventListener('click', () => zoomBy(ZOOM_STEP));
+  $('#zout').addEventListener('click', () => zoomBy(1 / ZOOM_STEP));
+  $('#zfit').addEventListener('click', fitAll);
+  $('#fitLeft').addEventListener('click', fitAll);
 }
 
 const ARROWS = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] };
 
-function onTap(node, viewport) {
+function onTap(node) {
   selectNode(node.dataset.id);
-  // On phones the inspector covers the lower part of the map.
-  if (isWide()) return;
-  const box = node.getBoundingClientRect(), view = viewport.getBoundingClientRect();
-  if (box.bottom > view.top + view.height * 0.42) centerNode(ui.sel);
+  // Move the map when the step details or a control cover the node.
+  if (ui.sel && isHidden(node)) centerNode(ui.sel, false);
 }
 
 // Wheel and trackpad zoom, one-finger pan, two-finger pinch, tap to select and double-tap to zoom.
@@ -61,9 +65,12 @@ function wireGestures() {
   viewport.addEventListener('wheel', (e) => {
     e.preventDefault();
     const rect = viewport.getBoundingClientRect();
-    if (!e.ctrlKey && Math.abs(e.deltaX) > Math.abs(e.deltaY)) { ui.view.x -= e.deltaX; applyView(); return; }
+    // Firefox can count a mouse wheel in lines or pages instead of pixels.
+    const unit = e.deltaMode === 1 ? LINE_PX : e.deltaMode === 2 ? viewport.clientHeight : 1;
+    const dx = e.deltaX * unit, dy = e.deltaY * unit;
+    if (!e.ctrlKey && Math.abs(dx) > Math.abs(dy)) { ui.view.x -= dx; applyView(); return; }
     // ctrlKey is set for a trackpad pinch, which sends smaller steps.
-    const factor = Math.exp(-e.deltaY * (e.ctrlKey ? 0.01 : 0.0015));
+    const factor = Math.exp(-dy * (e.ctrlKey ? 0.01 : 0.0015));
     zoomAt(e.clientX - rect.left, e.clientY - rect.top, factor);
   }, { passive: false });
   // Safari sends its own pinch events. Block them so the page does not zoom.
@@ -128,7 +135,7 @@ function wireGestures() {
     }
     lastTap = now;
     lastTapAt = [e.clientX, e.clientY];
-    if (node) onTap(node, viewport);
+    if (node) onTap(node);
     else closeInspector();
   });
   viewport.addEventListener('pointercancel', release);
@@ -142,7 +149,7 @@ function wireKeys() {
     if (!node) return;
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
-      onTap(node, viewport);
+      onTap(node);
       return;
     }
     const dir = ARROWS[e.key];

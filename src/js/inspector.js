@@ -2,7 +2,7 @@
 import { RECIPES, RECIPES_FOR, EXCLUDED, defaultRecipeFor, formatNumber, formatPower } from './engine.js';
 import { $, esc, svg, itemIcon, itemName, machineName, rateStr, unitLabel, optionTag, isWide, ROMAN } from './core.js';
 import { state, ui, update } from './store.js';
-import { NODE_WIDTH, applyView, applySelection } from './map-view.js';
+import { NODE_WIDTH, applyView, applySelection, visibleArea } from './map-view.js';
 import { openSheet, closeSheet, focusKey, refocus } from './sheets.js';
 
 export function closeInspector(instant) {
@@ -21,18 +21,16 @@ export function selectNode(id) {
   renderInspector();
 }
 
-// Moves the map so the node is in view. On phones it goes in the part above the inspector.
-export function centerNode(id) {
+// Moves the map so the node is in the middle of the part the step details
+// do not cover. zoomIn: also zoom in far enough to read the node.
+export function centerNode(id, zoomIn = true) {
   const box = ui.layout && ui.layout.nodes.find((n) => n.id === id);
   if (!box) return;
-  const viewport = $('#viewport');
-  const wide = isWide();
-  const k = Math.max(ui.view.k, wide ? 0.75 : 0.9);
-  const visibleHeight = wide ? viewport.clientHeight : viewport.clientHeight * 0.42;
-  const centerX = wide ? (viewport.clientWidth - 380) / 2 : viewport.clientWidth / 2;
+  const area = visibleArea();
+  const k = zoomIn ? Math.max(ui.view.k, isWide() ? 0.75 : 0.9) : ui.view.k;
   ui.view.k = k;
-  ui.view.x = centerX - (box.x + NODE_WIDTH / 2) * k;
-  ui.view.y = Math.max(60, visibleHeight / 2 + 20) - (box.y + box.h / 2) * k;
+  ui.view.x = area.left + area.width / 2 - (box.x + NODE_WIDTH / 2) * k;
+  ui.view.y = area.top + area.height / 2 - (box.y + box.h / 2) * k;
   const stage = $('#stage');
   stage.classList.add('anim');
   applyView();

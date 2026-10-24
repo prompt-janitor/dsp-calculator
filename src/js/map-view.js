@@ -1,7 +1,7 @@
 /* ---------- Flow map: render, pan, zoom and selection ---------- */
 import { MACHINE_CLASS, formatPower } from './engine.js';
 import {
-  $, $$, esc, machineIcon, itemIcon, itemName, itemColor, machineShortName, rateStr, unitLabel, isWide, CLASS_COLOR, ROMAN,
+  $, $$, esc, machineIcon, itemIcon, itemName, itemColor, machineShortName, rateStr, unitLabel, isFull, CLASS_COLOR, ROMAN,
 } from './core.js';
 import { state, ui } from './store.js';
 import { layoutGraph, NODE_WIDTH } from './layout.js';
@@ -13,11 +13,11 @@ const MAX_ZOOM = 2.2;
 const MIN_FIT_ZOOM = 0.08;
 // Below this zoom the edge labels are too small to read, so CSS hides them.
 const FAR_ZOOM = 0.42;
-// On a phone a whole large graph would be too small to read. Below this fit
-// zoom the map starts at PHONE_START_ZOOM on the target column instead, and
-// the fit button still shows the whole map.
-const PHONE_MIN_FIT = 0.34;
-const PHONE_START_ZOOM = 0.75;
+// On a phone or an iPad in portrait a whole large graph would be too small to
+// read. Below this fit zoom the map starts at START_ZOOM on the target column
+// instead, and the fit button still shows the whole map.
+const MIN_START_FIT = 0.34;
+const START_ZOOM = 0.75;
 // Keyboard focus keeps a node this far from the map edges.
 const FOCUS_MARGIN = 24;
 
@@ -116,6 +116,7 @@ export function renderMap() {
   if (!hasTargets || !Object.keys(ui.plan.nodes).length) {
     stage.innerHTML = '';
     $('#mapEmpty').hidden = false;
+    $('#edgeFade').hidden = true;
     return;
   }
   $('#mapEmpty').hidden = true;
@@ -136,19 +137,72 @@ export function applyView() {
   const stage = $('#stage');
   stage.style.transform = `translate(${ui.view.x}px,${ui.view.y}px) scale(${ui.view.k})`;
   stage.classList.toggle('far', ui.view.k < FAR_ZOOM);
+  $('#edgeFade').hidden = !mapCutOnLeft();
 }
 
-// The map area left free by the toolbar, the zoom buttons and the phone tab bar.
+// On small screens the map often starts zoomed in on the target. The edge
+// fade shows that more of the map is to the left.
+function mapCutOnLeft() {
+  if (isFull() || !ui.layout || !ui.layout.nodes.length) return false;
+  const left = Math.min(...ui.layout.nodes.map((n) => n.x));
+  return ui.view.x + left * ui.view.k < -4;
+}
+
+function shownRect(el) {
+  if (!el || !el.getClientRects().length) return null;
+  const r = el.getBoundingClientRect();
+  return r.width && r.height ? r : null;
+}
+
+const GAP = 14;
+
+// The part of the map that the toolbar, the zoom buttons and the tab bar do
+// not cover, in viewport pixels. It reads where CSS put each control.
 function freeArea(vp) {
-  const wide = isWide();
-  const tabbar = $('.tabbar');
-  const side = 14, top = wide ? 68 : 74;
-  const bottom = wide ? 20 : ((tabbar && tabbar.offsetHeight) || 0) + 14;
-  return {
-    side, top, bottom,
-    width: vp.clientWidth - side * 2 - (wide ? 56 : 54),
-    height: Math.max(80, vp.clientHeight - top - bottom),
-  };
+  const outer = vp.getBoundingClientRect();
+  let top = GAP, right = GAP, bottom = GAP, left = GAP;
+  for (const el of $$('.mapbar > *')) {
+    const r = shownRect(el);
+    if (r) top = Math.max(top, r.bottom - outer.top + 6);
+  }
+  const zoom = shownRect($('.zoombar'));
+  if (zoom && zoom.height > zoom.width) {
+    if (zoom.left - outer.left > outer.width / 2) right = Math.max(right, outer.right - zoom.left + 8);
+    else left = Math.max(left, zoom.right - outer.left + 8);
+  } else if (zoom) {
+    bottom = Math.max(bottom, outer.bottom - zoom.top + 8);
+  }
+  const tabbar = shownRect($('.tabbar'));
+  if (tabbar && tabbar.left < outer.right && tabbar.right > outer.left && tabbar.top > outer.top) {
+    bottom = Math.max(bottom, outer.bottom - tabbar.top + GAP);
+  }
+  return { left, top, width: Math.max(80, outer.width - left - right), height: Math.max(80, outer.height - top - bottom) };
+}
+
+// The free area, less the part the step details cover when they are open.
+export function visibleArea() {
+  const vp = $('#viewport');
+  const area = freeArea(vp);
+  const sheet = $('#inspector');
+  if (!('open' in sheet.dataset) || sheet.hidden) return area;
+  const outer = vp.getBoundingClientRect();
+  // offset* ignore the slide-in transform, so this is where the sheet ends up.
+  const box = { left: sheet.offsetLeft, top: sheet.offsetTop, right: sheet.offsetLeft + sheet.offsetWidth, bottom: sheet.offsetTop + sheet.offsetHeight };
+  if (box.left >= outer.right || box.right <= outer.left || box.top >= outer.bottom || box.bottom <= outer.top) return area;
+  if (box.left - outer.left > outer.width * 0.3) {
+    area.width = Math.max(80, Math.min(area.width, box.left - outer.left - GAP - area.left));
+  } else {
+    area.height = Math.max(80, Math.min(area.height, box.top - outer.top - GAP - area.top));
+  }
+  return area;
+}
+
+// True when part of el is outside the visible area of the map.
+export function isHidden(el) {
+  const area = visibleArea();
+  const outer = $('#viewport').getBoundingClientRect(), r = el.getBoundingClientRect();
+  return r.left < outer.left + area.left || r.top < outer.top + area.top ||
+    r.right > outer.left + area.left + area.width || r.bottom > outer.top + area.top + area.height;
 }
 
 // all: show the whole map, even when it would be very small on a phone.
@@ -160,18 +214,18 @@ export function fitView(all) {
   ui.needFit = false;
   const area = freeArea(vp);
   let k = Math.min(area.width / layout.width, area.height / (layout.height + 10), 1);
-  if (!isWide() && k < PHONE_MIN_FIT && !all) {
+  if (!isFull() && k < MIN_START_FIT && !all) {
     const target = layout.nodes.find((n) => ui.plan.nodes[n.id] && ui.plan.nodes[n.id].kind === 'target');
-    k = PHONE_START_ZOOM;
+    k = START_ZOOM;
     ui.view.k = k;
-    ui.view.x = area.side + area.width - layout.width * k;
+    ui.view.x = area.left + area.width - layout.width * k;
     ui.view.y = target ? area.top + area.height / 2 - (target.y + target.h / 2) * k : area.top;
     applyView();
     return;
   }
   k = Math.max(k, MIN_FIT_ZOOM);
   ui.view.k = k;
-  ui.view.x = area.side + (area.width - layout.width * k) / 2;
+  ui.view.x = area.left + (area.width - layout.width * k) / 2;
   ui.view.y = area.top + Math.max(0, (area.height - layout.height * k) / 2);
   applyView();
 }
@@ -232,10 +286,10 @@ export function panIntoView(el) {
   // move the map away from the view transform.
   vp.scrollLeft = 0;
   vp.scrollTop = 0;
-  const area = freeArea(vp);
+  const area = visibleArea();
   const box = el.getBoundingClientRect(), outer = vp.getBoundingClientRect();
-  const left = outer.left + FOCUS_MARGIN, right = outer.right - FOCUS_MARGIN;
-  const top = outer.top + area.top, bottom = outer.bottom - area.bottom;
+  const left = outer.left + Math.max(FOCUS_MARGIN, area.left), right = outer.left + area.left + area.width;
+  const top = outer.top + area.top, bottom = top + area.height;
   let dx = 0, dy = 0;
   if (box.left < left) dx = left - box.left; else if (box.right > right) dx = right - box.right;
   if (box.top < top) dy = top - box.top; else if (box.bottom > bottom) dy = bottom - box.bottom;

@@ -35,7 +35,8 @@ function targetHTML(target, i) {
         <button class="del" type="button" data-del="${i}" aria-label="Remove ${name}">${svg('i-x', 18)}</button></div>
       <div class="stepper">
         <button type="button" data-tstep="${i}" data-dir="-1" aria-label="Less">−</button>
-        <input type="text" inputmode="decimal" enterkeyhint="done" value="${target.rate}" data-rate="${i}" id="rate${i}" aria-label="Rate for ${name}">
+        <input type="text" inputmode="decimal" enterkeyhint="done" value="${target.rate}"
+          data-rate="${i}" id="rate${i}" aria-label="Rate for ${name}">
         <button type="button" data-tstep="${i}" data-dir="1" aria-label="More">+</button>
         <span class="u">${unitLabel()}</span>
       </div>

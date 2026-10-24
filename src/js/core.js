@@ -22,7 +22,9 @@ export const CLASS_ORDER = {
   miner: ['mining-machine', 'advanced-mining-machine']
 };
 export const CLASS_LABEL = { smelter: 'Smelter', assembler: 'Assembler', chem: 'Chemical plant', lab: 'Research lab', miner: 'Mining machine' };
-export const CLASS_COLOR = { smelter: 'var(--c-smelter)', assembler: 'var(--c-assembler)', chem: 'var(--c-chem)', lab: 'var(--c-lab)', miner: 'var(--c-source)' };
+export const CLASS_COLOR = {
+  smelter: 'var(--c-smelter)', assembler: 'var(--c-assembler)', chem: 'var(--c-chem)', lab: 'var(--c-lab)', miner: 'var(--c-source)'
+};
 export const TIER_LABEL = {
   'arc-smelter': 'Arc', 'plane-smelter': 'Plane', 'df-negentropy-smelter': 'Negentropy',
   'assembling-machine-1': 'Mk.I', 'assembling-machine-2': 'Mk.II', 'assembling-machine-3': 'Mk.III', 'df-recomposing-assembler': 'Re-composing',
@@ -31,8 +33,15 @@ export const TIER_LABEL = {
 };
 export const ROMAN = ['', 'I', 'II', 'III'];
 export const PRESETS = [
-  { id: 'matrices', name: 'All six matrices', items: [['electromagnetic-matrix', 60], ['energy-matrix', 60], ['structure-matrix', 60], ['information-matrix', 60], ['gravity-matrix', 60], ['universe-matrix', 60]] },
-  { id: 'dyson', name: 'Dyson sphere parts', items: [['solar-sail', 120], ['frame-material', 30], ['dyson-sphere-component', 12], ['small-carrier-rocket', 6]] },
+  {
+    id: 'matrices', name: 'All six matrices',
+    items: [['electromagnetic-matrix', 60], ['energy-matrix', 60], ['structure-matrix', 60],
+      ['information-matrix', 60], ['gravity-matrix', 60], ['universe-matrix', 60]]
+  },
+  {
+    id: 'dyson', name: 'Dyson sphere parts',
+    items: [['solar-sail', 120], ['frame-material', 30], ['dyson-sphere-component', 12], ['small-carrier-rocket', 6]]
+  },
   { id: 'mall', name: 'Logistics mall', items: [['conveyor-belt-3', 30], ['sorter-3', 30], ['assembling-machine-3', 6], ['logistics-bot', 30]] },
   { id: 'warp', name: 'Space warpers', items: [['space-warper', 30]] },
   { id: 'white', name: 'Universe matrix', items: [['universe-matrix', 60]] }
@@ -46,7 +55,8 @@ export function icon(key, size) {
   const box = `width:${size}px;height:${size}px`;
   if (!spot) return `<span class="ic0" style="${box}"></span>`;
   const k = size / TILE;
-  return `<span class="ic" style="${box};background-size:${SPRITE * k}px ${SPRITE * k}px;background-position:-${spot[0] * k}px -${spot[1] * k}px"></span>`;
+  const sheet = `background-size:${SPRITE * k}px ${SPRITE * k}px;background-position:-${spot[0] * k}px -${spot[1] * k}px`;
+  return `<span class="ic" style="${box};${sheet}"></span>`;
 }
 export const itemIcon = (id, size) => icon(ITEMS[id] ? ITEMS[id].ic : id, size);
 export const machineIcon = itemIcon;
@@ -87,6 +97,7 @@ export function buildCfg(choices) {
   const factor = choices.unit === 'min' ? 60 : 1;
   return {
     targets: choices.targets.map((t) => ({ item: t.item, rate: t.rate / factor })),
-    machines: choices.machines, belt: choices.belt, stack: choices.stack, prolif: choices.prolif, mining: choices.mining, overrides: choices.overrides
+    machines: choices.machines, belt: choices.belt, stack: choices.stack,
+    prolif: choices.prolif, mining: choices.mining, overrides: choices.overrides
   };
 }

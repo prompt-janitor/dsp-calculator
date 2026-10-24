@@ -1,6 +1,8 @@
 /* ---------- Flow map: render, pan, zoom and selection ---------- */
 import { MACHINE_CLASS, formatPower } from './engine.js';
-import { $, $$, esc, machineIcon, itemIcon, itemName, itemColor, machineShortName, rateStr, unitLabel, isWide, CLASS_COLOR, ROMAN } from './core.js';
+import {
+  $, $$, esc, machineIcon, itemIcon, itemName, itemColor, machineShortName, rateStr, unitLabel, isWide, CLASS_COLOR, ROMAN,
+} from './core.js';
 import { state, ui } from './store.js';
 import { layoutGraph, NODE_WIDTH } from './layout.js';
 
@@ -99,7 +101,8 @@ function edgeHTML({ e, d }, cap) {
 
 function edgeLabelHTML({ e, lx, ly }) {
   const extra = e.fluid ? ' pipe' : e.belts > 1 ? ` · ${e.belts} belts` : '';
-  return `<text class="elabel" ${edgeEnds(e)} x="${lx.toFixed(1)}" y="${(ly + 3.5).toFixed(1)}" text-anchor="middle">${rateStr(e.flow)}${extra}</text>`;
+  const at = `x="${lx.toFixed(1)}" y="${(ly + 3.5).toFixed(1)}"`;
+  return `<text class="elabel" ${edgeEnds(e)} ${at} text-anchor="middle">${rateStr(e.flow)}${extra}</text>`;
 }
 
 function edgesSVG(layout, cap) {

@@ -83,7 +83,8 @@ function resourcesHTML(totals) {
   return section('resources', `
     ${title('Raw input')}<div class="group">${raw}</div>
     ${title('Belt lines', totals.belts)}<div class="group">${belts}</div>
-    <p class="gnote">Each link on the map is its own line at ${BELTS[state.belt] * state.stack} items/s. Merge lines of the same item where you can.</p>
+    <p class="gnote">Each link on the map is its own line at ${BELTS[state.belt] * state.stack} items/s.
+      Merge lines of the same item where you can.</p>
     ${more ? `${title('Pipes, surplus, proliferator')}<div class="group">${more}</div>` : ''}`);
 }
 

@@ -4,7 +4,8 @@ export let DATA = null;
 export const RECIPES = {}, ITEMS = {}, RECIPES_FOR = {}, EXCLUDED = {};
 export const MACHINE_CLASS = {
   'arc-smelter': 'smelter', 'plane-smelter': 'smelter', 'df-negentropy-smelter': 'smelter',
-  'assembling-machine-1': 'assembler', 'assembling-machine-2': 'assembler', 'assembling-machine-3': 'assembler', 'df-recomposing-assembler': 'assembler',
+  'assembling-machine-1': 'assembler', 'assembling-machine-2': 'assembler', 'assembling-machine-3': 'assembler',
+  'df-recomposing-assembler': 'assembler',
   'chemical-plant': 'chem', 'quantum-chemical-plant': 'chem',
   'matrix-lab': 'lab', 'df-self-evolution-lab': 'lab',
   'mining-machine': 'miner', 'advanced-mining-machine': 'miner'
@@ -288,8 +289,12 @@ function buildEdges(users, supply, order, nodes, graphNodes) {
     const makers = byproductMakers(item, fromByproducts, order, nodes);
     for (const use of list) {
       const share = use.amt / total;
-      if (fromMain > MIN_FLOW && graphNodes[item]) edges.push({ from: item, to: use.id, item: item, flow: fromMain * share, kind: use.kind, by: false });
-      for (const maker of makers) edges.push({ from: maker.id, to: use.id, item: item, flow: maker.rate * share, kind: use.kind, by: true });
+      if (fromMain > MIN_FLOW && graphNodes[item]) {
+        edges.push({ from: item, to: use.id, item: item, flow: fromMain * share, kind: use.kind, by: false });
+      }
+      for (const maker of makers) {
+        edges.push({ from: maker.id, to: use.id, item: item, flow: maker.rate * share, kind: use.kind, by: true });
+      }
     }
   }
   return edges;

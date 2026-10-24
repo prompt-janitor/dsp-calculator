@@ -56,6 +56,8 @@ function headHTML(node, item) {
     <button class="btn round small" type="button" id="inspClose" aria-label="Close">${svg('i-x', 18)}</button>`;
 }
 
+const machineOptions = (node) => node.rec.prod.map((m) => optionTag(m, machineName(m), node.machine)).join('');
+
 function recipeOptions(item, current) {
   return (RECIPES_FOR[item] || []).map((id) => {
     const recipe = RECIPES[id];
@@ -80,7 +82,7 @@ function changeStepHTML(node, item, override) {
     <div class="gtitle">Change this step</div>
     <div class="group">
       <label class="selrow"><span>Recipe</span><select id="i_rec">${recipeOptions(item, node.rec.id)}</select></label>
-      <label class="selrow"><span>Building</span><select id="i_mach">${node.rec.prod.map((m) => optionTag(m, machineName(m), node.machine)).join('')}</select></label>
+      <label class="selrow"><span>Building</span><select id="i_mach">${machineOptions(node)}</select></label>
       <label class="selrow"><span>Proliferator</span><select id="i_pro">${proliferatorOptions(override)}</select></label>
       <label class="togrow"><span>Supplied from elsewhere<small class="hint">Stop building its ingredients</small></span>
         <input class="switch" type="checkbox" id="i_ext"${override.external ? ' checked' : ''}></label>
@@ -109,7 +111,8 @@ function rawBodyHTML(node) {
   return `
     <div class="kpis"><div class="kpi"><b>${rateStr(node.rate)}</b><span>${unitLabel()} needed</span></div></div>
     <div class="gtitle">Change this step</div>
-    <div class="group"><label class="togrow"><span>Supplied from elsewhere</span><input class="switch" type="checkbox" id="i_ext" checked></label></div>`;
+    <div class="group"><label class="togrow"><span>Supplied from elsewhere</span>
+      <input class="switch" type="checkbox" id="i_ext" checked></label></div>`;
 }
 
 export function renderInspector() {
@@ -121,7 +124,9 @@ export function renderInspector() {
   const active = sheet.contains(document.activeElement) ? document.activeElement : null;
   const key = focusKey(active);
   $('#inspHead').innerHTML = headHTML(node, item);
-  const reset = state.overrides[item] ? '<div class="sh-actions"><button class="btn" type="button" id="i_reset">Undo changes to this step</button></div>' : '';
+  const reset = state.overrides[item]
+    ? '<div class="sh-actions"><button class="btn" type="button" id="i_reset">Undo changes to this step</button></div>'
+    : '';
   $('#inspBody').innerHTML = (node.kind === 'raw' ? rawBodyHTML(node) : craftBodyHTML(node, item, override)) + reset;
   if (active) refocus(null, key);
   openSheet('inspector', { focus: $('#inspClose') });

@@ -119,7 +119,8 @@ function wireGestures() {
     if (!wasTap) return;
     const node = downTarget && downTarget.closest ? downTarget.closest('.node') : null;
     const now = Date.now(), rect = viewport.getBoundingClientRect();
-    const doubleTap = !node && now - lastTap < DOUBLE_TAP_MS && lastTapAt && Math.hypot(e.clientX - lastTapAt[0], e.clientY - lastTapAt[1]) < DOUBLE_TAP_PX;
+    const nearLast = lastTapAt && Math.hypot(e.clientX - lastTapAt[0], e.clientY - lastTapAt[1]) < DOUBLE_TAP_PX;
+    const doubleTap = !node && now - lastTap < DOUBLE_TAP_MS && nearLast;
     if (doubleTap) {
       animate(() => zoomAt(e.clientX - rect.left, e.clientY - rect.top, 1.8));
       lastTap = 0;

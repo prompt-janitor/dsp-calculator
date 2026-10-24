@@ -1,6 +1,8 @@
 /* ---------- Settings pane ---------- */
 import { BELTS, DATA } from './engine.js';
-import { $, esc, svg, itemIcon, machineIcon, machineName, count, inFrame, isStandalone, isIOS, CLASS_ORDER, CLASS_LABEL, TIER_LABEL, ROMAN } from './core.js';
+import {
+  $, esc, svg, itemIcon, machineIcon, machineName, count, inFrame, isStandalone, isIOS, CLASS_ORDER, CLASS_LABEL, TIER_LABEL, ROMAN,
+} from './core.js';
 import { state, ui, update, defaultState, replaceState, renderAll } from './store.js';
 import { install } from './pwa.js';
 import { toast } from './toast.js';
@@ -79,8 +81,9 @@ function beltsHTML() {
 
 function proliferatorHTML() {
   const off = `<span class="ic0 icon-off">${svg('i-x', 18)}</span>`;
-  const levels = [tierButton('data-plevel="0"', String(state.prolif.level) === '0', off, 'Off'),
-    ...[1, 2, 3].map((l) => tierButton(`data-plevel="${l}"`, String(state.prolif.level) === String(l), itemIcon('proliferator-' + l, 30), 'Mk.' + ROMAN[l]))];
+  const isLevel = (l) => String(state.prolif.level) === String(l);
+  const levels = [tierButton('data-plevel="0"', isLevel(0), off, 'Off'),
+    ...[1, 2, 3].map((l) => tierButton(`data-plevel="${l}"`, isLevel(l), itemIcon('proliferator-' + l, 30), 'Mk.' + ROMAN[l]))];
   const modes = segButton('data-pmode', 'products', 'Extra products', state.prolif.mode === 'products') +
     segButton('data-pmode', 'speed', 'Speed up', state.prolif.mode === 'speed');
   return `

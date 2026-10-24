@@ -7,7 +7,9 @@ export function defaultState() {
   return {
     targets: [{ item: 'information-matrix', rate: 60 }],
     unit: 'min',
-    machines: { smelter: 'plane-smelter', assembler: 'assembling-machine-3', chem: 'chemical-plant', lab: 'matrix-lab', miner: 'mining-machine' },
+    machines: {
+      smelter: 'plane-smelter', assembler: 'assembling-machine-3', chem: 'chemical-plant', lab: 'matrix-lab', miner: 'mining-machine'
+    },
     belt: 'conveyor-belt-3', stack: 1,
     prolif: { level: 0, mode: 'products' },
     mining: { speed: 100, veins: 8, oil: 1, orbital: 55 },

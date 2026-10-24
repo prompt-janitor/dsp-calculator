@@ -48,15 +48,16 @@ export const PRESETS = [
   { id: 'white', name: 'Universe matrix', items: [['universe-matrix', 60]] }
 ];
 
-// The sprite sheet is 1472 px square, with 64 px tiles.
-const SPRITE = 1472, TILE = 64;
+// The sprite sheet has 64 px tiles. scripts/pack-sprite.py sets its size.
+const TILE = 64;
 
 export function icon(key, size) {
   const spot = DATA.icons[key];
   const box = `width:${size}px;height:${size}px`;
   if (!spot) return `<span class="ic0" style="${box}"></span>`;
   const k = size / TILE;
-  const sheet = `background-size:${SPRITE * k}px ${SPRITE * k}px;background-position:-${spot[0] * k}px -${spot[1] * k}px`;
+  const [w, h] = DATA.sprite;
+  const sheet = `background-size:${w * k}px ${h * k}px;background-position:-${spot[0] * k}px -${spot[1] * k}px`;
   return `<span class="ic" style="${box};${sheet}"></span>`;
 }
 export const itemIcon = (id, size) => icon(ITEMS[id] ? ITEMS[id].ic : id, size);

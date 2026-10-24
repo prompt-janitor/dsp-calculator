@@ -2,8 +2,9 @@
 
 Usage: python3 scripts/prep-data.py /path/to/factoriolab
 (git clone --depth 1 https://github.com/factoriolab/factoriolab first)
+The sprite step needs Pillow (pip install pillow).
 """
-import json, sys, os, shutil
+import json, sys, os, shutil, subprocess
 root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 src = os.path.join(sys.argv[1], 'public', 'data', 'dsp') + '/'
 d=json.load(open(src+'data.json'))
@@ -52,4 +53,5 @@ out={'version':d['version'],'items':itemlist,'recipes':recipes,'machines':machin
 dst = os.path.join(root, 'src', 'data', 'recipes.json')
 json.dump(out, open(dst, 'w'), separators=(',', ':'))
 shutil.copy(src + 'icons.webp', os.path.join(root, 'src', 'assets', 'sprite.webp'))
+subprocess.run([sys.executable, os.path.join(root, 'scripts', 'pack-sprite.py')], check=True)
 print(len(recipes), 'recipes,', len(itemlist), 'items,', len(machines), 'machines')

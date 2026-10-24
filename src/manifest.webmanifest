@@ -1,6 +1,6 @@
 {
   "id": "./",
-  "name": "Dyson Sphere Calculator",
+  "name": "DSP Calculator",
   "short_name": "DSP Calc",
   "description": "A production planner for Dyson Sphere Program. It shows the buildings, belts, power and a flow map for any item.",
   "start_url": "./",

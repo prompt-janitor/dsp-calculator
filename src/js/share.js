@@ -15,7 +15,7 @@ const byCount = (counts) => Object.keys(counts).sort((a, b) => counts[b] - count
 function summaryText() {
   const totals = ui.plan.totals, unit = unitLabel();
   const lines = [
-    'Dyson Sphere plan',
+    'DSP Calculator plan',
     'Targets: ' + state.targets.map((t) => `${shortRate(t.rate)}${unit} ${itemName(t.item)}`).join(', '),
     `Power: ${formatPower(totals.power)} | Belt lines: ${totals.belts} (${BELTS[state.belt] * state.stack} items/s each)`,
     '', 'Buildings',
@@ -58,7 +58,7 @@ function copyText(text) {
 }
 
 function shareText() {
-  navigator.share({ title: 'Dyson Sphere plan', text: $('#expText').value }).catch((err) => {
+  navigator.share({ title: 'DSP Calculator plan', text: $('#expText').value }).catch((err) => {
     if (err.name !== 'AbortError') say('Sharing did not work. Use Copy instead.');
   });
 }

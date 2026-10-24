@@ -1,4 +1,4 @@
-# Dyson Sphere Calculator
+# DSP Calculator
 
 A production planner for [Dyson Sphere Program](https://store.steampowered.com/app/1366540/) that works out the steps, buildings, belts and power for the items you want to make.
 

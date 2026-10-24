@@ -35,7 +35,7 @@ body{margin:0;width:${w}px;height:${h}px;background:#0a1117;display:grid;place-i
 .c{display:flex;flex-direction:column;align-items:center;gap:${Math.round(s * 0.03)}px}
 b{font-weight:600;font-size:${Math.max(15, Math.round(s * 0.05))}px;letter-spacing:.14em;text-transform:uppercase}
 small{font:${Math.max(11, Math.round(s * 0.032))}px -apple-system,system-ui,sans-serif;color:#8ea2b2;letter-spacing:0}
-</style></head><body><div class="c">${ART(Math.round(s * 0.36))}<b>Dyson Sphere Calculator</b></div></body></html>`;
+</style></head><body><div class="c">${ART(Math.round(s * 0.36))}<b>DSP Calculator</b></div></body></html>`;
 };
 
 // CSS points and pixel ratio for current iPhones and iPads. Sizes that

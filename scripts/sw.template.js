@@ -1,4 +1,4 @@
-/* Dyson Sphere Calculator service worker: offline app shell, cache-first. */
+/* DSP Calculator service worker: offline app shell, cache-first. */
 const CACHE = 'dsp-calc-__VERSION__';
 const SHELL = __ASSETS__;
 

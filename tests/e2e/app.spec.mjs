@@ -65,7 +65,7 @@ test.describe('sheets open and close', () => {
     await showView(page, 'plan');
     await page.locator('[data-act="share"]:visible').first().click();
     await sheetOpen(page, 'export');
-    await expect(page.locator('#expText')).toHaveValue(/Dyson Sphere plan/);
+    await expect(page.locator('#expText')).toHaveValue(/DSP Calculator plan/);
     await page.locator('[data-close="export"]').click();
     await expect(page.locator('#export')).toBeHidden();
   });

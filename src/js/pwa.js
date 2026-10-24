@@ -19,14 +19,18 @@ export function install() {
   render('settings');
 }
 
+function offerUpdate(next) {
+  if (navigator.serviceWorker.controller) toast('A new version is ready', 'Reload', () => next.postMessage('skip'));
+}
+
 function watchForUpdate(reg) {
+  // A worker found on an earlier visit still waits until the user says so.
+  if (reg.waiting) offerUpdate(reg.waiting);
   reg.addEventListener('updatefound', () => {
     const next = reg.installing;
     if (!next) return;
     next.addEventListener('statechange', () => {
-      if (next.state === 'installed' && navigator.serviceWorker.controller) {
-        toast('A new version is ready', 'Reload', () => next.postMessage('skip'));
-      }
+      if (next.state === 'installed') offerUpdate(next);
     });
   });
 }

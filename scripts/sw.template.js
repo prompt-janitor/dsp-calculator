@@ -13,17 +13,19 @@ self.addEventListener('activate', (e) => {
   );
 });
 self.addEventListener('message', (e) => { if (e.data === 'skip') self.skipWaiting(); });
+// Only this version's cache is read, so a page never mixes files from two
+// builds while a new worker waits.
 self.addEventListener('fetch', (e) => {
   const req = e.request;
   if (req.method !== 'GET') return;
   const url = new URL(req.url);
   if (url.origin !== self.location.origin) return;
   if (req.mode === 'navigate') {
-    e.respondWith(caches.match('index.html').then((r) => r || fetch(req)));
+    e.respondWith(caches.match('index.html', { cacheName: CACHE }).then((r) => r || fetch(req)));
     return;
   }
   e.respondWith(
-    caches.match(req, { ignoreSearch: true }).then((hit) => hit || fetch(req).then((res) => {
+    caches.match(req, { cacheName: CACHE, ignoreSearch: true }).then((hit) => hit || fetch(req).then((res) => {
       if (res.ok) { const copy = res.clone(); caches.open(CACHE).then((c) => c.put(req, copy)); }
       return res;
     }))

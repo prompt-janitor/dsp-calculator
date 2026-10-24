@@ -10,7 +10,22 @@ export const MACH_CLASS = {
   'mining-machine': 'miner', 'advanced-mining-machine': 'miner'
 };
 const FLUIDS = { 'water': 1, 'crude-oil': 1, 'refined-oil': 1, 'sulfuric-acid': 1 };
+// Items per second for one stack, from the in-game belt tooltips.
 export const BELTS = { 'conveyor-belt-1': 6, 'conveyor-belt-2': 12, 'conveyor-belt-3': 30 };
+const DEFAULT_BELT_SPEED = BELTS['conveyor-belt-3'];
+// Orbital collectors burn part of what they gather for power. 55% net matches
+// a standard gas giant. Source: dsp-wiki.com/Orbital_Collector
+const DEFAULT_ORBITAL_NET = 55;
+const DEFAULT_MINING_SPEED = 100;
+const MAX_PASSES = 600;
+// The solve stops when no step's run rate changes by more than this, relative to its size.
+const CONVERGED = 1e-10;
+// A run rate above this means a loop in the recipes feeds itself without end.
+const RUNAWAY_RATE = 1e9;
+// Slack for float error, so 2.0000000001 machines or belts does not round up to 3.
+const ROUND_SLACK = 1e-9;
+// Flows smaller than this are float noise and get no edge.
+const MIN_FLOW = 1e-12;
 const DEFAULT_PICK = {
   'deuterium': 'deuterium-fractionation',
   'critical-photon': 'critical-photon',
@@ -22,11 +37,14 @@ export function initEngine(D) {
   DATA = D;
   // The source data lists deuterium fractionation as 0.01 : 0.01, which hides the 1% chance.
   // In game, each hydrogen has a 1% chance to become deuterium and a fractionator handles one belt of hydrogen.
+  // Source: dsp-wiki.com/Fractionator
   D.recipes.forEach(function (r) {
     if (r.id === 'deuterium-fractionation') { r.in = { 'hydrogen': 1 }; r.out = { 'deuterium': 0.01 }; r.time = 1; }
   });
   D.excluded.forEach(function (id) { EXCL[id] = 1; });
+  // FactorioLab's defaults exclude fire ice veins. Allow them, so fire ice comes from its vein by default.
   delete EXCL['fire-ice-vein'];
+
   D.recipes.forEach(function (r) {
     RECIPES[r.id] = r;
     Object.keys(r.out).forEach(function (o) { (CANDS[o] = CANDS[o] || []).push(r.id); });
@@ -46,7 +64,7 @@ export function defaultRecipeFor(item) {
   return (prim[0] || ok[0]);
 }
 
-function beltCap(cfg) { return (BELTS[cfg.belt] || 30) * (cfg.stack || 1); }
+function beltCap(cfg) { return (BELTS[cfg.belt] || DEFAULT_BELT_SPEED) * (cfg.stack || 1); }
 
 function pickMachine(rec, cfg, ovMachine) {
   if (ovMachine && rec.prod.indexOf(ovMachine) >= 0) return ovMachine;
@@ -117,15 +135,15 @@ export function solve(cfg) {
     var m = n.mach, r = n.rec, s = m.speed || 1;
     if (n.machine === 'fractionator') s = cap;
     else if (r.mining && (n.machine === 'mining-machine' || n.machine === 'advanced-mining-machine'))
-      s = s * (cfg.mining.veins || 1) * ((cfg.mining.speed || 100) / 100);
-    else if (n.machine === 'orbital-collector') s = s * ((cfg.mining.orbital || 55) / 100);
-    else if (n.machine === 'oil-extractor') s = (cfg.mining.oil || 1) * ((cfg.mining.speed || 100) / 100);
+      s = s * (cfg.mining.veins || 1) * ((cfg.mining.speed || DEFAULT_MINING_SPEED) / 100);
+    else if (n.machine === 'orbital-collector') s = s * ((cfg.mining.orbital || DEFAULT_ORBITAL_NET) / 100);
+    else if (n.machine === 'oil-extractor') s = (cfg.mining.oil || 1) * ((cfg.mining.speed || DEFAULT_MINING_SPEED) / 100);
     if (n.prof && n.prof.mode === 'speed') s *= (1 + n.prof.speed);
     return s;
   }
 
   var D = {}, S = {}, ok = true, iter;
-  for (iter = 0; iter < 600; iter++) {
+  for (iter = 0; iter < MAX_PASSES; iter++) {
     D = {}; S = {};
     cfg.targets.forEach(function (t) { if (t.item && t.rate > 0) D[t.item] = (D[t.item] || 0) + t.rate; });
     items.forEach(function (it) {
@@ -148,12 +166,12 @@ export function solve(cfg) {
       var nr = need / (n.rec.out[it] * pm);
       delta = Math.max(delta, Math.abs(nr - n.runs) / (1 + Math.abs(nr)));
       n.runs = nr;
-      if (nr > 1e9) blow = true;
+      if (nr > RUNAWAY_RATE) blow = true;
     });
     if (blow) { ok = false; break; }
-    if (delta < 1e-10) break;
+    if (delta < CONVERGED) break;
   }
-  if (iter >= 600) ok = false;
+  if (iter >= MAX_PASSES) ok = false;
 
   // finalize quantities
   var totals = { power: 0, built: {}, exact: {}, belts: 0, beltsByItem: {}, raw: {}, surplus: {}, prolif: {} };
@@ -161,7 +179,7 @@ export function solve(cfg) {
     var n = nodes[it], r = n.rec;
     var sp = nodeSpeed(n);
     n.count = n.runs * r.time / sp;
-    n.built = n.count > 1e-9 ? Math.ceil(n.count - 1e-9) : 0;
+    n.built = n.count > ROUND_SLACK ? Math.ceil(n.count - ROUND_SLACK) : 0;
     var pm = n.prof && n.prof.mode === 'products' ? 1 + n.prof.prod : 1;
     n.outRate = {};
     for (var o in r.out) n.outRate[o] = n.runs * r.out[o] * pm;
@@ -187,7 +205,7 @@ export function solve(cfg) {
   // surplus byproducts
   Object.keys(S).forEach(function (it) {
     var extra = S[it] - (D[it] || 0);
-    if (extra > 1e-9) totals.surplus[it] = extra;
+    if (extra > ROUND_SLACK) totals.surplus[it] = extra;
   });
 
   // ---------- Build graph edges ----------
@@ -216,24 +234,24 @@ export function solve(cfg) {
   Object.keys(cons).forEach(function (item) {
     var list = cons[item];
     var total = list.reduce(function (a, c) { return a + c.amt; }, 0);
-    if (total <= 1e-12) return;
+    if (total <= MIN_FLOW) return;
     var credit = Math.min(S[item] || 0, total);
     var primary = total - credit;
     var prov = [];
-    if (credit > 1e-12) {
+    if (credit > MIN_FLOW) {
       var tot = 0;
       items.forEach(function (it) {
         if (it !== item && nodes[it].rec.out[item]) {
           var pm = nodes[it].prof && nodes[it].prof.mode === 'products' ? 1 + nodes[it].prof.prod : 1;
           var s = nodes[it].runs * nodes[it].rec.out[item] * pm;
-          if (s > 1e-12) { prov.push({ id: it, s: s }); tot += s; }
+          if (s > MIN_FLOW) { prov.push({ id: it, s: s }); tot += s; }
         }
       });
       prov.forEach(function (p) { p.s = p.s / tot * credit; });
     }
     list.forEach(function (c) {
       var share = c.amt / total;
-      if (primary > 1e-12 && gNodes[item]) edges.push({ from: item, to: c.id, item: item, flow: primary * share, kind: c.kind, by: false });
+      if (primary > MIN_FLOW && gNodes[item]) edges.push({ from: item, to: c.id, item: item, flow: primary * share, kind: c.kind, by: false });
       prov.forEach(function (p) { edges.push({ from: p.id, to: c.id, item: item, flow: p.s * share, kind: c.kind, by: true }); });
     });
   });
@@ -242,7 +260,8 @@ export function solve(cfg) {
   edges.forEach(function (e) {
     e.fluid = !!FLUIDS[e.item];
     if (e.fluid) { e.belts = 0; }
-    else { e.belts = Math.max(1, Math.ceil(e.flow / cap - 1e-9)); }
+    else { e.belts = Math.max(1, Math.ceil(e.flow / cap - ROUND_SLACK)); }
+
     e.util = e.fluid ? 0 : e.flow / (e.belts * cap);
     if (!e.fluid) {
       totals.belts += e.belts;

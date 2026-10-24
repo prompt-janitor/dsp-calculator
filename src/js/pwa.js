@@ -20,7 +20,7 @@ export function install() {
 }
 
 function offerUpdate(next) {
-  if (navigator.serviceWorker.controller) toast('A new version is ready', 'Reload', () => next.postMessage('skip'));
+  if (navigator.serviceWorker.controller) toast('A new version is ready.', 'Reload', () => next.postMessage('skip'));
 }
 
 function watchForUpdate(reg) {

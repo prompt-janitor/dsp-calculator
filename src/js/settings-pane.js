@@ -137,13 +137,13 @@ const ABOUT = `
   <div class="gtitle">About the data</div>
   <p class="gnote flush">Recipes, machine speeds and proliferator values come from the FactorioLab data
   for Dyson Sphere Program (October 2026). It includes game update 0.10.34, with the Holo Beacon.
-  Power leaves out miners, orbital collectors and pumps. Deuterium fractionation assumes a 1% chance per hydrogen
+  Power leaves out miners and orbital collectors. Deuterium fractionation assumes a 1% chance per hydrogen
   and one machine per full belt.</p>
   <div class="gtitle">About this app</div>
   <p class="gnote flush">This is an unofficial fan project. It is not affiliated with Youthcat Studio or Gamera Games.
   Item icons are game art from Dyson Sphere Program by Youthcat Studio, taken from FactorioLab.
   The app collects no data. Your plans stay on this device.</p>
-  <p class="gnote">AI-generated. May contain errors. Provided as is, without warranty or liability.</p>
+  <p class="gnote">This app was made with AI and may contain errors. It is provided as is, without warranty or liability.</p>
   <div class="gtitle">Licences</div><div class="group">
     ${licenceRow('LICENSE.txt', 'App code', 'MIT')}
     ${licenceRow('FactorioLab-LICENSE.txt', 'Recipe data from FactorioLab', 'MIT')}
@@ -173,7 +173,7 @@ function reset(button) {
   next.opts.theme = state.opts.theme;
   replaceState(next);
   renderAll();
-  toast('Plan reset');
+  toast('Plan reset.');
 }
 
 function onClick(e) {

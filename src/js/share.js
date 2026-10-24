@@ -72,7 +72,7 @@ function loadCode() {
   replaceState(mergeState(defaultState(), saved));
   renderAll();
   closeSheet('export');
-  toast('Plan loaded');
+  toast('Plan loaded.');
 }
 
 export function wireShare() {

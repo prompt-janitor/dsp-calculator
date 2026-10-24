@@ -32,7 +32,7 @@ After that it opens like an app and works offline.
 
 This is an unofficial fan project. It is not affiliated with Youthcat Studio or Gamera Games. Item icons are game art from Dyson Sphere Program by Youthcat Studio, taken from [FactorioLab](https://github.com/factoriolab/factoriolab). The app collects no data. Your plans stay on your device.
 
-AI-generated. May contain errors. Provided as is, without warranty or liability.
+This app was made with AI and may contain errors. It is provided as is, without warranty or liability.
 
 ## For developers
 

@@ -40,7 +40,7 @@ function buildingsHTML(totals, steps) {
   return section('buildings', `
     ${title('Buildings to place', count(total))}
     <div class="group">${rows || '<div class="row noic"><span class="s">Nothing to build.</span></div>'}</div>
-    <p class="gnote">${formatPower(totals.power)} with every building running. Miners, collectors and pumps are not counted.</p>`);
+    <p class="gnote">${formatPower(totals.power)} with every building running. Miners and orbital collectors are not counted.</p>`);
 }
 
 function stepRow(node, beltsOut) {

@@ -30,7 +30,7 @@ function targetHTML(target, i) {
   const name = esc(itemName(target.item));
   return `
     <div class="target">
-      <button class="pick" type="button" data-pick="${i}" aria-label="Change item, now ${name}">${itemIcon(target.item, 40)}</button>
+      <button class="pick" type="button" data-pick="${i}" aria-label="Change ${name}">${itemIcon(target.item, 40)}</button>
       <div class="nm"><span>${name}</span>
         <button class="del" type="button" data-del="${i}" aria-label="Remove ${name}">${svg('i-x', 18)}</button></div>
       <div class="stepper">
@@ -73,7 +73,7 @@ function statsHTML(totals) {
     stat(formatPower(totals.power), 'Power') +
     stat(count(totals.belts), 'Belt lines') +
     (sprayed > 0 ? stat(rateStr(sprayed), 'Proliferator ' + unitLabel()) : stat(Object.keys(totals.raw).length, 'Raw resources')) +
-    (ui.plan.ok ? '' : stat('Loop', 'Recipes feed each other without surplus', ' warn wide'));
+    (ui.plan.ok ? '' : stat('Loop', 'Some recipes need each other and the numbers do not settle. Change a recipe on the map.', ' warn wide'));
 }
 
 // The biggest builds. CSS shows this list on phones only.
@@ -123,7 +123,7 @@ function loadPreset(id) {
   update((draft) => {
     draft.targets = preset.items.map(([item, perMin]) => ({ item, rate: draft.unit === 'min' ? perMin : rateInUnit(perMin, 's') }));
   }, 'plan', 'refit', 'solve');
-  toast('Loaded ' + preset.name.toLowerCase());
+  toast(`Loaded ${preset.name.toLowerCase()}.`);
 }
 
 // Opens the item picker and adds the chosen item as a new target.

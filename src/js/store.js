@@ -69,7 +69,7 @@ export function loadState() {
   state = loaded;
 }
 
-export function saveState() {
+function saveState() {
   // localStorage throws in some private modes and when storage is full.
   try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); } catch (e) { }
 }

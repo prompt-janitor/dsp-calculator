@@ -32,7 +32,7 @@ function summaryText() {
 }
 
 // mode: 'summary' or 'code'.
-export function openShare(mode) {
+function openShare(mode) {
   for (const button of $$('[data-exp]')) button.setAttribute('aria-pressed', button.dataset.exp === mode);
   const text = $('#expText');
   text.value = mode === 'summary' ? summaryText() : JSON.stringify(state);

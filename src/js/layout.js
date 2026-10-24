@@ -11,11 +11,11 @@ export const TARGET_HEIGHT = 64;
 // Space between two layer columns.
 export const COLUMN_GAP = 92;
 // Space between two nodes in a column.
-export const ROW_GAP = 22;
+const ROW_GAP = 22;
 // A long edge passes each layer between its ends as a thin placeholder node,
 // so edges can be ordered and spaced like nodes.
-export const PLACEHOLDER_HEIGHT = 6;
-export const PLACEHOLDER_GAP = 5;
+const PLACEHOLDER_HEIGHT = 6;
+const PLACEHOLDER_GAP = 5;
 
 // Edge ends keep this distance from the top and bottom of a node.
 const PORT_PAD = 16;

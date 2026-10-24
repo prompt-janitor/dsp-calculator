@@ -66,7 +66,7 @@ export function machineShortName(id) {
 }
 
 // Rates are items per second inside the solver. These turn them into the unit the user picked.
-export const unitFactor = () => (state.unit === 'min' ? 60 : 1);
+const unitFactor = () => (state.unit === 'min' ? 60 : 1);
 export const unitLabel = () => (state.unit === 'min' ? '/min' : '/s');
 export const rateStr = (perSec) => formatNumber(perSec * unitFactor());
 export const count = (n) => n.toLocaleString('en-US');

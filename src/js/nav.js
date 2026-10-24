@@ -17,7 +17,7 @@ function showMap() {
 }
 
 // The compact tab bar also sets the sidebar and main pane of the wide layout.
-export function setTab(tab) {
+function setTab(tab) {
   if (tab !== 'map') closeInspector(true);
   update((draft) => {
     draft.tab = tab;
@@ -31,7 +31,7 @@ function setSide(side) {
   update((draft) => { draft.side = side; if (!isWide()) draft.tab = side; }, 'nav');
 }
 
-export function setMain(main) {
+function setMain(main) {
   update((draft) => { draft.main = main; if (!isWide()) draft.tab = main; }, 'nav');
   if (main === 'map') showMap();
 }

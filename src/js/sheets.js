@@ -4,7 +4,7 @@ import { $, $$, isWide } from './core.js';
 const FOCUSABLE = 'button, input, select, textarea, [href], [tabindex]:not([tabindex="-1"])';
 const openers = {};
 
-export const isShown = (el) => !!el && el.isConnected && el.getClientRects().length > 0;
+const isShown = (el) => !!el && el.isConnected && el.getClientRects().length > 0;
 const focusables = (root) => $$(FOCUSABLE, root).filter((el) => !el.disabled && isShown(el));
 
 // A way to find the same control again after its pane is drawn again.

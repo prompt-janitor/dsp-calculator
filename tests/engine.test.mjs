@@ -16,10 +16,10 @@ test('electromagnetic matrix at 1/s', () => {
   close(p.totals.raw['copper-ore'], 1, 'copper ore per second');
 });
 
-test('deuterium fractionation uses 1% of a full belt per fractionator', () => {
+test('fractionators use 1 hydrogen per deuterium and one belt each', () => {
   const p = plan([{ item: 'deuterium', rate: 1 }]);
   close(p.nodes['deuterium'].machineCount, 1 / 0.3, 'fractionators on a Mk.III belt');
-  close(p.demand['hydrogen'], 100, 'hydrogen in');
+  close(p.demand['hydrogen'], 1, 'hydrogen used (the other 99% loops back)');
 });
 
 test('proliferator Mk.III extra products cuts raw ore and adds spray demand', () => {

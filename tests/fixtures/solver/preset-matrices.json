@@ -677,12 +677,12 @@
    "machine": "orbital-collector",
    "machineData": "orbital-collector",
    "spray": null,
-   "runs": 133.46354166666669,
+   "runs": 4.557291666666667,
    "kind": "source",
-   "machineCount": 242.66098484848487,
-   "built": 243,
+   "machineCount": 8.285984848484848,
+   "built": 9,
    "outRate": {
-    "hydrogen": 1025
+    "hydrogen": 35
    },
    "inRate": {},
    "power": 0,
@@ -863,7 +863,7 @@
     "deuterium": 10
    },
    "inRate": {
-    "hydrogen": 1000
+    "hydrogen": 10
    },
    "power": 24480,
    "powerAvg": 24000
@@ -1669,100 +1669,100 @@
    "from": "hydrogen",
    "to": "casimir-crystal",
    "item": "hydrogen",
-   "flow": 23.929961089494164,
+   "flow": 22.105263157894736,
    "kind": "item",
    "byproduct": false,
    "fluid": false,
    "belts": 1,
-   "beltFill": 0.7976653696498055
+   "beltFill": 0.7368421052631579
   },
   {
    "from": "refined-oil",
    "to": "casimir-crystal",
    "item": "hydrogen",
-   "flow": 0.04669260700389105,
+   "flow": 1.263157894736842,
    "kind": "item",
    "byproduct": true,
    "fluid": false,
    "belts": 1,
-   "beltFill": 0.0015564202334630351
+   "beltFill": 0.042105263157894736
   },
   {
    "from": "antimatter",
    "to": "casimir-crystal",
    "item": "hydrogen",
-   "flow": 0.023346303501945526,
+   "flow": 0.631578947368421,
    "kind": "item",
    "byproduct": true,
    "fluid": false,
    "belts": 1,
-   "beltFill": 0.0007782101167315176
+   "beltFill": 0.021052631578947368
   },
   {
    "from": "hydrogen",
    "to": "deuterium",
    "item": "hydrogen",
-   "flow": 997.0817120622568,
+   "flow": 9.210526315789473,
    "kind": "item",
    "byproduct": false,
    "fluid": false,
-   "belts": 34,
-   "beltFill": 0.9775310902571145
+   "belts": 1,
+   "beltFill": 0.3070175438596491
   },
   {
    "from": "refined-oil",
    "to": "deuterium",
    "item": "hydrogen",
-   "flow": 1.9455252918287937,
+   "flow": 0.5263157894736842,
    "kind": "item",
    "byproduct": true,
    "fluid": false,
    "belts": 1,
-   "beltFill": 0.0648508430609598
+   "beltFill": 0.017543859649122806
   },
   {
    "from": "antimatter",
    "to": "deuterium",
    "item": "hydrogen",
-   "flow": 0.9727626459143969,
+   "flow": 0.2631578947368421,
    "kind": "item",
    "byproduct": true,
    "fluid": false,
    "belts": 1,
-   "beltFill": 0.0324254215304799
+   "beltFill": 0.008771929824561403
   },
   {
    "from": "hydrogen",
    "to": "energy-matrix",
    "item": "hydrogen",
-   "flow": 3.9883268482490273,
+   "flow": 3.6842105263157894,
    "kind": "item",
    "byproduct": false,
    "fluid": false,
    "belts": 1,
-   "beltFill": 0.13294422827496757
+   "beltFill": 0.12280701754385964
   },
   {
    "from": "refined-oil",
    "to": "energy-matrix",
    "item": "hydrogen",
-   "flow": 0.007782101167315175,
+   "flow": 0.21052631578947367,
    "kind": "item",
    "byproduct": true,
    "fluid": false,
    "belts": 1,
-   "beltFill": 0.00025940337224383917
+   "beltFill": 0.007017543859649122
   },
   {
    "from": "antimatter",
    "to": "energy-matrix",
    "item": "hydrogen",
-   "flow": 0.0038910505836575876,
+   "flow": 0.10526315789473684,
    "kind": "item",
    "byproduct": true,
    "fluid": false,
    "belts": 1,
-   "beltFill": 0.00012970168612191958
+   "beltFill": 0.003508771929824561
   },
   {
    "from": "strange-matter",
@@ -1908,7 +1908,7 @@
    "oil-refinery": 8,
    "oil-extractor": 4,
    "water-pump": 14,
-   "orbital-collector": 243,
+   "orbital-collector": 9,
    "miniature-particle-collider": 9,
    "fractionator": 34,
    "ray-receiver": 10
@@ -1922,12 +1922,12 @@
    "oil-refinery": 8,
    "oil-extractor": 4,
    "water-pump": 13.2,
-   "orbital-collector": 242.66098484848487,
+   "orbital-collector": 8.285984848484848,
    "miniature-particle-collider": 9,
    "fractionator": 33.333333333333336,
    "ray-receiver": 10
   },
-  "belts": 118,
+  "belts": 85,
   "beltsByItem": {
    "antimatter": 1,
    "electromagnetic-matrix": 2,
@@ -1963,7 +1963,7 @@
    "titanium-glass": 1,
    "glass": 1,
    "stone": 1,
-   "hydrogen": 42,
+   "hydrogen": 9,
    "strange-matter": 1,
    "deuterium": 1,
    "particle-container": 1,
@@ -1986,7 +1986,7 @@
    "sulfuric-acid": 7,
    "water": 4,
    "stone": 8,
-   "hydrogen": 1028
+   "hydrogen": 38
   },
   "surplus": {},
   "proliferator": {}
@@ -2031,7 +2031,7 @@
   "glass": 4,
   "water": 4,
   "stone": 8,
-  "hydrogen": 1028,
+  "hydrogen": 38,
   "strange-matter": 1,
   "deuterium": 10,
   "particle-container": 2,

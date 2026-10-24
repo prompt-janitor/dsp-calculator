@@ -37,12 +37,6 @@ const DEFAULT_PICK = {
 
 export function initEngine(data) {
   DATA = data;
-  // The source data lists deuterium fractionation as 0.01 : 0.01, which hides the 1% chance.
-  // In game, each hydrogen has a 1% chance to become deuterium and a fractionator handles one belt of hydrogen.
-  // Source: dsp-wiki.com/Fractionator
-  for (const recipe of data.recipes) {
-    if (recipe.id === 'deuterium-fractionation') { recipe.in = { 'hydrogen': 1 }; recipe.out = { 'deuterium': 0.01 }; recipe.time = 1; }
-  }
   for (const id of data.excluded) EXCLUDED[id] = 1;
   // FactorioLab's defaults exclude fire ice veins. Allow them, so fire ice comes from its vein by default.
   delete EXCLUDED['fire-ice-vein'];

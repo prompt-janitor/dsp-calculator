@@ -405,12 +405,12 @@
    "machine": "orbital-collector",
    "machineData": "orbital-collector",
    "spray": null,
-   "runs": 52.708333333333336,
+   "runs": 1.1458333333333335,
    "kind": "source",
-   "machineCount": 95.83333333333333,
-   "built": 96,
+   "machineCount": 2.0833333333333335,
+   "built": 3,
    "outRate": {
-    "hydrogen": 404.8
+    "hydrogen": 8.8
    },
    "inRate": {},
    "power": 0,
@@ -805,7 +805,7 @@
     "deuterium": 4
    },
    "inRate": {
-    "hydrogen": 400
+    "hydrogen": 4
    },
    "power": 10080,
    "powerAvg": 9600
@@ -1258,12 +1258,12 @@
    "from": "hydrogen",
    "to": "deuterium",
    "item": "hydrogen",
-   "flow": 400,
+   "flow": 4,
    "kind": "item",
    "byproduct": false,
    "fluid": false,
-   "belts": 14,
-   "beltFill": 0.9523809523809523
+   "belts": 1,
+   "beltFill": 0.13333333333333333
   },
   {
    "from": "titanium-crystal",
@@ -1570,7 +1570,7 @@
    "plane-smelter": 62,
    "mining-machine": 29,
    "water-pump": 14,
-   "orbital-collector": 96,
+   "orbital-collector": 3,
    "chemical-plant": 33,
    "fractionator": 14
   },
@@ -1579,11 +1579,11 @@
    "plane-smelter": 57.1,
    "mining-machine": 25.525000000000002,
    "water-pump": 13.080000000000002,
-   "orbital-collector": 95.83333333333333,
+   "orbital-collector": 2.0833333333333335,
    "chemical-plant": 32.5,
    "fractionator": 13.333333333333334
   },
-  "belts": 77,
+  "belts": 64,
   "beltsByItem": {
    "deuteron-fuel-rod": 1,
    "dyson-sphere-component": 2,
@@ -1605,7 +1605,7 @@
    "titanium-ore": 1,
    "stone": 1,
    "graphene": 3,
-   "hydrogen": 15,
+   "hydrogen": 2,
    "titanium-crystal": 1,
    "organic-crystal": 1,
    "energetic-graphite": 2,
@@ -1634,7 +1634,7 @@
    "titanium-ore": 14.600000000000001,
    "stone": 11.200000000000001,
    "organic-crystal": 0.4,
-   "hydrogen": 404.8,
+   "hydrogen": 8.8,
    "sulfuric-acid": 10.100000000000001,
    "coal": 38.2
   },
@@ -1666,7 +1666,7 @@
   "titanium-ore": 14.600000000000001,
   "stone": 11.200000000000001,
   "graphene": 12.600000000000001,
-  "hydrogen": 404.8,
+  "hydrogen": 8.8,
   "titanium-crystal": 0.4,
   "organic-crystal": 0.4,
   "energetic-graphite": 19.1,

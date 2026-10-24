@@ -16,7 +16,7 @@
     "deuterium": 1
    },
    "inRate": {
-    "hydrogen": 100
+    "hydrogen": 1
    },
    "power": 2880,
    "powerAvg": 2400
@@ -27,12 +27,12 @@
    "machine": "orbital-collector",
    "machineData": "orbital-collector",
    "spray": null,
-   "runs": 13.020833333333334,
+   "runs": 0.13020833333333334,
    "kind": "source",
-   "machineCount": 23.674242424242422,
-   "built": 24,
+   "machineCount": 0.23674242424242423,
+   "built": 1,
    "outRate": {
-    "hydrogen": 100
+    "hydrogen": 1
    },
    "inRate": {},
    "power": 0,
@@ -50,12 +50,12 @@
    "from": "hydrogen",
    "to": "deuterium",
    "item": "hydrogen",
-   "flow": 100,
+   "flow": 1,
    "kind": "item",
    "byproduct": false,
    "fluid": false,
-   "belts": 4,
-   "beltFill": 0.8333333333333334
+   "belts": 1,
+   "beltFill": 0.03333333333333333
   },
   {
    "from": "deuterium",
@@ -73,26 +73,26 @@
   "power": 2880,
   "built": {
    "fractionator": 4,
-   "orbital-collector": 24
+   "orbital-collector": 1
   },
   "machineCount": {
    "fractionator": 3.3333333333333335,
-   "orbital-collector": 23.674242424242422
+   "orbital-collector": 0.23674242424242423
   },
-  "belts": 5,
+  "belts": 2,
   "beltsByItem": {
-   "hydrogen": 4,
+   "hydrogen": 1,
    "deuterium": 1
   },
   "raw": {
-   "hydrogen": 100
+   "hydrogen": 1
   },
   "surplus": {},
   "proliferator": {}
  },
  "demand": {
   "deuterium": 1,
-  "hydrogen": 100
+  "hydrogen": 1
  },
  "supply": {},
  "beltCapacity": 30,

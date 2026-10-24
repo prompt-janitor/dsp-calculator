@@ -341,7 +341,7 @@
     "deuterium": 5
    },
    "inRate": {
-    "hydrogen": 500
+    "hydrogen": 5
    },
    "power": 12240,
    "powerAvg": 12000
@@ -352,12 +352,12 @@
    "machine": "orbital-collector",
    "machineData": "orbital-collector",
    "spray": null,
-   "runs": 65.10416666666667,
+   "runs": 0.6510416666666667,
    "kind": "source",
-   "machineCount": 118.37121212121212,
-   "built": 119,
+   "machineCount": 1.1837121212121213,
+   "built": 2,
    "outRate": {
-    "hydrogen": 500
+    "hydrogen": 5
    },
    "inRate": {},
    "power": 0,
@@ -658,12 +658,12 @@
    "from": "hydrogen",
    "to": "deuterium",
    "item": "hydrogen",
-   "flow": 500,
+   "flow": 5,
    "kind": "item",
    "byproduct": false,
    "fluid": false,
-   "belts": 17,
-   "beltFill": 0.9803921568627451
+   "belts": 1,
+   "beltFill": 0.16666666666666666
   },
   {
    "from": "space-warper",
@@ -687,7 +687,7 @@
    "plane-smelter": 23,
    "mining-machine": 11,
    "fractionator": 17,
-   "orbital-collector": 119
+   "orbital-collector": 2
   },
   "machineCount": {
    "assembling-machine-3": 21.333333333333332,
@@ -697,9 +697,9 @@
    "plane-smelter": 22.5,
    "mining-machine": 9.25,
    "fractionator": 16.666666666666668,
-   "orbital-collector": 118.37121212121212
+   "orbital-collector": 1.1837121212121213
   },
-  "belts": 41,
+  "belts": 25,
   "beltsByItem": {
    "graviton-lens": 1,
    "diamond": 1,
@@ -718,7 +718,7 @@
    "iron-ore": 2,
    "copper-ore": 1,
    "gear": 1,
-   "hydrogen": 17,
+   "hydrogen": 1,
    "space-warper": 1
   },
   "raw": {
@@ -726,7 +726,7 @@
    "coal": 10,
    "iron-ore": 21,
    "copper-ore": 6,
-   "hydrogen": 500
+   "hydrogen": 5
   },
   "surplus": {},
   "proliferator": {}
@@ -751,7 +751,7 @@
   "iron-ore": 21,
   "copper-ore": 6,
   "gear": 4,
-  "hydrogen": 500
+  "hydrogen": 5
  },
  "supply": {},
  "beltCapacity": 30,

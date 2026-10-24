@@ -130,21 +130,10 @@ for (const view of VIEWS) {
   });
 }
 
-// Controls that are under 44 px today. The layout work in phase 3 should
-// fix these, and then the matching test.fixme line can go.
-const SMALL_TODAY = {
-  plan: 'Unit switch and remove button are 32 px, steppers 36 px, preset chips 40 px and "See all" 25 px high.',
-  build: 'The Buildings, Steps and Resources switch is 32 px high.',
-  settings: 'Stack, effect and appearance switches are 32 px high and the number steppers 36 px.',
-};
-const WIDE_HEADER = 'The Plan, Settings, Flow map and Build list switches in the wide header are 32 px high.';
-
 for (const view of VIEWS) {
   test(`tap targets are 44 px or larger: ${view}`, async ({ page, hasTouch }) => {
     test.skip(!hasTouch, 'touch devices only');
-    test.fixme(!!SMALL_TODAY[view], SMALL_TODAY[view]);
     await openApp(page);
-    test.fixme(isWide(page), WIDE_HEADER);
     await showView(page, view);
     expect(await smallTargets(page)).toEqual([]);
   });
@@ -180,9 +169,25 @@ test('baseline screenshots', async ({ page }, info) => {
   }
 });
 
-test('wide layout matches the viewport', async ({ page }) => {
+test('layout matches the viewport', async ({ page }) => {
   await openApp(page);
+  const { width, height } = page.viewportSize();
   const tabbar = page.locator('.tabbar');
-  if (isWide(page)) await expect(tabbar).toBeHidden();
-  else await expect(tabbar).toBeVisible();
+  if (await isWide(page)) {
+    expect(width).toBeGreaterThanOrEqual(600);
+    await expect(tabbar).toBeHidden();
+    const side = await page.locator('.side').boundingBox();
+    if (width < 1024) expect(side.width).toBeLessThanOrEqual(340 + 1);
+    else expect(side.width).toBeGreaterThanOrEqual(360);
+    return;
+  }
+  await expect(tabbar).toBeVisible();
+  const bar = await tabbar.boundingBox();
+  if (width > height) {
+    // Phones in landscape get the tab bar down the left side.
+    expect(bar.x).toBe(0);
+    expect(bar.height).toBe(height);
+  } else {
+    expect(bar.y + bar.height).toBe(height);
+  }
 });

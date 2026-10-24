@@ -1,5 +1,5 @@
 /* ---------- Sheets: open, close, focus and drag to close ---------- */
-import { $, $$, isWide } from './core.js';
+import { $, $$ } from './core.js';
 
 const FOCUSABLE = 'button, input, select, textarea, [href], [tabindex]:not([tabindex="-1"])';
 const openers = {};
@@ -91,11 +91,14 @@ function trapFocus(e) {
   }
 }
 
-// On phones a sheet can be dragged down to close it.
+// CSS sets --drag to 0 on sheets that are cards or dialogs and not bottom sheets.
+const canDrag = (sheet) => getComputedStyle(sheet).getPropertyValue('--drag').trim() !== '0';
+
+// A bottom sheet can be dragged down to close it.
 function attachDrag(handle, sheet, onClose) {
   let startY = null, dragY = 0, startTime = 0, pointer = null;
   handle.addEventListener('pointerdown', (e) => {
-    if (isWide() || e.target.closest('button, input, select, textarea, .chips')) return;
+    if (!canDrag(sheet) || e.target.closest('button, input, select, textarea, .chips')) return;
     startY = e.clientY; dragY = 0; startTime = Date.now(); pointer = e.pointerId;
     sheet.classList.add('dragging');
     handle.setPointerCapture(pointer);

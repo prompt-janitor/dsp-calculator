@@ -1,6 +1,7 @@
 /* ---------- Shared constants and helpers ---------- */
 import { DATA, ITEMS, formatNumber } from './engine.js';
 import { state } from './store.js';
+import { SPLIT, FULL, MOUSE } from './breakpoints.js';
 
 export const $ = (selector, root = document) => root.querySelector(selector);
 export const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
@@ -85,7 +86,9 @@ export function optionTag(value, label, current) {
   return `<option value="${esc(value)}"${value === current ? ' selected' : ''}>${esc(label)}</option>`;
 }
 
-export const isWide = () => window.matchMedia('(min-width: 900px)').matches;
+export const isWide = () => window.matchMedia(SPLIT).matches;
+export const isFull = () => window.matchMedia(FULL).matches;
+export const hasMouse = () => window.matchMedia(MOUSE).matches;
 export function inFrame() {
   // Reading window.top throws in a cross-origin frame.
   try { return window.self !== window.top; } catch (e) { return true; }

@@ -1,5 +1,10 @@
-/* Layout concept: compact = one pane at a time with an iOS-style tab bar and bottom sheets (iPhone portrait);
-   regular (>= 900px) = split view with a plan/settings sidebar beside a full-height flow map (iPad landscape). */
+/* Layouts (the same values are in src/js/breakpoints.js):
+   - phone: one pane at a time, a tab bar and bottom sheets. Under 600 px wide,
+     and phones in landscape, where the tab bar moves to the left side.
+   - split: a Plan or Settings sidebar next to the map or build list, from 600 px
+     wide and 500 px high. Under 1024 px the sidebar is narrower and the step
+     details open as a sheet at the bottom of the map. From 1440 px the step
+     details get their own column. */
 :root {
   --bg: #0a1117;
   --bg-blur: rgba(10, 17, 23, .82);
@@ -83,6 +88,8 @@ button { cursor: pointer; -webkit-user-select: none; user-select: none; }
 .pane { flex: 1; min-height: 0; display: flex; flex-direction: column; position: relative; }
 .pane-body { flex: 1; min-height: 0; overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain;
   padding: 4px 0 calc(var(--tab-h) + var(--sab) + 24px); }
+/* A phone in landscape is wide, so keep lists to a readable width. */
+.pane-body { padding-left: max(0px, calc((100% - 720px) / 2)); padding-right: max(0px, calc((100% - 720px) / 2)); }
 .wide-head { display: none; }
 
 /* compact: one pane visible */
@@ -256,18 +263,23 @@ button.row:active { background: var(--panel2); }
 .mapbar .title b { font: 600 15px/1.15 var(--f-display); letter-spacing: .04em; text-transform: uppercase; }
 .mapbar .title small { font: 12px/1.2 var(--f-mono); color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .mapbar .sp { flex: 1; }
-.mapbar .btn.round, .zoombar .btn.round { background: var(--bg-blur); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); border: 1px solid var(--sep); box-shadow: var(--shadow); }
+.mapbar .btn.round, .zoombar .btn.round, .edgefade .btn.round { background: var(--bg-blur); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); border: 1px solid var(--sep); box-shadow: var(--shadow); }
 .zoombar { position: absolute; z-index: 4; right: max(12px, var(--sar)); bottom: calc(var(--tab-h) + var(--sab) + 14px); display: flex; flex-direction: column; gap: 8px; }
 .layers { position: absolute; z-index: 5; right: max(12px, var(--sar)); top: calc(var(--sat) + 62px); width: 250px; padding: 6px 0; border-radius: 14px; }
 .legend { display: flex; flex-wrap: wrap; gap: 6px 12px; padding: 10px 14px 6px; border-top: 1px solid var(--sep); font-size: 12.5px; color: var(--muted); }
 .legend i { display: inline-block; width: 9px; height: 9px; border-radius: 2px; margin-right: 5px; }
+/* Shown on phones while part of the map is off the left edge. */
+.edgefade { position: absolute; z-index: 3; left: 0; top: 0; bottom: 0; width: 64px; display: flex; align-items: center; padding-left: max(8px, var(--sal));
+  background: linear-gradient(to right, var(--bg) 20%, transparent); pointer-events: none; }
+.edgefade .btn { pointer-events: auto; }
+.svgi.flip { transform: scaleX(-1); }
 .empty { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; color: var(--muted); padding: 24px; }
 .empty b { display: block; font: 600 18px var(--f-display); letter-spacing: .05em; text-transform: uppercase; color: var(--fg); margin-bottom: 6px; }
 
 /* ---------- sheets ---------- */
 .scrim { position: fixed; inset: 0; background: var(--scrim); z-index: 40; opacity: 0; transition: opacity .25s; }
 .scrim.on { opacity: 1; }
-.sheet { position: fixed; z-index: 41; left: 0; right: 0; bottom: 0; background: var(--panel); border-radius: 16px 16px 0 0; box-shadow: var(--shadow);
+.sheet { --drag: 1; position: fixed; z-index: 41; left: 0; right: 0; bottom: 0; background: var(--panel); border-radius: 16px 16px 0 0; box-shadow: var(--shadow);
   max-height: calc(100% - var(--sat) - 24px); display: flex; flex-direction: column; transform: translateY(105%); transition: transform .32s cubic-bezier(.2, .8, .2, 1);
   padding-left: var(--sal); padding-right: var(--sar); }
 .sheet.on { transform: none; }
@@ -310,7 +322,6 @@ button.row:active { background: var(--panel2); }
 .ibtn .t { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-height: 2.4em; }
 .grp { font: 600 12px var(--f-display); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin: 14px 4px 6px; }
 textarea { width: 100%; min-height: 240px; border-radius: 12px; border: 1px solid var(--line); background: var(--bg); padding: 12px; font: 16px/1.45 var(--f-mono); resize: vertical; }
-@media (min-width: 900px) { textarea { font-size: 13px; } }
 .sh-actions { display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
 .sh-actions .btn { flex: 1; min-height: 48px; }
 
@@ -324,48 +335,114 @@ textarea { width: 100%; min-height: 240px; border-radius: 12px; border: 1px soli
 .segbar { padding: 6px max(16px, var(--sar)) 8px max(16px, var(--sal)); background: var(--bg-blur); }
 .warnbox { margin: 12px max(16px, var(--sar)) 0 max(16px, var(--sal)); padding: 12px 14px; border-radius: 14px; border: 1px solid var(--bad); color: var(--bad); font-size: 14px; }
 
-/* ================= Regular width: iPad landscape and desktop ================= */
-@media (min-width: 900px) {
-  :root { --tab-h: 0px; }
+/* ================= Touch: 44 px tap targets ================= */
+@media (pointer: coarse) {
+  .btn { min-height: 44px; }
+  .btn.round.small { width: 44px; height: 44px; min-height: 44px; }
+  .seg button { min-height: 44px; min-width: 44px; }
+  .chip, .picker .chip { min-height: 44px; }
+  .target .del { width: 44px; height: 44px; margin: -12px -12px -12px 0; border-radius: 22px; }
+  .stepper button { width: 44px; height: 44px; }
+  .stepper input { height: 44px; }
+  .gtitle .act { min-height: 48px; padding: 0 6px; margin: -14px -6px; }
+  .picker .search input { height: 44px; }
+}
+
+/* ================= Phone in landscape: tab bar on the left ================= */
+@media (orientation: landscape) and (max-height: 499px) {
+  :root { --tab-h: 0px; --rail-w: 76px; }
+  /* The rail takes the left safe area, so the panes start after it. */
+  .side, .main { --sal: 0px; }
+  .app { padding-left: calc(var(--rail-w) + var(--sal)); }
+  .tabbar { top: 0; right: auto; width: calc(var(--rail-w) + var(--sal)); grid-template-columns: none; align-content: center; gap: 6px;
+    padding: var(--sat) 6px var(--sab) calc(var(--sal) + 6px); border-top: 0; border-right: 1px solid var(--sep); }
+  .tabbar button { min-height: 56px; }
+  .phone-head { padding-top: calc(var(--sat) + 8px); }
+  .phone-head h1 { font-size: 22px; }
+  .stats { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .pane-body { padding-bottom: calc(var(--sab) + 24px); }
+  .mapbar { top: calc(var(--sat) + 8px); }
+  /* The rail already says this is the map, and the title would cover nodes. */
+  .mapbar .title { display: none; }
+  .layers { top: calc(var(--sat) + 60px); max-height: calc(100% - var(--sat) - 70px); overflow-y: auto; }
+  .zoombar { flex-direction: row; bottom: calc(var(--sab) + 10px); }
+  .sheet.inspector { left: auto; top: 0; bottom: 0; width: min(360px, 46vw); max-height: none; padding-left: 0; border-radius: 16px 0 0 16px;
+    border-bottom: 0; transform: translateX(105%); --drag: 0; }
+  .sheet.inspector.on { transform: none; }
+  .sheet.inspector .grab::before { display: none; }
+  .sheet.inspector .grab { padding-top: 14px; cursor: default; }
+  .sheet.inspector .sh-body { padding-bottom: calc(var(--sab) + 18px); }
+  .sheet.picker, .sheet.export { left: calc(var(--rail-w) + var(--sal)); padding-left: 0; }
+  .picker { height: calc(100% - var(--sat) - 8px); }
+  .toast { left: calc(50% + var(--rail-w) / 2); bottom: calc(var(--sab) + 12px); }
+}
+
+/* ================= Split view: 600 px wide and up ================= */
+@media (min-width: 600px) and (min-height: 500px) {
+  :root { --tab-h: 0px; --side-w: clamp(272px, 36vw, 340px); }
   .app { flex-direction: row; }
   .tabbar, .phone-head, .segbar, .glance { display: none !important; }
   .app .side, .app .main { display: flex !important; }
-  .side { flex: none; width: 360px; border-right: 1px solid var(--sep); background: var(--bg); padding-left: var(--sal); }
-  .main { padding-right: var(--sar); }
+  .side { flex: none; width: calc(var(--side-w) + var(--sal)); border-right: 1px solid var(--sep); background: var(--bg); padding-left: var(--sal); }
+  .main { padding-right: var(--sar); min-width: 0; }
   .app[data-side="plan"] #pane-settings, .app[data-side="settings"] #pane-plan { display: none !important; }
   .app[data-side="plan"] #pane-plan, .app[data-side="settings"] #pane-settings { display: flex !important; }
   .app[data-main="map"] #pane-build, .app[data-main="build"] #pane-map { display: none !important; }
   .app[data-main="map"] #pane-map, .app[data-main="build"] #pane-build { display: flex !important; }
-  .wide-head { display: flex; align-items: center; gap: 12px; padding: calc(var(--sat) + 12px) 16px 12px; border-bottom: 1px solid var(--sep); min-height: 64px; }
+  .wide-head { display: flex; align-items: center; gap: 12px; padding: calc(var(--sat) + 10px) 16px 10px; border-bottom: 1px solid var(--sep); min-height: 64px; }
   .brand { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; }
   .brand svg { width: 30px; height: 30px; flex: none; }
-  .brand b { font: 600 15px/1.1 var(--f-display); letter-spacing: .06em; text-transform: uppercase; white-space: nowrap; }
-  .main-head .mini { flex: 1; font: 13px var(--f-mono); color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: center; }
-  .pane-body { padding-bottom: 28px; }
+  .brand b { font: 600 15px/1.1 var(--f-display); letter-spacing: .06em; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .main-head .mini { flex: 1; min-width: 0; font: 13px var(--f-mono); color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: center; }
+  .pane-body { padding-bottom: calc(var(--sab) + 28px); }
   .side .gtitle { margin-left: 32px; margin-right: 32px; }
+  /* The sidebar is too narrow to scroll the presets sideways without hiding some. */
+  .side .chips { flex-wrap: wrap; overflow: visible; }
   .mapbar { top: 12px; }
-  .mapbar .sp { display: none; }
-  .layers { left: 16px; right: auto; }
-  .zoombar { left: 16px; right: auto; }
-  .mapbar .title { display: none; }
-  .layers { top: 64px; }
-  .zoombar { bottom: 16px; }
-  .toast { left: calc(50% + 180px); }
+  .mapbar .sp, .mapbar .title { display: none; }
+  .layers { left: 16px; right: auto; top: 64px; }
+  .zoombar { left: 16px; right: auto; bottom: calc(var(--sab) + 16px); }
+  .toast { left: calc(50% + var(--side-w) / 2); bottom: calc(var(--sab) + 24px); }
   .bsec { display: block !important; }
-  #buildBody { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); align-content: start; gap: 0 4px; padding: 0 8px 28px; }
+  #buildBody { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); align-content: start; gap: 0 4px; padding: 0 8px calc(var(--sab) + 28px); }
   #buildBody > .warnbox { grid-column: 1 / -1; }
-  .sheet.inspector { left: auto; right: max(16px, var(--sar)); top: calc(var(--sat) + 80px); bottom: auto; width: 360px; max-height: calc(100% - var(--sat) - 96px); height: auto; border-radius: 16px; border: 1px solid var(--sep);
-    transform: translateX(calc(100% + 40px)); }
+  textarea { font-size: 13px; }
+  .sheet.picker, .sheet.export { left: 50%; top: 50%; bottom: auto; width: min(760px, calc(100% - 64px)); height: min(720px, calc(100% - 64px)); border-radius: 18px;
+    transform: translate(-50%, -45%); opacity: 0; transition: transform .25s, opacity .2s; pointer-events: none; --drag: 0; }
+  .sheet.picker.on, .sheet.export.on { transform: translate(-50%, -50%); opacity: 1; pointer-events: auto; }
+  .sheet.picker .grab::before, .sheet.export .grab::before { display: none; }
+  .sheet.picker .grab, .sheet.export .grab { padding-top: 16px; cursor: default; }
+  .igrid { grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); }
+}
+
+/* Narrow split view (iPad in portrait): step details as a sheet under the map. */
+@media (min-width: 600px) and (max-width: 1023px) and (min-height: 500px) {
+  .brand b { display: none; }
+  .side .stat b { font-size: 18px; }
+  /* The sidebar is too narrow for the rate field next to the item icon. */
+  .target .pick { grid-row: auto; }
+  .target .stepper { grid-column: 1 / -1; }
+  .sheet.inspector { left: calc(var(--side-w) + var(--sal)); max-height: 50%; padding-left: 0; }
+  .sheet.inspector .sh-body { padding-bottom: calc(var(--sab) + 18px); }
+}
+
+/* Full split view (iPad in landscape, desktop): step details as a floating card. */
+@media (min-width: 1024px) and (min-height: 500px) {
+  :root { --side-w: 360px; }
+  .sheet.inspector { left: auto; right: max(16px, var(--sar)); top: calc(var(--sat) + 80px); bottom: auto; width: 360px; max-height: calc(100% - var(--sat) - 96px);
+    height: auto; border-radius: 16px; border: 1px solid var(--sep); transform: translateX(calc(100% + 40px)); --drag: 0; }
   .sheet.inspector.on { transform: none; }
   .sheet.inspector .grab::before { display: none; }
   .sheet.inspector .grab { cursor: default; padding-top: 14px; }
-  .sheet.picker, .sheet.export { left: 50%; top: 50%; bottom: auto; width: min(760px, calc(100% - 64px)); height: min(720px, calc(100% - 64px)); border-radius: 18px;
-    transform: translate(-50%, -45%); opacity: 0; transition: transform .25s, opacity .2s; pointer-events: none; }
-  .sheet.picker.on, .sheet.export.on { transform: translate(-50%, -50%); opacity: 1; pointer-events: auto; }
-  .sheet.picker .grab::before, .sheet.export .grab::before { display: none; }
-  .sheet.picker .grab, .sheet.export .grab { padding-top: 16px; }
-  .igrid { grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); }
-  .toast { bottom: 24px; }
 }
-@media (min-width: 1280px) { .side { width: 380px; } }
+@media (min-width: 1280px) and (min-height: 500px) { :root { --side-w: 380px; } }
+
+/* Large screens: build list columns stop growing, and step details get a column. */
+@media (min-width: 1440px) and (min-height: 500px) {
+  :root { --insp-w: 380px; }
+  #buildBody { grid-template-columns: repeat(auto-fill, minmax(340px, 440px)); }
+  .sheet.inspector { top: calc(var(--sat) + 65px); right: 0; bottom: 0; width: calc(var(--insp-w) + var(--sar)); max-height: none; padding-right: var(--sar);
+    border: 0; border-left: 1px solid var(--sep); border-radius: 0; box-shadow: none; }
+  body:has(#inspector[data-open]) .app[data-main="map"] .vpwrap { margin-right: var(--insp-w); }
+}
 @media (prefers-reduced-motion: reduce) { .sheet, .scrim, .stage.anim, .switch, .switch::after { transition: none !important; } }

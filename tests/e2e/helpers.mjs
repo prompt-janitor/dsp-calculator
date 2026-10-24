@@ -1,7 +1,10 @@
 import { expect } from '@playwright/test';
+import { SPLIT, FULL } from '../../src/js/breakpoints.js';
 
-// Same breakpoint as the @media (min-width: 900px) rules in app.css.
-export const isWide = (page) => page.viewportSize().width >= 900;
+// True when the page shows the split view, the same test the app uses.
+export const isWide = (page) => page.evaluate((query) => matchMedia(query).matches, SPLIT);
+// True when the page shows the full split view (1024 px and up).
+export const isFull = (page) => page.evaluate((query) => matchMedia(query).matches, FULL);
 
 // Opens the app with a clean state and waits for the first plan to render.
 export async function openApp(page) {
@@ -16,7 +19,7 @@ export async function openApp(page) {
 // Shows one of the four views. Compact layouts use the tab bar, wide
 // layouts use the sidebar switch (plan, settings) and the main switch (map, build).
 export async function showView(page, view) {
-  if (!isWide(page)) await page.locator(`.tabbar [data-tab="${view}"]`).click();
+  if (!(await isWide(page))) await page.locator(`.tabbar [data-tab="${view}"]`).click();
   else if (view === 'plan' || view === 'settings') await page.locator(`.wide-head [data-side="${view}"]`).click();
   else await page.locator(`.wide-head [data-main="${view}"]`).click();
   const pane = { plan: '#pane-plan', map: '#pane-map', build: '#pane-build', settings: '#pane-settings' }[view];

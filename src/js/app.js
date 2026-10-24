@@ -4,7 +4,7 @@ import { initEngine, solve, defaultRecipeFor, fmt, fmtPower, RECIPES, CANDS, EXC
 import { $, $$, esc, svg, ic, itemIc, machIc, itemName, machName, machShort, rateStr, ul, opt, isWide, inFrame, isStandalone, isIOS, buildCfg,
   CLASS_ORDER, CLASS_LABEL, TIER_LABEL, ROMAN, PRESETS } from './core.js';
 import { state, ui, defaultState, mergeState, loadState, replaceState, update, render, onRender } from './store.js';
-import { NW, nodeColor, renderMap, applyView, fitView, zoomAt, applySelection } from './map.js';
+import { NODE_WIDTH as NW, nodeColor, renderMap, applyView, fitView, zoomAt, applySelection } from './map-view.js';
 
 /* ---------- navigation ---------- */
 function setTab(t) {

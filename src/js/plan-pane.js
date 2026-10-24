@@ -127,6 +127,12 @@ function loadPreset(id) {
   toast('Loaded ' + preset.name.toLowerCase());
 }
 
+// Opens the item picker and adds the chosen item as a new target.
+export function addTarget(focusSearch = false) {
+  const add = (item) => update((draft) => { draft.targets.push({ item, rate: draft.unit === 'min' ? 60 : 1 }); }, 'plan', 'solve');
+  openPicker(add, focusSearch);
+}
+
 function onClick(e) {
   const button = e.target.closest('button');
   if (!button) return;
@@ -136,9 +142,7 @@ function onClick(e) {
   else if (pick) openPicker((item) => update((draft) => { draft.targets[+pick].item = item; }, 'plan', 'solve'));
   else if (tstep) stepRate(+tstep, +dir);
   else if (preset) loadPreset(preset);
-  else if (button.id === 'addTarget') {
-    openPicker((item) => update((draft) => { draft.targets.push({ item, rate: draft.unit === 'min' ? 60 : 1 }); }, 'plan', 'solve'));
-  }
+  else if (button.id === 'addTarget') addTarget();
 }
 
 // Typing a rate solves after a short pause and leaves the field as typed.

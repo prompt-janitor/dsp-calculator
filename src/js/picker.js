@@ -13,8 +13,9 @@ function groupOf(item) {
   return item.cat === 'buildings' ? 'buildings' : 'components';
 }
 
-// onPick gets the id of the item the user chose.
-export function openPicker(onPick) {
+// onPick gets the id of the item the user chose. focusSearch: put the cursor in
+// the search field even on a phone, for the / shortcut.
+export function openPicker(onPick, focusSearch = false) {
   ui.picker.onPick = onPick;
   ui.picker.cat = 'all';
   const search = $('#pickSearch');
@@ -22,7 +23,7 @@ export function openPicker(onPick) {
   renderCategories();
   renderGrid();
   // On phones focus goes to the sheet, so the keyboard does not cover the list.
-  openSheet('picker', { modal: true, focus: isWide() ? search : null });
+  openSheet('picker', { modal: true, focus: isWide() || focusSearch ? search : null });
 }
 
 // Sets the pressed chip in place, so keyboard focus stays on it.

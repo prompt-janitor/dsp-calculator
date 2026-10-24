@@ -17,17 +17,28 @@ export function defaultState() {
   };
 }
 
-export function mergeState(d, s) {
-  if (!s || typeof s !== 'object') return d;
-  if (Array.isArray(s.targets)) d.targets = s.targets.filter(function (t) { return t && ITEMS[t.item] && isFinite(+t.rate); }).map(function (t) { return { item: t.item, rate: +t.rate }; });
-  if (s.unit === 's' || s.unit === 'min') d.unit = s.unit;
-  ['machines', 'prolif', 'mining', 'opts'].forEach(function (k) { if (s[k] && typeof s[k] === 'object') for (var x in s[k]) d[k][x] = s[k][x]; });
-  if (BELTS[s.belt]) d.belt = s.belt;
-  if (s.stack >= 1 && s.stack <= 4) d.stack = +s.stack;
-  if (s.overrides && typeof s.overrides === 'object') d.overrides = s.overrides;
-  ['tab', 'side', 'main', 'bsec'].forEach(function (k) { if (typeof s[k] === 'string') d[k] = s[k]; });
-  if (['plan', 'map', 'build', 'settings'].indexOf(d.tab) < 0) d.tab = 'plan';
-  return d;
+const TABS = ['plan', 'map', 'build', 'settings'];
+
+// Copies the valid parts of a saved or pasted state onto a fresh default one.
+export function mergeState(base, saved) {
+  if (!saved || typeof saved !== 'object') return base;
+  if (Array.isArray(saved.targets)) {
+    base.targets = saved.targets
+      .filter((t) => t && ITEMS[t.item] && isFinite(+t.rate))
+      .map((t) => ({ item: t.item, rate: +t.rate }));
+  }
+  if (saved.unit === 's' || saved.unit === 'min') base.unit = saved.unit;
+  for (const key of ['machines', 'prolif', 'mining', 'opts']) {
+    if (saved[key] && typeof saved[key] === 'object') Object.assign(base[key], saved[key]);
+  }
+  if (BELTS[saved.belt]) base.belt = saved.belt;
+  if (saved.stack >= 1 && saved.stack <= 4) base.stack = +saved.stack;
+  if (saved.overrides && typeof saved.overrides === 'object') base.overrides = saved.overrides;
+  for (const key of ['tab', 'side', 'main', 'bsec']) {
+    if (typeof saved[key] === 'string') base[key] = saved[key];
+  }
+  if (!TABS.includes(base.tab)) base.tab = 'plan';
+  return base;
 }
 
 // What the user chose. It is saved to localStorage, and a plan code is this
@@ -49,10 +60,13 @@ export const ui = {
 };
 
 export function loadState() {
-  var d = defaultState();
+  let loaded = defaultState();
   // localStorage throws in some private modes and when storage is blocked.
-  try { var raw = localStorage.getItem(STORE_KEY); if (raw) d = mergeState(d, JSON.parse(raw)); } catch (e) { }
-  state = d;
+  try {
+    const raw = localStorage.getItem(STORE_KEY);
+    if (raw) loaded = mergeState(loaded, JSON.parse(raw));
+  } catch (e) { }
+  state = loaded;
 }
 
 export function saveState() {
@@ -87,7 +101,11 @@ export function render(...parts) {
     ui.solveTimer = setTimeout(() => render('solve'), 160);
   }
   if (parts.includes('solve')) clearTimeout(ui.solveTimer);
-  for (const p of PARTS) if (parts.includes(p)) renderers[p]();
+  for (const part of PARTS) if (parts.includes(part)) renderers[part]();
+}
+
+export function renderAll() {
+  render(...PARTS);
 }
 
 // Changes the saved choices, saves them and draws the given parts again.

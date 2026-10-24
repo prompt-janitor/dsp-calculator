@@ -2,21 +2,33 @@
 import { DATA, ITEMS, fmt } from './engine.js';
 import { state } from './store.js';
 
-export function $(s, r) { return (r || document).querySelector(s); }
-export function $$(s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); }
-export function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
-export function svg(id, s) { return '<svg class="svgi"' + (s ? ' style="width:' + s + 'px;height:' + s + 'px"' : '') + ' aria-hidden="true"><use href="#' + id + '"/></svg>'; }
+export const $ = (selector, root = document) => root.querySelector(selector);
+export const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 
-export const CLASS_ORDER = { smelter: ['arc-smelter', 'plane-smelter', 'df-negentropy-smelter'],
+const ESCAPES = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' };
+// Every piece of text that goes into HTML passes through here.
+export const esc = (text) => String(text).replace(/[&<>"]/g, (c) => ESCAPES[c]);
+
+export function svg(id, size, cls = '') {
+  const style = size ? ` style="width:${size}px;height:${size}px"` : '';
+  return `<svg class="svgi${cls ? ' ' + cls : ''}"${style} aria-hidden="true"><use href="#${id}"/></svg>`;
+}
+
+export const CLASS_ORDER = {
+  smelter: ['arc-smelter', 'plane-smelter', 'df-negentropy-smelter'],
   assembler: ['assembling-machine-1', 'assembling-machine-2', 'assembling-machine-3', 'df-recomposing-assembler'],
-  chem: ['chemical-plant', 'quantum-chemical-plant'], lab: ['matrix-lab', 'df-self-evolution-lab'],
-  miner: ['mining-machine', 'advanced-mining-machine'] };
+  chem: ['chemical-plant', 'quantum-chemical-plant'],
+  lab: ['matrix-lab', 'df-self-evolution-lab'],
+  miner: ['mining-machine', 'advanced-mining-machine']
+};
 export const CLASS_LABEL = { smelter: 'Smelter', assembler: 'Assembler', chem: 'Chemical plant', lab: 'Research lab', miner: 'Mining machine' };
 export const CLASS_COLOR = { smelter: 'var(--c-smelter)', assembler: 'var(--c-assembler)', chem: 'var(--c-chem)', lab: 'var(--c-lab)', miner: 'var(--c-source)' };
-export const TIER_LABEL = { 'arc-smelter': 'Arc', 'plane-smelter': 'Plane', 'df-negentropy-smelter': 'Negentropy',
+export const TIER_LABEL = {
+  'arc-smelter': 'Arc', 'plane-smelter': 'Plane', 'df-negentropy-smelter': 'Negentropy',
   'assembling-machine-1': 'Mk.I', 'assembling-machine-2': 'Mk.II', 'assembling-machine-3': 'Mk.III', 'df-recomposing-assembler': 'Re-composing',
   'chemical-plant': 'Chemical', 'quantum-chemical-plant': 'Quantum', 'matrix-lab': 'Matrix', 'df-self-evolution-lab': 'Self-evolution',
-  'mining-machine': 'Standard', 'advanced-mining-machine': 'Advanced' };
+  'mining-machine': 'Standard', 'advanced-mining-machine': 'Advanced'
+};
 export const ROMAN = ['', 'I', 'II', 'III'];
 export const PRESETS = [
   { id: 'matrices', name: 'All six matrices', items: [['electromagnetic-matrix', 60], ['energy-matrix', 60], ['structure-matrix', 60], ['information-matrix', 60], ['gravity-matrix', 60], ['universe-matrix', 60]] },
@@ -26,33 +38,58 @@ export const PRESETS = [
   { id: 'white', name: 'Universe matrix', items: [['universe-matrix', 60]] }
 ];
 
-/* ---------- helpers ---------- */
-export function ic(key, s) {
-  var p = DATA.icons[key];
-  if (!p) return '<span class="ic0" style="width:' + s + 'px;height:' + s + 'px"></span>';
-  var k = s / 64;
-  return '<span class="ic" style="width:' + s + 'px;height:' + s + 'px;background-size:' + (1472 * k) + 'px ' + (1472 * k) + 'px;background-position:-' + (p[0] * k) + 'px -' + (p[1] * k) + 'px"></span>';
+// The sprite sheet is 1472 px square, with 64 px tiles.
+const SPRITE = 1472, TILE = 64;
+
+export function icon(key, size) {
+  const spot = DATA.icons[key];
+  const box = `width:${size}px;height:${size}px`;
+  if (!spot) return `<span class="ic0" style="${box}"></span>`;
+  const k = size / TILE;
+  return `<span class="ic" style="${box};background-size:${SPRITE * k}px ${SPRITE * k}px;background-position:-${spot[0] * k}px -${spot[1] * k}px"></span>`;
 }
-export function itemIc(id, s) { var it = ITEMS[id]; return ic(it ? it.ic : id, s); }
-export function machIc(id, s) { return ic(ITEMS[id] ? ITEMS[id].ic : id, s); }
-export function itemName(id) { return ITEMS[id] ? ITEMS[id].name : id; }
-export function itemColor(id) { var it = ITEMS[id]; var p = it && DATA.icons[it.ic]; return p ? p[2] : '#7e93a6'; }
-export function machName(id) { return DATA.machines[id] ? DATA.machines[id].name : id; }
-export function machShort(id) { return machName(id).replace('Assembling Machine', 'Assembler').replace('Miniature Particle Collider', 'Particle Collider').replace('Quantum Chemical Plant', 'Quantum Chem. Plant').replace('Advanced Mining Machine', 'Adv. Mining Machine'); }
-export function uf() { return state.unit === 'min' ? 60 : 1; }
-export function ul() { return state.unit === 'min' ? '/min' : '/s'; }
-export function rateStr(perSec) { return fmt(perSec * uf()); }
-export function opt(v, label, cur) { return '<option value="' + esc(v) + '"' + (v === cur ? ' selected' : '') + '>' + esc(label) + '</option>'; }
-export function isWide() { return window.matchMedia('(min-width: 900px)').matches; }
+export const itemIcon = (id, size) => icon(ITEMS[id] ? ITEMS[id].ic : id, size);
+export const machineIcon = itemIcon;
+export const itemName = (id) => (ITEMS[id] ? ITEMS[id].name : id);
+export function itemColor(id) {
+  const item = ITEMS[id];
+  const spot = item && DATA.icons[item.ic];
+  return spot ? spot[2] : '#7e93a6';
+}
+export const machineName = (id) => (DATA.machines[id] ? DATA.machines[id].name : id);
+export function machineShortName(id) {
+  return machineName(id)
+    .replace('Assembling Machine', 'Assembler')
+    .replace('Miniature Particle Collider', 'Particle Collider')
+    .replace('Quantum Chemical Plant', 'Quantum Chem. Plant')
+    .replace('Advanced Mining Machine', 'Adv. Mining Machine');
+}
+
+// Rates are items per second inside the solver. These turn them into the unit the user picked.
+export const unitFactor = () => (state.unit === 'min' ? 60 : 1);
+export const unitLabel = () => (state.unit === 'min' ? '/min' : '/s');
+export const rateStr = (perSec) => fmt(perSec * unitFactor());
+export const count = (n) => n.toLocaleString('en-US');
+
+export function optionTag(value, label, current) {
+  return `<option value="${esc(value)}"${value === current ? ' selected' : ''}>${esc(label)}</option>`;
+}
+
+export const isWide = () => window.matchMedia('(min-width: 900px)').matches;
 export function inFrame() {
   // Reading window.top throws in a cross-origin frame.
   try { return window.self !== window.top; } catch (e) { return true; }
 }
-export function isStandalone() { return !!(navigator.standalone || (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches)); }
-export function isIOS() { return /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1); }
+export const isStandalone = () => !!(navigator.standalone || window.matchMedia('(display-mode: standalone)').matches);
+export const isIOS = () => /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 
-export function buildCfg(s) {
-  var f = s.unit === 'min' ? 60 : 1;
-  return { targets: s.targets.map(function (t) { return { item: t.item, rate: t.rate / f }; }),
-    machines: s.machines, belt: s.belt, stack: s.stack, prolif: s.prolif, mining: s.mining, overrides: s.overrides };
+export function buildCfg(choices) {
+  const factor = choices.unit === 'min' ? 60 : 1;
+  return {
+    targets: choices.targets.map((t) => ({ item: t.item, rate: t.rate / factor })),
+    machines: choices.machines, belt: choices.belt, stack: choices.stack, prolif: choices.prolif, mining: choices.mining, overrides: choices.overrides
+  };
 }
+
+// Old names that the map code still imports. Remove them once it uses the names above.
+export { icon as ic, itemIcon as itemIc, machineIcon as machIc, machineName as machName, machineShortName as machShort, unitFactor as uf, unitLabel as ul, optionTag as opt };

@@ -38,19 +38,19 @@
 @media (prefers-color-scheme: light) {
   :root:not([data-theme="dark"]) {
     --bg: #eef2f5; --bg-blur: rgba(238, 242, 245, .84); --panel: #ffffff; --panel2: #f4f7f9; --raised: #e7edf1;
-    --sep: rgba(40, 70, 90, .12); --line: #d2dde4; --fg: #13202a; --muted: #5a6e7d;
-    --accent: #0a86a1; --accent-ink: #ffffff; --accent-soft: rgba(10, 134, 161, .12); --warm: #b06804; --bad: #c4402f;
+    --sep: rgba(40, 70, 90, .12); --line: #d2dde4; --fg: #13202a; --muted: #55687a;
+    --accent: #06758d; --accent-ink: #ffffff; --accent-soft: rgba(6, 117, 141, .12); --warm: #9a5d00; --bad: #c4402f;
     --grid: rgba(60, 90, 110, .13); --halo: #eef2f5; --scrim: rgba(20, 35, 45, .35);
-    --c-smelter: #c07708; --c-assembler: #0a86a1; --c-chem: #1e8a52; --c-lab: #7853d6; --c-source: #8a6c4c; --c-other: #5d7487;
+    --c-smelter: #9a5d00; --c-assembler: #06758d; --c-chem: #1a7d4a; --c-lab: #7853d6; --c-source: #8a6c4c; --c-other: #5d7487;
     --shadow: 0 10px 30px rgba(20, 40, 60, .18); color-scheme: light;
   }
 }
 :root[data-theme="light"] {
   --bg: #eef2f5; --bg-blur: rgba(238, 242, 245, .84); --panel: #ffffff; --panel2: #f4f7f9; --raised: #e7edf1;
-  --sep: rgba(40, 70, 90, .12); --line: #d2dde4; --fg: #13202a; --muted: #5a6e7d;
-  --accent: #0a86a1; --accent-ink: #ffffff; --accent-soft: rgba(10, 134, 161, .12); --warm: #b06804; --bad: #c4402f;
+  --sep: rgba(40, 70, 90, .12); --line: #d2dde4; --fg: #13202a; --muted: #55687a;
+  --accent: #06758d; --accent-ink: #ffffff; --accent-soft: rgba(6, 117, 141, .12); --warm: #9a5d00; --bad: #c4402f;
   --grid: rgba(60, 90, 110, .13); --halo: #eef2f5; --scrim: rgba(20, 35, 45, .35);
-  --c-smelter: #c07708; --c-assembler: #0a86a1; --c-chem: #1e8a52; --c-lab: #7853d6; --c-source: #8a6c4c; --c-other: #5d7487;
+  --c-smelter: #9a5d00; --c-assembler: #06758d; --c-chem: #1a7d4a; --c-lab: #7853d6; --c-source: #8a6c4c; --c-other: #5d7487;
   --shadow: 0 10px 30px rgba(20, 40, 60, .18); color-scheme: light;
 }
 

@@ -233,6 +233,8 @@ button.row:active { background: var(--panel2); }
 .node .pic { grid-row: 1 / span 2; width: 40px; height: 40px; border-radius: 7px; background: var(--bg); display: grid; place-items: center; margin-top: 2px; }
 .node .t1 { font-weight: 600; font-size: 13.5px; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-right: 4px; }
 .node .t1.hb { padding-right: 58px; }
+.node .txt { min-width: 0; }
+.node.target .t1 { padding: 0; }
 .node .t2 { font: 12px/1.35 var(--f-mono); color: var(--muted); }
 .node .t2 b { color: var(--fg); font-weight: 600; }
 .node .mrow { grid-column: 1 / span 2; display: flex; align-items: center; gap: 7px; margin-top: 4px; padding-top: 5px; border-top: 1px dashed var(--line); font-size: 12px; min-width: 0; }

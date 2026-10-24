@@ -90,6 +90,3 @@ export function buildCfg(choices) {
     machines: choices.machines, belt: choices.belt, stack: choices.stack, prolif: choices.prolif, mining: choices.mining, overrides: choices.overrides
   };
 }
-
-// Old names that the map code still imports. Remove them once it uses the names above.
-export { icon as ic, itemIcon as itemIc, machineIcon as machIc, machineName as machName, machineShortName as machShort, unitFactor as uf, unitLabel as ul, optionTag as opt };

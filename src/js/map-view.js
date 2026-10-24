@@ -1,6 +1,6 @@
 /* ---------- Flow map: render, pan, zoom and selection ---------- */
-import { ITEMS, MACH_CLASS, fmtPower } from './engine.js';
-import { $, $$, esc, ic, itemIc, itemName, itemColor, machShort, rateStr, ul, isWide, CLASS_COLOR, ROMAN } from './core.js';
+import { MACH_CLASS, fmtPower } from './engine.js';
+import { $, $$, esc, machineIcon, itemIcon, itemName, itemColor, machineShortName, rateStr, unitLabel, isWide, CLASS_COLOR, ROMAN } from './core.js';
 import { state, ui } from './store.js';
 import { layoutGraph, NODE_WIDTH } from './layout.js';
 
@@ -23,7 +23,7 @@ export function nodeColor(n) {
 }
 
 /* ---------- nodes ---------- */
-function rateHTML(perSec) { return `<div class="t2"><b>${rateStr(perSec)}</b>${ul()}</div>`; }
+function rateHTML(perSec) { return `<div class="t2"><b>${rateStr(perSec)}</b>${unitLabel()}</div>`; }
 
 function nodeShell({ id, cls, pos, color, body }) {
   const style = `left:${pos.x}px;top:${pos.y}px${color ? `;--nc:${color}` : ''}`;
@@ -32,15 +32,15 @@ function nodeShell({ id, cls, pos, color, body }) {
 
 function targetHTML(id, n, pos) {
   const name = itemName(n.item);
-  const body = `<div class="pic">${itemIc(n.item, 34)}</div>` +
-    `<div style="min-width:0"><div class="tag">Target</div><div class="t1" style="padding:0">${esc(name)}</div>${rateHTML(n.rate)}</div>`;
+  const body = `<div class="pic">${itemIcon(n.item, 34)}</div>` +
+    `<div class="txt"><div class="tag">Target</div><div class="t1">${esc(name)}</div>${rateHTML(n.rate)}</div>`;
   return nodeShell({ id, cls: 'node target', pos, body });
 }
 
 function rawHTML(id, n, pos, sel) {
   const name = itemName(n.item);
-  const body = `<div class="pic">${itemIc(n.item, 34)}</div>` +
-    `<div style="min-width:0"><div class="t1">${esc(name)}</div>${rateHTML(n.rate)}</div>` +
+  const body = `<div class="pic">${itemIcon(n.item, 34)}</div>` +
+    `<div class="txt"><div class="t1">${esc(name)}</div>${rateHTML(n.rate)}</div>` +
     '<div class="mrow"><span class="mn">Supplied from elsewhere</span></div>';
   return nodeShell({ id, cls: 'node raw' + sel, pos, color: 'var(--c-source)', body });
 }
@@ -51,10 +51,10 @@ function sprayBadge(prof) {
 }
 
 function machineRow(n) {
-  const icon = ic(ITEMS[n.machine] ? ITEMS[n.machine].ic : n.machine, 20);
+  const icon = machineIcon(n.machine, 20);
   const power = n.power > 0 ? `<span class="pw">${fmtPower(n.power)}</span>` : '';
   return `<div class="mrow">${icon}<span class="cnt">${n.built ? n.built + '×' : '–'}</span>` +
-    `<span class="mn">${esc(machShort(n.machine))}</span>${power}</div>`;
+    `<span class="mn">${esc(machineShortName(n.machine))}</span>${power}</div>`;
 }
 
 function craftHTML(id, n, pos, sel) {
@@ -62,8 +62,8 @@ function craftHTML(id, n, pos, sel) {
   const made = n.outRate[id] || 0;
   const badge = sprayBadge(n.prof);
   const util = n.built ? n.count / n.built : 0;
-  const body = badge + `<div class="pic">${itemIc(id, 34)}</div>` +
-    `<div style="min-width:0"><div class="t1${badge ? ' hb' : ''}" title="${esc(n.rec.name)}">${esc(name)}</div>${rateHTML(made)}</div>` +
+  const body = badge + `<div class="pic">${itemIcon(id, 34)}</div>` +
+    `<div class="txt"><div class="t1${badge ? ' hb' : ''}" title="${esc(n.rec.name)}">${esc(name)}</div>${rateHTML(made)}</div>` +
     machineRow(n) +
     `<div class="util"><i style="width:${Math.round(util * 100)}%"></i></div>`;
   return nodeShell({ id, cls: 'node' + sel, pos, color: nodeColor(n), body });

@@ -2,7 +2,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { baseCfg } from './lib/load.mjs';
-import { solve, DATA, CANDS } from '../src/js/engine.js';
+import { solve, defaultRecipeFor, DATA, CANDS } from '../src/js/engine.js';
 
 const plan = (targets, patch = {}) => solve(Object.assign(baseCfg(), patch, { targets }));
 const close = (a, b, msg) => assert.ok(Math.abs(a - b) < 1e-6, `${msg}: ${a} != ${b}`);
@@ -40,4 +40,20 @@ test('belt lines count against belt capacity', () => {
   const p = plan([{ item: 'iron-ingot', rate: 61 }], { belt: 'conveyor-belt-3', stack: 1 });
   const e = p.edges.find((x) => x.to === '__target_iron-ingot');
   assert.equal(e.belts, 3);
+});
+
+test('fire ice comes from its vein by default', () => {
+  assert.equal(defaultRecipeFor('fire-ice'), 'fire-ice-vein');
+});
+
+test('orbital collectors use the net rate from Settings', () => {
+  const at55 = plan([{ item: 'hydrogen', rate: 1 }]);
+  const at100 = plan([{ item: 'hydrogen', rate: 1 }], { mining: { speed: 100, veins: 8, oil: 1, orbital: 100 } });
+  close(at55.nodes['hydrogen'].count * 0.55, at100.nodes['hydrogen'].count, 'collectors at 55% and 100%');
+});
+
+test('an item set as external gets no step', () => {
+  const p = plan([{ item: 'iron-ingot', rate: 1 }], { overrides: { 'iron-ore': { external: true } } });
+  assert.equal(p.nodes['iron-ore'].kind, 'raw');
+  close(p.totals.raw['iron-ore'], 1, 'iron ore from outside');
 });

@@ -8,7 +8,8 @@ import { toast } from './toast.js';
 const HINT_KEY = 'dsp-map-hint';
 
 function showMap() {
-  requestAnimationFrame(() => { if (ui.needFit) fitView(); });
+  // Fit now, before the next frame, so the map does not jump after it shows.
+  if (ui.needFit) fitView();
   let seen = false;
   // localStorage throws in some private modes. The hint then shows each time.
   try { seen = localStorage.getItem(HINT_KEY) === '1'; localStorage.setItem(HINT_KEY, '1'); } catch (e) { }

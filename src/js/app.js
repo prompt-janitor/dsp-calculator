@@ -22,7 +22,9 @@ function showMap() {
   mapHint();
 }
 function mapHint() {
-  var seen = false; try { seen = localStorage.getItem('dsp-map-hint') === '1'; localStorage.setItem('dsp-map-hint', '1'); } catch (e) { }
+  var seen = false;
+  // localStorage throws in some private modes. The hint then shows each time.
+  try { seen = localStorage.getItem('dsp-map-hint') === '1'; localStorage.setItem('dsp-map-hint', '1'); } catch (e) { }
   if (!seen) setTimeout(function () { toast('Drag to pan, pinch to zoom. Tap a box for details.'); }, 400);
 }
 function setSide(v) { update(function (s) { s.side = v; if (!isWide()) s.tab = v; }, 'nav'); }
@@ -233,7 +235,7 @@ function attachDrag(handle, sheetId, onClose) {
     if (isWide() || e.target.closest('button, input, select, textarea, .chips')) return;
     y0 = e.clientY; dy = 0; t0 = Date.now(); pid = e.pointerId;
     $('#' + sheetId).classList.add('dragging');
-    try { handle.setPointerCapture(pid); } catch (x) { }
+    handle.setPointerCapture(pid);
   });
   handle.addEventListener('pointermove', function (e) {
     if (y0 === null || e.pointerId !== pid) return;
@@ -366,6 +368,7 @@ function openExport(mode) {
 function copyText(txt) {
   var msg = $('#expMsg');
   var fail = function () { msg.textContent = 'Copy was blocked. Press and hold the text, then choose Select All and Copy.'; var ta = $('#expText'); ta.focus(); ta.select(); };
+  // navigator.clipboard is missing on plain http and in some webviews.
   try { navigator.clipboard.writeText(txt).then(function () { msg.textContent = 'Copied.'; }, fail); } catch (e) { fail(); }
 }
 
@@ -521,11 +524,15 @@ function wire() {
   $$('[data-exp]').forEach(function (b) { b.addEventListener('click', function () { openExport(b.getAttribute('data-exp')); }); });
   $('#expCopy').addEventListener('click', function () { copyText($('#expText').value); });
   $('#expShare').addEventListener('click', function () {
-    try { navigator.share({ title: 'Dyson Sphere plan', text: $('#expText').value }).catch(function () { }); } catch (e) { }
+    navigator.share({ title: 'Dyson Sphere plan', text: $('#expText').value }).catch(function (err) {
+      if (err.name !== 'AbortError') $('#expMsg').textContent = 'Sharing did not work. Use Copy instead.';
+    });
   });
   $('#expLoad').addEventListener('click', function () {
-    try { replaceState(mergeState(defaultState(), JSON.parse($('#expText').value))); renderAll(); closeSheet('export'); toast('Plan loaded'); }
-    catch (err) { $('#expMsg').textContent = 'That code could not be read. Paste a code copied from this app.'; }
+    var saved;
+    try { saved = JSON.parse($('#expText').value); }
+    catch (err) { $('#expMsg').textContent = 'That code could not be read. Paste a code copied from this app.'; return; }
+    replaceState(mergeState(defaultState(), saved)); renderAll(); closeSheet('export'); toast('Plan loaded');
   });
 
   // map controls
@@ -547,7 +554,7 @@ function wire() {
   ['gesturestart', 'gesturechange'].forEach(function (ev) { vp.addEventListener(ev, function (e) { e.preventDefault(); }, { passive: false }); });
   vp.addEventListener('pointerdown', function (e) {
     ptrs[e.pointerId] = { x: e.clientX, y: e.clientY }; moved = 0; downTarget = e.target;
-    try { vp.setPointerCapture(e.pointerId); } catch (x) { }
+    vp.setPointerCapture(e.pointerId);
     vp.classList.add('drag'); $('#layers').hidden = true;
     var ks = Object.keys(ptrs);
     if (ks.length === 2) { var a = ptrs[ks[0]], b = ptrs[ks[1]]; pinch = Math.hypot(a.x - b.x, a.y - b.y); }
@@ -621,6 +628,8 @@ function renderAll() {
 /* ---------- PWA ---------- */
 function registerSW() {
   if (!('serviceWorker' in navigator) || inFrame() || location.protocol === 'file:') return;
+  // Service worker calls can throw or reject in private modes and when
+  // storage is blocked. The app still works then, only without offline use.
   try {
     navigator.serviceWorker.register('sw.js').then(function (reg) {
       reg.addEventListener('updatefound', function () {

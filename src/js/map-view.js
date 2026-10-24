@@ -30,18 +30,17 @@ export function nodeColor(n) {
 /* ---------- nodes ---------- */
 function rateHTML(perSec) { return `<div class="t2"><b>${rateStr(perSec)}</b>${unitLabel()}</div>`; }
 
-// label is the name a screen reader reads for the node.
-function nodeShell({ id, cls, pos, color, label, body }) {
+// A node has no aria-label, so its name is the text people see on it.
+function nodeShell({ id, cls, pos, color, body }) {
   const style = `left:${pos.x}px;top:${pos.y}px${color ? `;--nc:${color}` : ''}`;
-  const attrs = `data-id="${esc(id)}" style="${style}" tabindex="0" role="button" aria-label="${esc(label)}"`;
-  return `<div class="${cls}" ${attrs}>${body}</div>`;
+  return `<div class="${cls}" data-id="${esc(id)}" style="${style}" tabindex="0" role="button">${body}</div>`;
 }
 
 function targetHTML(id, n, pos) {
   const name = itemName(n.item);
   const body = `<div class="pic">${itemIcon(n.item, 34)}</div>` +
     `<div class="txt"><div class="tag">Target</div><div class="t1">${esc(name)}</div>${rateHTML(n.rate)}</div>`;
-  return nodeShell({ id, cls: 'node target', pos, label: `Target: ${name}, ${rateStr(n.rate)}${unitLabel()}`, body });
+  return nodeShell({ id, cls: 'node target', pos, body });
 }
 
 function rawHTML(id, n, pos, sel) {
@@ -49,8 +48,7 @@ function rawHTML(id, n, pos, sel) {
   const body = `<div class="pic">${itemIcon(n.item, 34)}</div>` +
     `<div class="txt"><div class="t1">${esc(name)}</div>${rateHTML(n.rate)}</div>` +
     '<div class="mrow"><span class="mn">Supplied from elsewhere</span></div>';
-  const label = `${name}, ${rateStr(n.rate)}${unitLabel()}, supplied from elsewhere`;
-  return nodeShell({ id, cls: 'node raw' + sel, pos, color: 'var(--c-source)', label, body });
+  return nodeShell({ id, cls: 'node raw' + sel, pos, color: 'var(--c-source)', body });
 }
 
 function sprayBadge(prof) {
@@ -74,8 +72,7 @@ function craftHTML(id, n, pos, sel) {
     `<div class="txt"><div class="t1${badge ? ' hb' : ''}" title="${esc(n.rec.name)}">${esc(name)}</div>${rateHTML(made)}</div>` +
     machineRow(n) +
     `<div class="util"><i style="width:${Math.round(util * 100)}%"></i></div>`;
-  const label = `${name}, ${rateStr(made)}${unitLabel()}, ${machineShortName(n.machine)}: ${n.built || 0}`;
-  return nodeShell({ id, cls: 'node' + sel, pos, color: nodeColor(n), label, body });
+  return nodeShell({ id, cls: 'node' + sel, pos, color: nodeColor(n), body });
 }
 
 function nodeHTML(id, pos) {

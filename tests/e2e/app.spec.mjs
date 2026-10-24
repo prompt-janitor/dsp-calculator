@@ -106,7 +106,7 @@ test('map nodes work with the keyboard', async ({ page, hasTouch }) => {
   await openApp(page);
   await showView(page, 'map');
   const target = page.locator('#stage .node.target').first();
-  await expect(target).toHaveAttribute('aria-label', /^Target: /);
+  await expect(target).toHaveAccessibleName(/^Target .+\/(min|s)$/);
   await target.focus();
   await page.keyboard.press('ArrowLeft');
   const focused = page.locator('#stage .node:focus');

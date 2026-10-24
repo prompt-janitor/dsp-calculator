@@ -88,3 +88,20 @@ test('an update found earlier shows the toast on the next visit', async ({ brows
   await expect.poll(() => buildLabel(page), { timeout: 15000 }).toBe('B');
   await context.close();
 });
+
+test('a license link shows the license text while the worker is in control', async ({ browser, browserName }) => {
+  test.skip(browserName !== 'chromium', 'checked in Chromium only');
+  live = server.builds.a;
+  const context = await browser.newContext({ serviceWorkers: 'allow' });
+  const page = await context.newPage();
+  await page.goto(URL);
+  await page.waitForFunction(() => !!navigator.serviceWorker.controller);
+  await page.goto(URL + 'licenses/LICENSE.txt');
+  await expect(page.locator('body')).toContainText('MIT License');
+  expect(await page.locator('#app').count()).toBe(0);
+  // It also works offline, from the precache.
+  await context.setOffline(true);
+  await page.goto(URL + 'licenses/OFL-ChakraPetch.txt');
+  await expect(page.locator('body')).toContainText('SIL OPEN FONT LICENSE');
+  await context.close();
+});

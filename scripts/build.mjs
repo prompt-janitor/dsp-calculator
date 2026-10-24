@@ -1,5 +1,5 @@
 // Builds the static site into dist/. No dependencies; run with `npm run build`.
-import { readFileSync, writeFileSync, mkdirSync, rmSync, cpSync, readdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, rmSync, cpSync, readdirSync, existsSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -45,6 +45,8 @@ cpSync(src('manifest.webmanifest'), join(dist, 'manifest.webmanifest'));
 mkdirSync(join(dist, 'licenses'), { recursive: true });
 cpSync(src('assets/fonts/OFL-ChakraPetch.txt'), join(dist, 'licenses', 'OFL-ChakraPetch.txt'));
 cpSync(join(root, 'LICENSE'), join(dist, 'licenses', 'LICENSE.txt'));
+// FactorioLab's license, if `npm run licenses` has downloaded it.
+if (existsSync(join(root, '.licenses'))) cpSync(join(root, '.licenses'), join(dist, 'licenses'), { recursive: true });
 writeFileSync(join(dist, '.nojekyll'), '');
 
 // The cache version is a hash of every file in dist/, so any change to any
@@ -60,7 +62,7 @@ for (const f of [...scripts, 'index.html']) writeFileSync(join(dist, f), withVer
 
 // Service worker: the precache list holds every file the app needs offline.
 const assets = ['./', 'index.html', 'manifest.webmanifest', 'sprite.webp', ...scripts.map((f) => f + '?v=' + version)];
-for (const dir of ['icons', 'splash']) for (const f of readdirSync(join(dist, dir)).sort()) assets.push(dir + '/' + f);
+for (const dir of ['icons', 'splash', 'licenses']) for (const f of readdirSync(join(dist, dir)).sort()) assets.push(dir + '/' + f);
 const sw = readFileSync(join(root, 'scripts', 'sw.template.js'), 'utf8')
   .replace('__VERSION__', version)
   .replace('__ASSETS__', () => JSON.stringify(assets, null, 2));

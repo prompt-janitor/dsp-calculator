@@ -20,7 +20,9 @@ self.addEventListener('fetch', (e) => {
   if (req.method !== 'GET') return;
   const url = new URL(req.url);
   if (url.origin !== self.location.origin) return;
-  if (req.mode === 'navigate') {
+  // Only the app's own page gets index.html. Other pages, such as the
+  // license files, are served as they are.
+  if (req.mode === 'navigate' && (url.pathname.endsWith('/') || url.pathname.endsWith('/index.html'))) {
     e.respondWith(caches.match('index.html', { cacheName: CACHE }).then((r) => r || fetch(req)));
     return;
   }

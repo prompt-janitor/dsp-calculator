@@ -27,8 +27,8 @@ jobs:
       - run: npm ci
       - run: npm test
       - run: npm run lint:copy -- --strict
-      - run: npm run build
       - run: npm run licenses
+      - run: npm run build
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

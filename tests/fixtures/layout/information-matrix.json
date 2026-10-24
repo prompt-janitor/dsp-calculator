@@ -1,0 +1,696 @@
+{
+ "width": 2148,
+ "height": 734,
+ "nodes": [
+  {
+   "id": "information-matrix",
+   "x": 1600,
+   "y": 409.5,
+   "h": 86
+  },
+  {
+   "id": "processor",
+   "x": 960,
+   "y": 567.5,
+   "h": 86
+  },
+  {
+   "id": "microcrystalline-component",
+   "x": 640,
+   "y": 513.5,
+   "h": 86
+  },
+  {
+   "id": "high-purity-silicon",
+   "x": 320,
+   "y": 432,
+   "h": 86
+  },
+  {
+   "id": "silicon-ore",
+   "x": 0,
+   "y": 432,
+   "h": 86
+  },
+  {
+   "id": "copper-ingot",
+   "x": 320,
+   "y": 540,
+   "h": 86
+  },
+  {
+   "id": "copper-ore",
+   "x": 0,
+   "y": 540,
+   "h": 86
+  },
+  {
+   "id": "circuit-board",
+   "x": 640,
+   "y": 621.5,
+   "h": 86
+  },
+  {
+   "id": "iron-ingot",
+   "x": 320,
+   "y": 648,
+   "h": 86
+  },
+  {
+   "id": "iron-ore",
+   "x": 0,
+   "y": 648,
+   "h": 86
+  },
+  {
+   "id": "particle-broadband",
+   "x": 1280,
+   "y": 251.49999999999997,
+   "h": 86
+  },
+  {
+   "id": "plastic",
+   "x": 640,
+   "y": 240.50000000000003,
+   "h": 86
+  },
+  {
+   "id": "refined-oil",
+   "x": 320,
+   "y": 324,
+   "h": 86
+  },
+  {
+   "id": "crude-oil",
+   "x": 0,
+   "y": 324,
+   "h": 86
+  },
+  {
+   "id": "energetic-graphite",
+   "x": 320,
+   "y": 108.00000000000003,
+   "h": 86
+  },
+  {
+   "id": "coal",
+   "x": 0,
+   "y": 108.00000000000003,
+   "h": 86
+  },
+  {
+   "id": "crystal-silicon",
+   "x": 640,
+   "y": 405.5,
+   "h": 86
+  },
+  {
+   "id": "carbon-nanotube",
+   "x": 960,
+   "y": 108.50000000000003,
+   "h": 86
+  },
+  {
+   "id": "titanium-ingot",
+   "x": 320,
+   "y": 216.00000000000003,
+   "h": 86
+  },
+  {
+   "id": "titanium-ore",
+   "x": 0,
+   "y": 216.00000000000003,
+   "h": 86
+  },
+  {
+   "id": "graphene",
+   "x": 640,
+   "y": 27.50000000000003,
+   "h": 86
+  },
+  {
+   "id": "sulfuric-acid",
+   "x": 320,
+   "y": 0,
+   "h": 86
+  },
+  {
+   "id": "__target_information-matrix",
+   "x": 1920,
+   "y": 420.5,
+   "h": 64
+  }
+ ],
+ "paths": [
+  {
+   "edge": {
+    "from": "particle-broadband",
+    "to": "information-matrix",
+    "item": "particle-broadband",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     1508,
+     294.5
+    ],
+    "to": [
+     1600,
+     425.5
+    ]
+   },
+   "d": "M1508.0,294.5C1554.0,294.5 1554.0,425.5 1600.0,425.5",
+   "lx": 1554,
+   "ly": 360,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "processor",
+    "to": "information-matrix",
+    "item": "processor",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     1188,
+     610.5
+    ],
+    "to": [
+     1600,
+     479.5
+    ]
+   },
+   "d": "M1188.0,610.5C1291.0,610.5 1291.0,610.5 1394.0,610.5C1497.0,610.5 1497.0,479.5 1600.0,479.5",
+   "lx": 1497,
+   "ly": 545,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "circuit-board",
+    "to": "processor",
+    "item": "circuit-board",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     868,
+     664.5
+    ],
+    "to": [
+     960,
+     637.5
+    ]
+   },
+   "d": "M868.0,664.5C914.0,664.5 914.0,637.5 960.0,637.5",
+   "lx": 914,
+   "ly": 651,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "microcrystalline-component",
+    "to": "processor",
+    "item": "microcrystalline-component",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     868,
+     556.5
+    ],
+    "to": [
+     960,
+     583.5
+    ]
+   },
+   "d": "M868.0,556.5C914.0,556.5 914.0,583.5 960.0,583.5",
+   "lx": 914,
+   "ly": 570,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "copper-ingot",
+    "to": "microcrystalline-component",
+    "item": "copper-ingot",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     548,
+     556
+    ],
+    "to": [
+     640,
+     583.5
+    ]
+   },
+   "d": "M548.0,556.0C594.0,556.0 594.0,583.5 640.0,583.5",
+   "lx": 594,
+   "ly": 569.75,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "copper-ingot",
+    "to": "circuit-board",
+    "item": "copper-ingot",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     548,
+     610
+    ],
+    "to": [
+     640,
+     637.5
+    ]
+   },
+   "d": "M548.0,610.0C594.0,610.0 594.0,637.5 640.0,637.5",
+   "lx": 594,
+   "ly": 623.75,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "high-purity-silicon",
+    "to": "microcrystalline-component",
+    "item": "high-purity-silicon",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     548,
+     502
+    ],
+    "to": [
+     640,
+     529.5
+    ]
+   },
+   "d": "M548.0,502.0C594.0,502.0 594.0,529.5 640.0,529.5",
+   "lx": 594,
+   "ly": 515.75,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "high-purity-silicon",
+    "to": "crystal-silicon",
+    "item": "high-purity-silicon",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     548,
+     448
+    ],
+    "to": [
+     640,
+     448.5
+    ]
+   },
+   "d": "M548.0,448.0C594.0,448.0 594.0,448.5 640.0,448.5",
+   "lx": 594,
+   "ly": 448.25,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "silicon-ore",
+    "to": "high-purity-silicon",
+    "item": "silicon-ore",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     228,
+     475
+    ],
+    "to": [
+     320,
+     475
+    ]
+   },
+   "d": "M228.0,475.0C274.0,475.0 274.0,475.0 320.0,475.0",
+   "lx": 274,
+   "ly": 475,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "copper-ore",
+    "to": "copper-ingot",
+    "item": "copper-ore",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     228,
+     583
+    ],
+    "to": [
+     320,
+     583
+    ]
+   },
+   "d": "M228.0,583.0C274.0,583.0 274.0,583.0 320.0,583.0",
+   "lx": 274,
+   "ly": 583,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "iron-ingot",
+    "to": "circuit-board",
+    "item": "iron-ingot",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     548,
+     691
+    ],
+    "to": [
+     640,
+     691.5
+    ]
+   },
+   "d": "M548.0,691.0C594.0,691.0 594.0,691.5 640.0,691.5",
+   "lx": 594,
+   "ly": 691.25,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "iron-ore",
+    "to": "iron-ingot",
+    "item": "iron-ore",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     228,
+     691
+    ],
+    "to": [
+     320,
+     691
+    ]
+   },
+   "d": "M228.0,691.0C274.0,691.0 274.0,691.0 320.0,691.0",
+   "lx": 274,
+   "ly": 691,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "carbon-nanotube",
+    "to": "particle-broadband",
+    "item": "carbon-nanotube",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     1188,
+     151.5
+    ],
+    "to": [
+     1280,
+     267.5
+    ]
+   },
+   "d": "M1188.0,151.5C1234.0,151.5 1234.0,267.5 1280.0,267.5",
+   "lx": 1234,
+   "ly": 209.5,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "crystal-silicon",
+    "to": "particle-broadband",
+    "item": "crystal-silicon",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     868,
+     448.5
+    ],
+    "to": [
+     1280,
+     321.5
+    ]
+   },
+   "d": "M868.0,448.5C971.0,448.5 971.0,448.5 1074.0,448.5C1177.0,448.5 1177.0,321.5 1280.0,321.5",
+   "lx": 1177,
+   "ly": 385,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "plastic",
+    "to": "particle-broadband",
+    "item": "plastic",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     868,
+     283.5
+    ],
+    "to": [
+     1280,
+     294.5
+    ]
+   },
+   "d": "M868.0,283.5C971.0,283.5 971.0,283.5 1074.0,283.5C1177.0,283.5 1177.0,294.5 1280.0,294.5",
+   "lx": 1177,
+   "ly": 289,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "energetic-graphite",
+    "to": "plastic",
+    "item": "energetic-graphite",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     548,
+     178
+    ],
+    "to": [
+     640,
+     256.5
+    ]
+   },
+   "d": "M548.0,178.0C594.0,178.0 594.0,256.5 640.0,256.5",
+   "lx": 594,
+   "ly": 217.25,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "energetic-graphite",
+    "to": "graphene",
+    "item": "energetic-graphite",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     548,
+     124
+    ],
+    "to": [
+     640,
+     97.5
+    ]
+   },
+   "d": "M548.0,124.0C594.0,124.0 594.0,97.5 640.0,97.5",
+   "lx": 594,
+   "ly": 110.75000000000003,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "refined-oil",
+    "to": "plastic",
+    "item": "refined-oil",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     548,
+     367
+    ],
+    "to": [
+     640,
+     310.5
+    ]
+   },
+   "d": "M548.0,367.0C594.0,367.0 594.0,310.5 640.0,310.5",
+   "lx": 594,
+   "ly": 338.75,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "crude-oil",
+    "to": "refined-oil",
+    "item": "crude-oil",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     228,
+     367
+    ],
+    "to": [
+     320,
+     367
+    ]
+   },
+   "d": "M228.0,367.0C274.0,367.0 274.0,367.0 320.0,367.0",
+   "lx": 274,
+   "ly": 367,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "coal",
+    "to": "energetic-graphite",
+    "item": "coal",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     228,
+     151
+    ],
+    "to": [
+     320,
+     151
+    ]
+   },
+   "d": "M228.0,151.0C274.0,151.0 274.0,151.0 320.0,151.0",
+   "lx": 274,
+   "ly": 151.00000000000003,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "graphene",
+    "to": "carbon-nanotube",
+    "item": "graphene",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     868,
+     70.5
+    ],
+    "to": [
+     960,
+     124.5
+    ]
+   },
+   "d": "M868.0,70.5C914.0,70.5 914.0,124.5 960.0,124.5",
+   "lx": 914,
+   "ly": 97.50000000000003,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "titanium-ingot",
+    "to": "carbon-nanotube",
+    "item": "titanium-ingot",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     548,
+     259
+    ],
+    "to": [
+     960,
+     178.5
+    ]
+   },
+   "d": "M548.0,259.0C651.0,259.0 651.0,232.5 754.0,232.5C857.0,232.5 857.0,178.5 960.0,178.5",
+   "lx": 857,
+   "ly": 205.50000000000003,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "titanium-ore",
+    "to": "titanium-ingot",
+    "item": "titanium-ore",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     228,
+     259
+    ],
+    "to": [
+     320,
+     259
+    ]
+   },
+   "d": "M228.0,259.0C274.0,259.0 274.0,259.0 320.0,259.0",
+   "lx": 274,
+   "ly": 259,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "sulfuric-acid",
+    "to": "graphene",
+    "item": "sulfuric-acid",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     548,
+     43
+    ],
+    "to": [
+     640,
+     43.5
+    ]
+   },
+   "d": "M548.0,43.0C594.0,43.0 594.0,43.5 640.0,43.5",
+   "lx": 594,
+   "ly": 43.250000000000014,
+   "spray": false
+  },
+  {
+   "edge": {
+    "from": "information-matrix",
+    "to": "__target_information-matrix",
+    "item": "information-matrix",
+    "kind": "item"
+   },
+   "ports": {
+    "from": [
+     1828,
+     452.5
+    ],
+    "to": [
+     1920,
+     452.5
+    ]
+   },
+   "d": "M1828.0,452.5C1874.0,452.5 1874.0,452.5 1920.0,452.5",
+   "lx": 1874,
+   "ly": 452.5,
+   "spray": false
+  }
+ ]
+}

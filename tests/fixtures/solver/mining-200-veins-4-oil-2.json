@@ -1,0 +1,282 @@
+{
+ "ok": true,
+ "iterations": 3,
+ "nodes": {
+  "iron-ingot": {
+   "item": "iron-ingot",
+   "rec": "iron-ingot",
+   "machine": "plane-smelter",
+   "mach": "plane-smelter",
+   "prof": null,
+   "runs": 5,
+   "kind": "craft",
+   "count": 2.5,
+   "built": 3,
+   "outRate": {
+    "iron-ingot": 5
+   },
+   "inRate": {
+    "iron-ore": 5
+   },
+   "power": 4320,
+   "powerAvg": 3600
+  },
+  "iron-ore": {
+   "item": "iron-ore",
+   "rec": "iron-vein",
+   "machine": "mining-machine",
+   "mach": "mining-machine",
+   "prof": null,
+   "runs": 5,
+   "kind": "source",
+   "count": 1.25,
+   "built": 2,
+   "outRate": {
+    "iron-ore": 5
+   },
+   "inRate": {},
+   "power": 0,
+   "powerAvg": 0
+  },
+  "plastic": {
+   "item": "plastic",
+   "rec": "plastic",
+   "machine": "chemical-plant",
+   "mach": "chemical-plant",
+   "prof": null,
+   "runs": 2,
+   "kind": "craft",
+   "count": 6,
+   "built": 6,
+   "outRate": {
+    "plastic": 2
+   },
+   "inRate": {
+    "energetic-graphite": 2,
+    "refined-oil": 4
+   },
+   "power": 4320,
+   "powerAvg": 4320
+  },
+  "refined-oil": {
+   "item": "refined-oil",
+   "rec": "plasma-refining",
+   "machine": "oil-refinery",
+   "mach": "oil-refinery",
+   "prof": null,
+   "runs": 2,
+   "kind": "craft",
+   "count": 8,
+   "built": 8,
+   "outRate": {
+    "hydrogen": 2,
+    "refined-oil": 4
+   },
+   "inRate": {
+    "crude-oil": 4
+   },
+   "power": 7680,
+   "powerAvg": 7680
+  },
+  "crude-oil": {
+   "item": "crude-oil",
+   "rec": "crude-oil-seep",
+   "machine": "oil-extractor",
+   "mach": "oil-extractor",
+   "prof": null,
+   "runs": 4,
+   "kind": "source",
+   "count": 1,
+   "built": 1,
+   "outRate": {
+    "crude-oil": 4
+   },
+   "inRate": {},
+   "power": 840,
+   "powerAvg": 840
+  },
+  "energetic-graphite": {
+   "item": "energetic-graphite",
+   "rec": "energetic-graphite",
+   "machine": "plane-smelter",
+   "mach": "plane-smelter",
+   "prof": null,
+   "runs": 2,
+   "kind": "craft",
+   "count": 2,
+   "built": 2,
+   "outRate": {
+    "energetic-graphite": 2
+   },
+   "inRate": {
+    "coal": 4
+   },
+   "power": 2880,
+   "powerAvg": 2880
+  },
+  "coal": {
+   "item": "coal",
+   "rec": "coal-vein",
+   "machine": "mining-machine",
+   "mach": "mining-machine",
+   "prof": null,
+   "runs": 4,
+   "kind": "source",
+   "count": 1,
+   "built": 1,
+   "outRate": {
+    "coal": 4
+   },
+   "inRate": {},
+   "power": 0,
+   "powerAvg": 0
+  },
+  "__target_plastic": {
+   "item": "plastic",
+   "kind": "target",
+   "rate": 2,
+   "id": "__target_plastic"
+  },
+  "__target_iron-ingot": {
+   "item": "iron-ingot",
+   "kind": "target",
+   "rate": 5,
+   "id": "__target_iron-ingot"
+  }
+ },
+ "edges": [
+  {
+   "from": "iron-ore",
+   "to": "iron-ingot",
+   "item": "iron-ore",
+   "flow": 5,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.16666666666666666
+  },
+  {
+   "from": "energetic-graphite",
+   "to": "plastic",
+   "item": "energetic-graphite",
+   "flow": 2,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.06666666666666667
+  },
+  {
+   "from": "refined-oil",
+   "to": "plastic",
+   "item": "refined-oil",
+   "flow": 4,
+   "kind": "item",
+   "by": false,
+   "fluid": true,
+   "belts": 0,
+   "util": 0
+  },
+  {
+   "from": "crude-oil",
+   "to": "refined-oil",
+   "item": "crude-oil",
+   "flow": 4,
+   "kind": "item",
+   "by": false,
+   "fluid": true,
+   "belts": 0,
+   "util": 0
+  },
+  {
+   "from": "coal",
+   "to": "energetic-graphite",
+   "item": "coal",
+   "flow": 4,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.13333333333333333
+  },
+  {
+   "from": "plastic",
+   "to": "__target_plastic",
+   "item": "plastic",
+   "flow": 2,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.06666666666666667
+  },
+  {
+   "from": "iron-ingot",
+   "to": "__target_iron-ingot",
+   "item": "iron-ingot",
+   "flow": 5,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.16666666666666666
+  }
+ ],
+ "totals": {
+  "power": 20040,
+  "built": {
+   "plane-smelter": 5,
+   "mining-machine": 3,
+   "chemical-plant": 6,
+   "oil-refinery": 8,
+   "oil-extractor": 1
+  },
+  "exact": {
+   "plane-smelter": 4.5,
+   "mining-machine": 2.25,
+   "chemical-plant": 6,
+   "oil-refinery": 8,
+   "oil-extractor": 1
+  },
+  "belts": 5,
+  "beltsByItem": {
+   "iron-ore": 1,
+   "energetic-graphite": 1,
+   "coal": 1,
+   "plastic": 1,
+   "iron-ingot": 1
+  },
+  "raw": {
+   "iron-ore": 5,
+   "crude-oil": 4,
+   "coal": 4
+  },
+  "surplus": {
+   "hydrogen": 2
+  },
+  "prolif": {}
+ },
+ "D": {
+  "plastic": 2,
+  "iron-ingot": 5,
+  "iron-ore": 5,
+  "energetic-graphite": 2,
+  "refined-oil": 4,
+  "crude-oil": 4,
+  "coal": 4
+ },
+ "S": {
+  "hydrogen": 2
+ },
+ "cap": 30,
+ "order": [
+  "iron-ingot",
+  "iron-ore",
+  "plastic",
+  "refined-oil",
+  "crude-oil",
+  "energetic-graphite",
+  "coal"
+ ]
+}

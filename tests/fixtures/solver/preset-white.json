@@ -1,0 +1,2015 @@
+{
+ "ok": true,
+ "iterations": 10,
+ "nodes": {
+  "universe-matrix": {
+   "item": "universe-matrix",
+   "rec": "universe-matrix",
+   "machine": "matrix-lab",
+   "mach": "matrix-lab",
+   "prof": null,
+   "runs": 1,
+   "kind": "craft",
+   "count": 15,
+   "built": 15,
+   "outRate": {
+    "universe-matrix": 1
+   },
+   "inRate": {
+    "antimatter": 1,
+    "electromagnetic-matrix": 1,
+    "energy-matrix": 1,
+    "gravity-matrix": 1,
+    "information-matrix": 1,
+    "structure-matrix": 1
+   },
+   "power": 7200,
+   "powerAvg": 7200
+  },
+  "structure-matrix": {
+   "item": "structure-matrix",
+   "rec": "structure-matrix",
+   "machine": "matrix-lab",
+   "mach": "matrix-lab",
+   "prof": null,
+   "runs": 1,
+   "kind": "craft",
+   "count": 8,
+   "built": 8,
+   "outRate": {
+    "structure-matrix": 1
+   },
+   "inRate": {
+    "diamond": 1,
+    "titanium-crystal": 1
+   },
+   "power": 3840,
+   "powerAvg": 3840
+  },
+  "titanium-crystal": {
+   "item": "titanium-crystal",
+   "rec": "titanium-crystal",
+   "machine": "assembling-machine-3",
+   "mach": "assembling-machine-3",
+   "prof": null,
+   "runs": 2,
+   "kind": "craft",
+   "count": 5.333333333333333,
+   "built": 6,
+   "outRate": {
+    "titanium-crystal": 2
+   },
+   "inRate": {
+    "organic-crystal": 2,
+    "titanium-ingot": 6
+   },
+   "power": 6480,
+   "powerAvg": 5760
+  },
+  "titanium-ingot": {
+   "item": "titanium-ingot",
+   "rec": "titanium-ingot",
+   "machine": "plane-smelter",
+   "mach": "plane-smelter",
+   "prof": null,
+   "runs": 9,
+   "kind": "craft",
+   "count": 9,
+   "built": 9,
+   "outRate": {
+    "titanium-ingot": 9
+   },
+   "inRate": {
+    "titanium-ore": 18
+   },
+   "power": 12960,
+   "powerAvg": 12960
+  },
+  "titanium-ore": {
+   "item": "titanium-ore",
+   "rec": "titanium-vein",
+   "machine": "mining-machine",
+   "mach": "mining-machine",
+   "prof": null,
+   "runs": 18,
+   "kind": "source",
+   "count": 4.5,
+   "built": 5,
+   "outRate": {
+    "titanium-ore": 18
+   },
+   "inRate": {},
+   "power": 0,
+   "powerAvg": 0
+  },
+  "organic-crystal": {
+   "item": "organic-crystal",
+   "rec": "organic-crystal-vein",
+   "machine": "mining-machine",
+   "mach": "mining-machine",
+   "prof": null,
+   "runs": 2,
+   "kind": "source",
+   "count": 0.5,
+   "built": 1,
+   "outRate": {
+    "organic-crystal": 2
+   },
+   "inRate": {},
+   "power": 0,
+   "powerAvg": 0
+  },
+  "diamond": {
+   "item": "diamond",
+   "rec": "diamond",
+   "machine": "plane-smelter",
+   "mach": "plane-smelter",
+   "prof": null,
+   "runs": 3,
+   "kind": "craft",
+   "count": 3,
+   "built": 3,
+   "outRate": {
+    "diamond": 3
+   },
+   "inRate": {
+    "energetic-graphite": 3
+   },
+   "power": 4320,
+   "powerAvg": 4320
+  },
+  "energetic-graphite": {
+   "item": "energetic-graphite",
+   "rec": "energetic-graphite",
+   "machine": "plane-smelter",
+   "mach": "plane-smelter",
+   "prof": null,
+   "runs": 16.5,
+   "kind": "craft",
+   "count": 16.5,
+   "built": 17,
+   "outRate": {
+    "energetic-graphite": 16.5
+   },
+   "inRate": {
+    "coal": 33
+   },
+   "power": 24480,
+   "powerAvg": 23760
+  },
+  "coal": {
+   "item": "coal",
+   "rec": "coal-vein",
+   "machine": "mining-machine",
+   "mach": "mining-machine",
+   "prof": null,
+   "runs": 33,
+   "kind": "source",
+   "count": 8.25,
+   "built": 9,
+   "outRate": {
+    "coal": 33
+   },
+   "inRate": {},
+   "power": 0,
+   "powerAvg": 0
+  },
+  "information-matrix": {
+   "item": "information-matrix",
+   "rec": "information-matrix",
+   "machine": "matrix-lab",
+   "mach": "matrix-lab",
+   "prof": null,
+   "runs": 1,
+   "kind": "craft",
+   "count": 10,
+   "built": 10,
+   "outRate": {
+    "information-matrix": 1
+   },
+   "inRate": {
+    "particle-broadband": 1,
+    "processor": 2
+   },
+   "power": 4800,
+   "powerAvg": 4800
+  },
+  "processor": {
+   "item": "processor",
+   "rec": "processor",
+   "machine": "assembling-machine-3",
+   "mach": "assembling-machine-3",
+   "prof": null,
+   "runs": 3,
+   "kind": "craft",
+   "count": 6,
+   "built": 6,
+   "outRate": {
+    "processor": 3
+   },
+   "inRate": {
+    "circuit-board": 6,
+    "microcrystalline-component": 6
+   },
+   "power": 6480,
+   "powerAvg": 6480
+  },
+  "microcrystalline-component": {
+   "item": "microcrystalline-component",
+   "rec": "microcrystalline-component",
+   "machine": "assembling-machine-3",
+   "mach": "assembling-machine-3",
+   "prof": null,
+   "runs": 6,
+   "kind": "craft",
+   "count": 8,
+   "built": 8,
+   "outRate": {
+    "microcrystalline-component": 6
+   },
+   "inRate": {
+    "copper-ingot": 6,
+    "high-purity-silicon": 12
+   },
+   "power": 8640,
+   "powerAvg": 8640
+  },
+  "high-purity-silicon": {
+   "item": "high-purity-silicon",
+   "rec": "high-purity-silicon",
+   "machine": "plane-smelter",
+   "mach": "plane-smelter",
+   "prof": null,
+   "runs": 14,
+   "kind": "craft",
+   "count": 14,
+   "built": 14,
+   "outRate": {
+    "high-purity-silicon": 14
+   },
+   "inRate": {
+    "silicon-ore": 28
+   },
+   "power": 20160,
+   "powerAvg": 20160
+  },
+  "silicon-ore": {
+   "item": "silicon-ore",
+   "rec": "silicium-vein",
+   "machine": "mining-machine",
+   "mach": "mining-machine",
+   "prof": null,
+   "runs": 28,
+   "kind": "source",
+   "count": 7,
+   "built": 7,
+   "outRate": {
+    "silicon-ore": 28
+   },
+   "inRate": {},
+   "power": 0,
+   "powerAvg": 0
+  },
+  "copper-ingot": {
+   "item": "copper-ingot",
+   "rec": "copper-ingot",
+   "machine": "plane-smelter",
+   "mach": "plane-smelter",
+   "prof": null,
+   "runs": 16,
+   "kind": "craft",
+   "count": 8,
+   "built": 8,
+   "outRate": {
+    "copper-ingot": 16
+   },
+   "inRate": {
+    "copper-ore": 16
+   },
+   "power": 11520,
+   "powerAvg": 11520
+  },
+  "copper-ore": {
+   "item": "copper-ore",
+   "rec": "copper-vein",
+   "machine": "mining-machine",
+   "mach": "mining-machine",
+   "prof": null,
+   "runs": 16,
+   "kind": "source",
+   "count": 4,
+   "built": 4,
+   "outRate": {
+    "copper-ore": 16
+   },
+   "inRate": {},
+   "power": 0,
+   "powerAvg": 0
+  },
+  "circuit-board": {
+   "item": "circuit-board",
+   "rec": "circuit-board",
+   "machine": "assembling-machine-3",
+   "mach": "assembling-machine-3",
+   "prof": null,
+   "runs": 3.5,
+   "kind": "craft",
+   "count": 2.3333333333333335,
+   "built": 3,
+   "outRate": {
+    "circuit-board": 7
+   },
+   "inRate": {
+    "copper-ingot": 3.5,
+    "iron-ingot": 7
+   },
+   "power": 3240,
+   "powerAvg": 2520
+  },
+  "iron-ingot": {
+   "item": "iron-ingot",
+   "rec": "iron-ingot",
+   "machine": "plane-smelter",
+   "mach": "plane-smelter",
+   "prof": null,
+   "runs": 20,
+   "kind": "craft",
+   "count": 10,
+   "built": 10,
+   "outRate": {
+    "iron-ingot": 20
+   },
+   "inRate": {
+    "iron-ore": 20
+   },
+   "power": 14400,
+   "powerAvg": 14400
+  },
+  "iron-ore": {
+   "item": "iron-ore",
+   "rec": "iron-vein",
+   "machine": "mining-machine",
+   "mach": "mining-machine",
+   "prof": null,
+   "runs": 29,
+   "kind": "source",
+   "count": 7.25,
+   "built": 8,
+   "outRate": {
+    "iron-ore": 29
+   },
+   "inRate": {},
+   "power": 0,
+   "powerAvg": 0
+  },
+  "particle-broadband": {
+   "item": "particle-broadband",
+   "rec": "particle-broadband",
+   "machine": "assembling-machine-3",
+   "mach": "assembling-machine-3",
+   "prof": null,
+   "runs": 1,
+   "kind": "craft",
+   "count": 5.333333333333333,
+   "built": 6,
+   "outRate": {
+    "particle-broadband": 1
+   },
+   "inRate": {
+    "carbon-nanotube": 2,
+    "crystal-silicon": 2,
+    "plastic": 1
+   },
+   "power": 6480,
+   "powerAvg": 5760
+  },
+  "plastic": {
+   "item": "plastic",
+   "rec": "plastic",
+   "machine": "chemical-plant",
+   "mach": "chemical-plant",
+   "prof": null,
+   "runs": 1,
+   "kind": "craft",
+   "count": 3,
+   "built": 3,
+   "outRate": {
+    "plastic": 1
+   },
+   "inRate": {
+    "energetic-graphite": 1,
+    "refined-oil": 2
+   },
+   "power": 2160,
+   "powerAvg": 2160
+  },
+  "refined-oil": {
+   "item": "refined-oil",
+   "rec": "plasma-refining",
+   "machine": "oil-refinery",
+   "mach": "oil-refinery",
+   "prof": null,
+   "runs": 1,
+   "kind": "craft",
+   "count": 4,
+   "built": 4,
+   "outRate": {
+    "hydrogen": 1,
+    "refined-oil": 2
+   },
+   "inRate": {
+    "crude-oil": 2
+   },
+   "power": 3840,
+   "powerAvg": 3840
+  },
+  "crude-oil": {
+   "item": "crude-oil",
+   "rec": "crude-oil-seep",
+   "machine": "oil-extractor",
+   "mach": "oil-extractor",
+   "prof": null,
+   "runs": 2,
+   "kind": "source",
+   "count": 2,
+   "built": 2,
+   "outRate": {
+    "crude-oil": 2
+   },
+   "inRate": {},
+   "power": 1680,
+   "powerAvg": 1680
+  },
+  "crystal-silicon": {
+   "item": "crystal-silicon",
+   "rec": "crystal-silicon",
+   "machine": "plane-smelter",
+   "mach": "plane-smelter",
+   "prof": null,
+   "runs": 2,
+   "kind": "craft",
+   "count": 2,
+   "built": 2,
+   "outRate": {
+    "crystal-silicon": 2
+   },
+   "inRate": {
+    "high-purity-silicon": 2
+   },
+   "power": 2880,
+   "powerAvg": 2880
+  },
+  "carbon-nanotube": {
+   "item": "carbon-nanotube",
+   "rec": "carbon-nanotube",
+   "machine": "chemical-plant",
+   "mach": "chemical-plant",
+   "prof": null,
+   "runs": 1,
+   "kind": "craft",
+   "count": 4,
+   "built": 4,
+   "outRate": {
+    "carbon-nanotube": 2
+   },
+   "inRate": {
+    "graphene": 3,
+    "titanium-ingot": 1
+   },
+   "power": 2880,
+   "powerAvg": 2880
+  },
+  "graphene": {
+   "item": "graphene",
+   "rec": "graphene",
+   "machine": "chemical-plant",
+   "mach": "chemical-plant",
+   "prof": null,
+   "runs": 3.5,
+   "kind": "craft",
+   "count": 10.5,
+   "built": 11,
+   "outRate": {
+    "graphene": 7
+   },
+   "inRate": {
+    "energetic-graphite": 10.5,
+    "sulfuric-acid": 3.5
+   },
+   "power": 7920,
+   "powerAvg": 7560
+  },
+  "sulfuric-acid": {
+   "item": "sulfuric-acid",
+   "rec": "sulphuric-acid-vein",
+   "machine": "water-pump",
+   "mach": "water-pump",
+   "prof": null,
+   "runs": 3.5,
+   "kind": "source",
+   "count": 4.2,
+   "built": 5,
+   "outRate": {
+    "sulfuric-acid": 3.5
+   },
+   "inRate": {},
+   "power": 1500,
+   "powerAvg": 1260
+  },
+  "gravity-matrix": {
+   "item": "gravity-matrix",
+   "rec": "gravity-matrix",
+   "machine": "matrix-lab",
+   "mach": "matrix-lab",
+   "prof": null,
+   "runs": 0.5,
+   "kind": "craft",
+   "count": 12,
+   "built": 12,
+   "outRate": {
+    "gravity-matrix": 1
+   },
+   "inRate": {
+    "graviton-lens": 0.5,
+    "quantum-chip": 0.5
+   },
+   "power": 5760,
+   "powerAvg": 5760
+  },
+  "quantum-chip": {
+   "item": "quantum-chip",
+   "rec": "quantum-chip",
+   "machine": "assembling-machine-3",
+   "mach": "assembling-machine-3",
+   "prof": null,
+   "runs": 0.5,
+   "kind": "craft",
+   "count": 2,
+   "built": 2,
+   "outRate": {
+    "quantum-chip": 0.5
+   },
+   "inRate": {
+    "plane-filter": 1,
+    "processor": 1
+   },
+   "power": 2160,
+   "powerAvg": 2160
+  },
+  "plane-filter": {
+   "item": "plane-filter",
+   "rec": "plane-filter",
+   "machine": "assembling-machine-3",
+   "mach": "assembling-machine-3",
+   "prof": null,
+   "runs": 1,
+   "kind": "craft",
+   "count": 8,
+   "built": 8,
+   "outRate": {
+    "plane-filter": 1
+   },
+   "inRate": {
+    "casimir-crystal": 1,
+    "titanium-glass": 2
+   },
+   "power": 8640,
+   "powerAvg": 8640
+  },
+  "titanium-glass": {
+   "item": "titanium-glass",
+   "rec": "titanium-glass",
+   "machine": "assembling-machine-3",
+   "mach": "assembling-machine-3",
+   "prof": null,
+   "runs": 1,
+   "kind": "craft",
+   "count": 3.3333333333333335,
+   "built": 4,
+   "outRate": {
+    "titanium-glass": 2
+   },
+   "inRate": {
+    "glass": 2,
+    "titanium-ingot": 2,
+    "water": 2
+   },
+   "power": 4320,
+   "powerAvg": 3600
+  },
+  "water": {
+   "item": "water",
+   "rec": "ocean",
+   "machine": "water-pump",
+   "mach": "water-pump",
+   "prof": null,
+   "runs": 2,
+   "kind": "source",
+   "count": 2.4,
+   "built": 3,
+   "outRate": {
+    "water": 2
+   },
+   "inRate": {},
+   "power": 900,
+   "powerAvg": 720
+  },
+  "glass": {
+   "item": "glass",
+   "rec": "glass",
+   "machine": "plane-smelter",
+   "mach": "plane-smelter",
+   "prof": null,
+   "runs": 2,
+   "kind": "craft",
+   "count": 2,
+   "built": 2,
+   "outRate": {
+    "glass": 2
+   },
+   "inRate": {
+    "stone": 4
+   },
+   "power": 2880,
+   "powerAvg": 2880
+  },
+  "stone": {
+   "item": "stone",
+   "rec": "stone-vein",
+   "machine": "mining-machine",
+   "mach": "mining-machine",
+   "prof": null,
+   "runs": 4,
+   "kind": "source",
+   "count": 1,
+   "built": 1,
+   "outRate": {
+    "stone": 4
+   },
+   "inRate": {},
+   "power": 0,
+   "powerAvg": 0
+  },
+  "casimir-crystal": {
+   "item": "casimir-crystal",
+   "rec": "casimir-crystal",
+   "machine": "assembling-machine-3",
+   "mach": "assembling-machine-3",
+   "prof": null,
+   "runs": 1,
+   "kind": "craft",
+   "count": 2.6666666666666665,
+   "built": 3,
+   "outRate": {
+    "casimir-crystal": 1
+   },
+   "inRate": {
+    "graphene": 2,
+    "hydrogen": 12,
+    "titanium-crystal": 1
+   },
+   "power": 3240,
+   "powerAvg": 2880
+  },
+  "hydrogen": {
+   "item": "hydrogen",
+   "rec": "gas-giant-hydrogen",
+   "machine": "orbital-collector",
+   "mach": "orbital-collector",
+   "prof": null,
+   "runs": 66.66666666666667,
+   "kind": "source",
+   "count": 121.2121212121212,
+   "built": 122,
+   "outRate": {
+    "hydrogen": 512
+   },
+   "inRate": {},
+   "power": 0,
+   "powerAvg": 0
+  },
+  "graviton-lens": {
+   "item": "graviton-lens",
+   "rec": "graviton-lens",
+   "machine": "assembling-machine-3",
+   "mach": "assembling-machine-3",
+   "prof": null,
+   "runs": 0.5,
+   "kind": "craft",
+   "count": 2,
+   "built": 2,
+   "outRate": {
+    "graviton-lens": 0.5
+   },
+   "inRate": {
+    "diamond": 2,
+    "strange-matter": 0.5
+   },
+   "power": 2160,
+   "powerAvg": 2160
+  },
+  "strange-matter": {
+   "item": "strange-matter",
+   "rec": "strange-matter",
+   "machine": "miniature-particle-collider",
+   "mach": "miniature-particle-collider",
+   "prof": null,
+   "runs": 0.5,
+   "kind": "craft",
+   "count": 4,
+   "built": 4,
+   "outRate": {
+    "strange-matter": 0.5
+   },
+   "inRate": {
+    "deuterium": 5,
+    "iron-ingot": 1,
+    "particle-container": 1
+   },
+   "power": 48000,
+   "powerAvg": 48000
+  },
+  "particle-container": {
+   "item": "particle-container",
+   "rec": "particle-container",
+   "machine": "assembling-machine-3",
+   "mach": "assembling-machine-3",
+   "prof": null,
+   "runs": 1,
+   "kind": "craft",
+   "count": 2.6666666666666665,
+   "built": 3,
+   "outRate": {
+    "particle-container": 1
+   },
+   "inRate": {
+    "copper-ingot": 2,
+    "electromagnetic-turbine": 2,
+    "graphene": 2
+   },
+   "power": 3240,
+   "powerAvg": 2880
+  },
+  "electromagnetic-turbine": {
+   "item": "electromagnetic-turbine",
+   "rec": "electromagnetic-turbine",
+   "machine": "assembling-machine-3",
+   "mach": "assembling-machine-3",
+   "prof": null,
+   "runs": 2,
+   "kind": "craft",
+   "count": 2.6666666666666665,
+   "built": 3,
+   "outRate": {
+    "electromagnetic-turbine": 2
+   },
+   "inRate": {
+    "electric-motor": 4,
+    "magnetic-coil": 4
+   },
+   "power": 3240,
+   "powerAvg": 2880
+  },
+  "magnetic-coil": {
+   "item": "magnetic-coil",
+   "rec": "magnetic-coil",
+   "machine": "assembling-machine-3",
+   "mach": "assembling-machine-3",
+   "prof": null,
+   "runs": 4.5,
+   "kind": "craft",
+   "count": 3,
+   "built": 3,
+   "outRate": {
+    "magnetic-coil": 9
+   },
+   "inRate": {
+    "copper-ingot": 4.5,
+    "magnet": 9
+   },
+   "power": 3240,
+   "powerAvg": 3240
+  },
+  "magnet": {
+   "item": "magnet",
+   "rec": "magnet",
+   "machine": "plane-smelter",
+   "mach": "plane-smelter",
+   "prof": null,
+   "runs": 9,
+   "kind": "craft",
+   "count": 6.75,
+   "built": 7,
+   "outRate": {
+    "magnet": 9
+   },
+   "inRate": {
+    "iron-ore": 9
+   },
+   "power": 10080,
+   "powerAvg": 9720
+  },
+  "electric-motor": {
+   "item": "electric-motor",
+   "rec": "electric-motor",
+   "machine": "assembling-machine-3",
+   "mach": "assembling-machine-3",
+   "prof": null,
+   "runs": 4,
+   "kind": "craft",
+   "count": 5.333333333333333,
+   "built": 6,
+   "outRate": {
+    "electric-motor": 4
+   },
+   "inRate": {
+    "gear": 4,
+    "iron-ingot": 8,
+    "magnetic-coil": 4
+   },
+   "power": 6480,
+   "powerAvg": 5760
+  },
+  "gear": {
+   "item": "gear",
+   "rec": "gear",
+   "machine": "assembling-machine-3",
+   "mach": "assembling-machine-3",
+   "prof": null,
+   "runs": 4,
+   "kind": "craft",
+   "count": 2.6666666666666665,
+   "built": 3,
+   "outRate": {
+    "gear": 4
+   },
+   "inRate": {
+    "iron-ingot": 4
+   },
+   "power": 3240,
+   "powerAvg": 2880
+  },
+  "deuterium": {
+   "item": "deuterium",
+   "rec": "deuterium-fractionation",
+   "machine": "fractionator",
+   "mach": "fractionator",
+   "prof": null,
+   "runs": 500,
+   "kind": "craft",
+   "count": 16.666666666666668,
+   "built": 17,
+   "outRate": {
+    "deuterium": 5
+   },
+   "inRate": {
+    "hydrogen": 500
+   },
+   "power": 12240,
+   "powerAvg": 12000
+  },
+  "energy-matrix": {
+   "item": "energy-matrix",
+   "rec": "energy-matrix",
+   "machine": "matrix-lab",
+   "mach": "matrix-lab",
+   "prof": null,
+   "runs": 1,
+   "kind": "craft",
+   "count": 6,
+   "built": 6,
+   "outRate": {
+    "energy-matrix": 1
+   },
+   "inRate": {
+    "energetic-graphite": 2,
+    "hydrogen": 2
+   },
+   "power": 2880,
+   "powerAvg": 2880
+  },
+  "electromagnetic-matrix": {
+   "item": "electromagnetic-matrix",
+   "rec": "electromagnetic-matrix",
+   "machine": "matrix-lab",
+   "mach": "matrix-lab",
+   "prof": null,
+   "runs": 1,
+   "kind": "craft",
+   "count": 3,
+   "built": 3,
+   "outRate": {
+    "electromagnetic-matrix": 1
+   },
+   "inRate": {
+    "circuit-board": 1,
+    "magnetic-coil": 1
+   },
+   "power": 1440,
+   "powerAvg": 1440
+  },
+  "antimatter": {
+   "item": "antimatter",
+   "rec": "mass-energy-storage",
+   "machine": "miniature-particle-collider",
+   "mach": "miniature-particle-collider",
+   "prof": null,
+   "runs": 0.5,
+   "kind": "craft",
+   "count": 1,
+   "built": 1,
+   "outRate": {
+    "antimatter": 1,
+    "hydrogen": 1
+   },
+   "inRate": {
+    "critical-photon": 1
+   },
+   "power": 12000,
+   "powerAvg": 12000
+  },
+  "critical-photon": {
+   "item": "critical-photon",
+   "rec": "critical-photon",
+   "machine": "ray-receiver",
+   "mach": "ray-receiver",
+   "prof": null,
+   "runs": 0.16666666666666666,
+   "kind": "craft",
+   "count": 10,
+   "built": 10,
+   "outRate": {
+    "critical-photon": 1
+   },
+   "inRate": {},
+   "power": 0,
+   "powerAvg": 0
+  },
+  "__target_universe-matrix": {
+   "item": "universe-matrix",
+   "kind": "target",
+   "rate": 1,
+   "id": "__target_universe-matrix"
+  }
+ },
+ "edges": [
+  {
+   "from": "antimatter",
+   "to": "universe-matrix",
+   "item": "antimatter",
+   "flow": 1,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.03333333333333333
+  },
+  {
+   "from": "electromagnetic-matrix",
+   "to": "universe-matrix",
+   "item": "electromagnetic-matrix",
+   "flow": 1,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.03333333333333333
+  },
+  {
+   "from": "energy-matrix",
+   "to": "universe-matrix",
+   "item": "energy-matrix",
+   "flow": 1,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.03333333333333333
+  },
+  {
+   "from": "gravity-matrix",
+   "to": "universe-matrix",
+   "item": "gravity-matrix",
+   "flow": 1,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.03333333333333333
+  },
+  {
+   "from": "information-matrix",
+   "to": "universe-matrix",
+   "item": "information-matrix",
+   "flow": 1,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.03333333333333333
+  },
+  {
+   "from": "structure-matrix",
+   "to": "universe-matrix",
+   "item": "structure-matrix",
+   "flow": 1,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.03333333333333333
+  },
+  {
+   "from": "diamond",
+   "to": "structure-matrix",
+   "item": "diamond",
+   "flow": 1,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.03333333333333333
+  },
+  {
+   "from": "diamond",
+   "to": "graviton-lens",
+   "item": "diamond",
+   "flow": 2,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.06666666666666667
+  },
+  {
+   "from": "titanium-crystal",
+   "to": "structure-matrix",
+   "item": "titanium-crystal",
+   "flow": 1,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.03333333333333333
+  },
+  {
+   "from": "titanium-crystal",
+   "to": "casimir-crystal",
+   "item": "titanium-crystal",
+   "flow": 1,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.03333333333333333
+  },
+  {
+   "from": "organic-crystal",
+   "to": "titanium-crystal",
+   "item": "organic-crystal",
+   "flow": 2,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.06666666666666667
+  },
+  {
+   "from": "titanium-ingot",
+   "to": "titanium-crystal",
+   "item": "titanium-ingot",
+   "flow": 6,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.2
+  },
+  {
+   "from": "titanium-ingot",
+   "to": "carbon-nanotube",
+   "item": "titanium-ingot",
+   "flow": 1,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.03333333333333333
+  },
+  {
+   "from": "titanium-ingot",
+   "to": "titanium-glass",
+   "item": "titanium-ingot",
+   "flow": 2,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.06666666666666667
+  },
+  {
+   "from": "titanium-ore",
+   "to": "titanium-ingot",
+   "item": "titanium-ore",
+   "flow": 18,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.6
+  },
+  {
+   "from": "energetic-graphite",
+   "to": "diamond",
+   "item": "energetic-graphite",
+   "flow": 3,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.1
+  },
+  {
+   "from": "energetic-graphite",
+   "to": "plastic",
+   "item": "energetic-graphite",
+   "flow": 1,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.03333333333333333
+  },
+  {
+   "from": "energetic-graphite",
+   "to": "graphene",
+   "item": "energetic-graphite",
+   "flow": 10.5,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.35
+  },
+  {
+   "from": "energetic-graphite",
+   "to": "energy-matrix",
+   "item": "energetic-graphite",
+   "flow": 2,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.06666666666666667
+  },
+  {
+   "from": "coal",
+   "to": "energetic-graphite",
+   "item": "coal",
+   "flow": 33,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 2,
+   "util": 0.55
+  },
+  {
+   "from": "particle-broadband",
+   "to": "information-matrix",
+   "item": "particle-broadband",
+   "flow": 1,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.03333333333333333
+  },
+  {
+   "from": "processor",
+   "to": "information-matrix",
+   "item": "processor",
+   "flow": 2,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.06666666666666667
+  },
+  {
+   "from": "processor",
+   "to": "quantum-chip",
+   "item": "processor",
+   "flow": 1,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.03333333333333333
+  },
+  {
+   "from": "circuit-board",
+   "to": "processor",
+   "item": "circuit-board",
+   "flow": 6,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.2
+  },
+  {
+   "from": "circuit-board",
+   "to": "electromagnetic-matrix",
+   "item": "circuit-board",
+   "flow": 1,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.03333333333333333
+  },
+  {
+   "from": "microcrystalline-component",
+   "to": "processor",
+   "item": "microcrystalline-component",
+   "flow": 6,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.2
+  },
+  {
+   "from": "copper-ingot",
+   "to": "microcrystalline-component",
+   "item": "copper-ingot",
+   "flow": 6,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.2
+  },
+  {
+   "from": "copper-ingot",
+   "to": "circuit-board",
+   "item": "copper-ingot",
+   "flow": 3.5,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.11666666666666667
+  },
+  {
+   "from": "copper-ingot",
+   "to": "particle-container",
+   "item": "copper-ingot",
+   "flow": 2,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.06666666666666667
+  },
+  {
+   "from": "copper-ingot",
+   "to": "magnetic-coil",
+   "item": "copper-ingot",
+   "flow": 4.5,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.15
+  },
+  {
+   "from": "high-purity-silicon",
+   "to": "microcrystalline-component",
+   "item": "high-purity-silicon",
+   "flow": 12,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.4
+  },
+  {
+   "from": "high-purity-silicon",
+   "to": "crystal-silicon",
+   "item": "high-purity-silicon",
+   "flow": 2,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.06666666666666667
+  },
+  {
+   "from": "silicon-ore",
+   "to": "high-purity-silicon",
+   "item": "silicon-ore",
+   "flow": 28,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.9333333333333333
+  },
+  {
+   "from": "copper-ore",
+   "to": "copper-ingot",
+   "item": "copper-ore",
+   "flow": 16,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.5333333333333333
+  },
+  {
+   "from": "iron-ingot",
+   "to": "circuit-board",
+   "item": "iron-ingot",
+   "flow": 7,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.23333333333333334
+  },
+  {
+   "from": "iron-ingot",
+   "to": "strange-matter",
+   "item": "iron-ingot",
+   "flow": 1,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.03333333333333333
+  },
+  {
+   "from": "iron-ingot",
+   "to": "electric-motor",
+   "item": "iron-ingot",
+   "flow": 8,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.26666666666666666
+  },
+  {
+   "from": "iron-ingot",
+   "to": "gear",
+   "item": "iron-ingot",
+   "flow": 4,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.13333333333333333
+  },
+  {
+   "from": "iron-ore",
+   "to": "iron-ingot",
+   "item": "iron-ore",
+   "flow": 20,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.6666666666666666
+  },
+  {
+   "from": "iron-ore",
+   "to": "magnet",
+   "item": "iron-ore",
+   "flow": 9,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.3
+  },
+  {
+   "from": "carbon-nanotube",
+   "to": "particle-broadband",
+   "item": "carbon-nanotube",
+   "flow": 2,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.06666666666666667
+  },
+  {
+   "from": "crystal-silicon",
+   "to": "particle-broadband",
+   "item": "crystal-silicon",
+   "flow": 2,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.06666666666666667
+  },
+  {
+   "from": "plastic",
+   "to": "particle-broadband",
+   "item": "plastic",
+   "flow": 1,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.03333333333333333
+  },
+  {
+   "from": "refined-oil",
+   "to": "plastic",
+   "item": "refined-oil",
+   "flow": 2,
+   "kind": "item",
+   "by": false,
+   "fluid": true,
+   "belts": 0,
+   "util": 0
+  },
+  {
+   "from": "crude-oil",
+   "to": "refined-oil",
+   "item": "crude-oil",
+   "flow": 2,
+   "kind": "item",
+   "by": false,
+   "fluid": true,
+   "belts": 0,
+   "util": 0
+  },
+  {
+   "from": "graphene",
+   "to": "carbon-nanotube",
+   "item": "graphene",
+   "flow": 3,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.1
+  },
+  {
+   "from": "graphene",
+   "to": "casimir-crystal",
+   "item": "graphene",
+   "flow": 2,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.06666666666666667
+  },
+  {
+   "from": "graphene",
+   "to": "particle-container",
+   "item": "graphene",
+   "flow": 2,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.06666666666666667
+  },
+  {
+   "from": "sulfuric-acid",
+   "to": "graphene",
+   "item": "sulfuric-acid",
+   "flow": 3.5,
+   "kind": "item",
+   "by": false,
+   "fluid": true,
+   "belts": 0,
+   "util": 0
+  },
+  {
+   "from": "graviton-lens",
+   "to": "gravity-matrix",
+   "item": "graviton-lens",
+   "flow": 0.5,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.016666666666666666
+  },
+  {
+   "from": "quantum-chip",
+   "to": "gravity-matrix",
+   "item": "quantum-chip",
+   "flow": 0.5,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.016666666666666666
+  },
+  {
+   "from": "plane-filter",
+   "to": "quantum-chip",
+   "item": "plane-filter",
+   "flow": 1,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.03333333333333333
+  },
+  {
+   "from": "casimir-crystal",
+   "to": "plane-filter",
+   "item": "casimir-crystal",
+   "flow": 1,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.03333333333333333
+  },
+  {
+   "from": "titanium-glass",
+   "to": "plane-filter",
+   "item": "titanium-glass",
+   "flow": 2,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.06666666666666667
+  },
+  {
+   "from": "glass",
+   "to": "titanium-glass",
+   "item": "glass",
+   "flow": 2,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.06666666666666667
+  },
+  {
+   "from": "water",
+   "to": "titanium-glass",
+   "item": "water",
+   "flow": 2,
+   "kind": "item",
+   "by": false,
+   "fluid": true,
+   "belts": 0,
+   "util": 0
+  },
+  {
+   "from": "stone",
+   "to": "glass",
+   "item": "stone",
+   "flow": 4,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.13333333333333333
+  },
+  {
+   "from": "hydrogen",
+   "to": "casimir-crystal",
+   "item": "hydrogen",
+   "flow": 11.95330739299611,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.398443579766537
+  },
+  {
+   "from": "refined-oil",
+   "to": "casimir-crystal",
+   "item": "hydrogen",
+   "flow": 0.023346303501945526,
+   "kind": "item",
+   "by": true,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.0007782101167315176
+  },
+  {
+   "from": "antimatter",
+   "to": "casimir-crystal",
+   "item": "hydrogen",
+   "flow": 0.023346303501945526,
+   "kind": "item",
+   "by": true,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.0007782101167315176
+  },
+  {
+   "from": "hydrogen",
+   "to": "deuterium",
+   "item": "hydrogen",
+   "flow": 498.0544747081712,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 17,
+   "util": 0.976577401388571
+  },
+  {
+   "from": "refined-oil",
+   "to": "deuterium",
+   "item": "hydrogen",
+   "flow": 0.9727626459143969,
+   "kind": "item",
+   "by": true,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.0324254215304799
+  },
+  {
+   "from": "antimatter",
+   "to": "deuterium",
+   "item": "hydrogen",
+   "flow": 0.9727626459143969,
+   "kind": "item",
+   "by": true,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.0324254215304799
+  },
+  {
+   "from": "hydrogen",
+   "to": "energy-matrix",
+   "item": "hydrogen",
+   "flow": 1.9922178988326849,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.06640726329442283
+  },
+  {
+   "from": "refined-oil",
+   "to": "energy-matrix",
+   "item": "hydrogen",
+   "flow": 0.0038910505836575876,
+   "kind": "item",
+   "by": true,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.00012970168612191958
+  },
+  {
+   "from": "antimatter",
+   "to": "energy-matrix",
+   "item": "hydrogen",
+   "flow": 0.0038910505836575876,
+   "kind": "item",
+   "by": true,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.00012970168612191958
+  },
+  {
+   "from": "strange-matter",
+   "to": "graviton-lens",
+   "item": "strange-matter",
+   "flow": 0.5,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.016666666666666666
+  },
+  {
+   "from": "deuterium",
+   "to": "strange-matter",
+   "item": "deuterium",
+   "flow": 5,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.16666666666666666
+  },
+  {
+   "from": "particle-container",
+   "to": "strange-matter",
+   "item": "particle-container",
+   "flow": 1,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.03333333333333333
+  },
+  {
+   "from": "electromagnetic-turbine",
+   "to": "particle-container",
+   "item": "electromagnetic-turbine",
+   "flow": 2,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.06666666666666667
+  },
+  {
+   "from": "electric-motor",
+   "to": "electromagnetic-turbine",
+   "item": "electric-motor",
+   "flow": 4,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.13333333333333333
+  },
+  {
+   "from": "magnetic-coil",
+   "to": "electromagnetic-turbine",
+   "item": "magnetic-coil",
+   "flow": 4,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.13333333333333333
+  },
+  {
+   "from": "magnetic-coil",
+   "to": "electric-motor",
+   "item": "magnetic-coil",
+   "flow": 4,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.13333333333333333
+  },
+  {
+   "from": "magnetic-coil",
+   "to": "electromagnetic-matrix",
+   "item": "magnetic-coil",
+   "flow": 1,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.03333333333333333
+  },
+  {
+   "from": "magnet",
+   "to": "magnetic-coil",
+   "item": "magnet",
+   "flow": 9,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.3
+  },
+  {
+   "from": "gear",
+   "to": "electric-motor",
+   "item": "gear",
+   "flow": 4,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.13333333333333333
+  },
+  {
+   "from": "critical-photon",
+   "to": "antimatter",
+   "item": "critical-photon",
+   "flow": 1,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.03333333333333333
+  },
+  {
+   "from": "universe-matrix",
+   "to": "__target_universe-matrix",
+   "item": "universe-matrix",
+   "flow": 1,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.03333333333333333
+  }
+ ],
+ "totals": {
+  "power": 294000,
+  "built": {
+   "matrix-lab": 54,
+   "assembling-machine-3": 66,
+   "plane-smelter": 72,
+   "mining-machine": 35,
+   "chemical-plant": 18,
+   "oil-refinery": 4,
+   "oil-extractor": 2,
+   "water-pump": 8,
+   "orbital-collector": 122,
+   "miniature-particle-collider": 5,
+   "fractionator": 17,
+   "ray-receiver": 10
+  },
+  "exact": {
+   "matrix-lab": 54,
+   "assembling-machine-3": 61.33333333333333,
+   "plane-smelter": 71.25,
+   "mining-machine": 32.5,
+   "chemical-plant": 17.5,
+   "oil-refinery": 4,
+   "oil-extractor": 2,
+   "water-pump": 6.6,
+   "orbital-collector": 121.2121212121212,
+   "miniature-particle-collider": 5,
+   "fractionator": 16.666666666666668,
+   "ray-receiver": 10
+  },
+  "belts": 91,
+  "beltsByItem": {
+   "antimatter": 1,
+   "electromagnetic-matrix": 1,
+   "energy-matrix": 1,
+   "gravity-matrix": 1,
+   "information-matrix": 1,
+   "structure-matrix": 1,
+   "diamond": 2,
+   "titanium-crystal": 2,
+   "organic-crystal": 1,
+   "titanium-ingot": 3,
+   "titanium-ore": 1,
+   "energetic-graphite": 4,
+   "coal": 2,
+   "particle-broadband": 1,
+   "processor": 2,
+   "circuit-board": 2,
+   "microcrystalline-component": 1,
+   "copper-ingot": 4,
+   "high-purity-silicon": 2,
+   "silicon-ore": 1,
+   "copper-ore": 1,
+   "iron-ingot": 4,
+   "iron-ore": 2,
+   "carbon-nanotube": 1,
+   "crystal-silicon": 1,
+   "plastic": 1,
+   "graphene": 3,
+   "graviton-lens": 1,
+   "quantum-chip": 1,
+   "plane-filter": 1,
+   "casimir-crystal": 1,
+   "titanium-glass": 1,
+   "glass": 1,
+   "stone": 1,
+   "hydrogen": 25,
+   "strange-matter": 1,
+   "deuterium": 1,
+   "particle-container": 1,
+   "electromagnetic-turbine": 1,
+   "electric-motor": 1,
+   "magnetic-coil": 3,
+   "magnet": 1,
+   "gear": 1,
+   "critical-photon": 1,
+   "universe-matrix": 1
+  },
+  "raw": {
+   "titanium-ore": 18,
+   "organic-crystal": 2,
+   "coal": 33,
+   "silicon-ore": 28,
+   "copper-ore": 16,
+   "iron-ore": 29,
+   "crude-oil": 2,
+   "sulfuric-acid": 3.5,
+   "water": 2,
+   "stone": 4,
+   "hydrogen": 514
+  },
+  "surplus": {},
+  "prolif": {}
+ },
+ "D": {
+  "universe-matrix": 1,
+  "antimatter": 1,
+  "electromagnetic-matrix": 1,
+  "energy-matrix": 1,
+  "gravity-matrix": 1,
+  "information-matrix": 1,
+  "structure-matrix": 1,
+  "diamond": 3,
+  "titanium-crystal": 2,
+  "organic-crystal": 2,
+  "titanium-ingot": 9,
+  "titanium-ore": 18,
+  "energetic-graphite": 16.5,
+  "coal": 33,
+  "particle-broadband": 1,
+  "processor": 3,
+  "circuit-board": 7,
+  "microcrystalline-component": 6,
+  "copper-ingot": 16,
+  "high-purity-silicon": 14,
+  "silicon-ore": 28,
+  "copper-ore": 16,
+  "iron-ingot": 20,
+  "iron-ore": 29,
+  "carbon-nanotube": 2,
+  "crystal-silicon": 2,
+  "plastic": 1,
+  "refined-oil": 2,
+  "crude-oil": 2,
+  "graphene": 7,
+  "sulfuric-acid": 3.5,
+  "graviton-lens": 0.5,
+  "quantum-chip": 0.5,
+  "plane-filter": 1,
+  "casimir-crystal": 1,
+  "titanium-glass": 2,
+  "glass": 2,
+  "water": 2,
+  "stone": 4,
+  "hydrogen": 514,
+  "strange-matter": 0.5,
+  "deuterium": 5,
+  "particle-container": 1,
+  "electromagnetic-turbine": 2,
+  "electric-motor": 4,
+  "magnetic-coil": 9,
+  "magnet": 9,
+  "gear": 4,
+  "critical-photon": 1
+ },
+ "S": {
+  "hydrogen": 2
+ },
+ "cap": 30,
+ "order": [
+  "universe-matrix",
+  "structure-matrix",
+  "titanium-crystal",
+  "titanium-ingot",
+  "titanium-ore",
+  "organic-crystal",
+  "diamond",
+  "energetic-graphite",
+  "coal",
+  "information-matrix",
+  "processor",
+  "microcrystalline-component",
+  "high-purity-silicon",
+  "silicon-ore",
+  "copper-ingot",
+  "copper-ore",
+  "circuit-board",
+  "iron-ingot",
+  "iron-ore",
+  "particle-broadband",
+  "plastic",
+  "refined-oil",
+  "crude-oil",
+  "crystal-silicon",
+  "carbon-nanotube",
+  "graphene",
+  "sulfuric-acid",
+  "gravity-matrix",
+  "quantum-chip",
+  "plane-filter",
+  "titanium-glass",
+  "water",
+  "glass",
+  "stone",
+  "casimir-crystal",
+  "hydrogen",
+  "graviton-lens",
+  "strange-matter",
+  "particle-container",
+  "electromagnetic-turbine",
+  "magnetic-coil",
+  "magnet",
+  "electric-motor",
+  "gear",
+  "deuterium",
+  "energy-matrix",
+  "electromagnetic-matrix",
+  "antimatter",
+  "critical-photon"
+ ]
+}

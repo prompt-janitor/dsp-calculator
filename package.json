@@ -9,9 +9,12 @@
     "test": "node --test tests/*.test.mjs",
     "lint:copy": "node scripts/lint-copy.mjs",
     "serve": "npm run build && npx --yes serve dist -l 8080",
-    "assets": "node scripts/gen-assets.cjs"
+    "assets": "node scripts/gen-assets.cjs",
+    "snapshot": "node scripts/snapshot.mjs"
   },
-  "engines": { "node": ">=20" },
+  "engines": {
+    "node": ">=20"
+  },
   "devDependencies": {
     "playwright": "^1.47.0"
   }

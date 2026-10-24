@@ -1,0 +1,209 @@
+{
+ "ok": true,
+ "iterations": 3,
+ "nodes": {
+  "carbon-nanotube": {
+   "item": "carbon-nanotube",
+   "rec": "carbon-nanotube",
+   "machine": "chemical-plant",
+   "mach": "chemical-plant",
+   "prof": null,
+   "runs": 1,
+   "kind": "craft",
+   "count": 4,
+   "built": 4,
+   "outRate": {
+    "carbon-nanotube": 2
+   },
+   "inRate": {
+    "graphene": 3,
+    "titanium-ingot": 1
+   },
+   "power": 2880,
+   "powerAvg": 2880
+  },
+  "titanium-ingot": {
+   "item": "titanium-ingot",
+   "rec": "titanium-ingot",
+   "machine": "plane-smelter",
+   "mach": "plane-smelter",
+   "prof": null,
+   "runs": 1,
+   "kind": "craft",
+   "count": 1,
+   "built": 1,
+   "outRate": {
+    "titanium-ingot": 1
+   },
+   "inRate": {
+    "titanium-ore": 2
+   },
+   "power": 1440,
+   "powerAvg": 1440
+  },
+  "titanium-ore": {
+   "item": "titanium-ore",
+   "rec": "titanium-vein",
+   "machine": "mining-machine",
+   "mach": "mining-machine",
+   "prof": null,
+   "runs": 2,
+   "kind": "source",
+   "count": 0.5,
+   "built": 1,
+   "outRate": {
+    "titanium-ore": 2
+   },
+   "inRate": {},
+   "power": 0,
+   "powerAvg": 0
+  },
+  "graphene": {
+   "item": "graphene",
+   "rec": "graphene-advanced",
+   "machine": "chemical-plant",
+   "mach": "chemical-plant",
+   "prof": null,
+   "runs": 1.5,
+   "kind": "craft",
+   "count": 3,
+   "built": 3,
+   "outRate": {
+    "graphene": 3,
+    "hydrogen": 1.5
+   },
+   "inRate": {
+    "fire-ice": 3
+   },
+   "power": 2160,
+   "powerAvg": 2160
+  },
+  "fire-ice": {
+   "item": "fire-ice",
+   "rec": "fire-ice-vein",
+   "machine": "mining-machine",
+   "mach": "mining-machine",
+   "prof": null,
+   "runs": 3,
+   "kind": "source",
+   "count": 0.75,
+   "built": 1,
+   "outRate": {
+    "fire-ice": 3
+   },
+   "inRate": {},
+   "power": 0,
+   "powerAvg": 0
+  },
+  "__target_carbon-nanotube": {
+   "item": "carbon-nanotube",
+   "kind": "target",
+   "rate": 2,
+   "id": "__target_carbon-nanotube"
+  }
+ },
+ "edges": [
+  {
+   "from": "graphene",
+   "to": "carbon-nanotube",
+   "item": "graphene",
+   "flow": 3,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.1
+  },
+  {
+   "from": "titanium-ingot",
+   "to": "carbon-nanotube",
+   "item": "titanium-ingot",
+   "flow": 1,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.03333333333333333
+  },
+  {
+   "from": "titanium-ore",
+   "to": "titanium-ingot",
+   "item": "titanium-ore",
+   "flow": 2,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.06666666666666667
+  },
+  {
+   "from": "fire-ice",
+   "to": "graphene",
+   "item": "fire-ice",
+   "flow": 3,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.1
+  },
+  {
+   "from": "carbon-nanotube",
+   "to": "__target_carbon-nanotube",
+   "item": "carbon-nanotube",
+   "flow": 2,
+   "kind": "item",
+   "by": false,
+   "fluid": false,
+   "belts": 1,
+   "util": 0.06666666666666667
+  }
+ ],
+ "totals": {
+  "power": 6480,
+  "built": {
+   "chemical-plant": 7,
+   "plane-smelter": 1,
+   "mining-machine": 2
+  },
+  "exact": {
+   "chemical-plant": 7,
+   "plane-smelter": 1,
+   "mining-machine": 1.25
+  },
+  "belts": 5,
+  "beltsByItem": {
+   "graphene": 1,
+   "titanium-ingot": 1,
+   "titanium-ore": 1,
+   "fire-ice": 1,
+   "carbon-nanotube": 1
+  },
+  "raw": {
+   "titanium-ore": 2,
+   "fire-ice": 3
+  },
+  "surplus": {
+   "hydrogen": 1.5
+  },
+  "prolif": {}
+ },
+ "D": {
+  "carbon-nanotube": 2,
+  "graphene": 3,
+  "titanium-ingot": 1,
+  "titanium-ore": 2,
+  "fire-ice": 3
+ },
+ "S": {
+  "hydrogen": 1.5
+ },
+ "cap": 30,
+ "order": [
+  "carbon-nanotube",
+  "titanium-ingot",
+  "titanium-ore",
+  "graphene",
+  "fire-ice"
+ ]
+}

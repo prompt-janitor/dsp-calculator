@@ -3,6 +3,7 @@ import { $, $$ } from './core.js';
 import { state, ui, update } from './store.js';
 import { applyView, fitView, zoomAt, nearestNode, panIntoView, isHidden } from './map-view.js';
 import { selectNode, centerNode, closeInspector } from './inspector.js';
+import { hideMapHint } from './nav.js';
 
 const TAP_MOVE = 8;          // px a pointer can move and still count as a tap
 const DOUBLE_TAP_MS = 300;
@@ -62,6 +63,7 @@ function wireButtons() {
 const ARROWS = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] };
 
 function onTap(node) {
+  hideMapHint();
   selectNode(node.dataset.id);
   // Move the map when the step details or a control cover the node.
   if (ui.sel && isHidden(node)) centerNode(ui.sel, false);
@@ -75,6 +77,7 @@ function wireGestures() {
 
   viewport.addEventListener('wheel', (e) => {
     e.preventDefault();
+    hideMapHint();
     const rect = viewport.getBoundingClientRect();
     // Firefox can count a mouse wheel in lines or pages instead of pixels.
     const unit = e.deltaMode === 1 ? LINE_PX : e.deltaMode === 2 ? viewport.clientHeight : 1;
@@ -94,6 +97,7 @@ function wireGestures() {
     viewport.setPointerCapture(e.pointerId);
     viewport.classList.add('drag');
     showLayers(false);
+    hideMapHint();
     const ids = Object.keys(pointers);
     if (ids.length === 2) {
       const [a, b] = [pointers[ids[0]], pointers[ids[1]]];

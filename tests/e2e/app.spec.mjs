@@ -237,3 +237,21 @@ test('map options close with Esc and with a tap on the map', async ({ page, hasT
   await expect(layers).toBeHidden();
   await expect(button).toHaveAttribute('aria-expanded', 'false');
 });
+
+test('a short toast does not drop the update prompt', async ({ page }) => {
+  await openApp(page);
+  await showView(page, 'plan');
+  await page.evaluate(async () => {
+    const { toast } = await import(document.querySelector('link[href*="js/toast.js"]').href);
+    toast('A new version is ready.', 'Reload', () => { window.reloaded = true; });
+  });
+  await expect(page.locator('#toastAct')).toBeVisible();
+  await page.locator('[data-preset="warp"]').click();
+  await expect(page.locator('#toast')).toContainText('Loaded space warpers.');
+  await expect(page.locator('#toastAct')).toHaveCount(0);
+  await expect(page.locator('#toastAct')).toBeVisible({ timeout: 6000 });
+  const box = await page.locator('#toastAct').boundingBox();
+  expect(box.height).toBeGreaterThanOrEqual((await page.evaluate(() => matchMedia('(pointer: coarse)').matches)) ? 44 : 34);
+  await page.locator('#toastClose').click();
+  await expect(page.locator('#toast')).toBeHidden();
+});

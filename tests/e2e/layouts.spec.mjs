@@ -86,6 +86,15 @@ test('map hint fits the device and goes when you leave the map', async ({ page, 
   await expect(toast).toBeHidden();
 });
 
+test('map hint goes when you tap a node', async ({ page, hasTouch }) => {
+  await openApp(page);
+  await showView(page, 'map');
+  const toast = page.locator('#toast');
+  await expect(toast).toBeVisible();
+  await tapMapNode(page, hasTouch);
+  await expect(toast).toBeHidden();
+});
+
 test('quick start presets are not cut off in the sidebar', async ({ page }) => {
   await openApp(page);
   test.skip(!(await isWide(page)), 'split view only');

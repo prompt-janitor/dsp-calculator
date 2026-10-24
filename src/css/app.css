@@ -331,6 +331,7 @@ textarea { width: 100%; min-height: 240px; border-radius: 12px; border: 1px soli
 .toast { position: fixed; z-index: 60; left: 50%; bottom: calc(var(--tab-h) + var(--sab) + 18px); transform: translateX(-50%); display: flex; gap: 12px; align-items: center;
   padding: 10px 10px 10px 16px; border-radius: 14px; background: var(--fg); color: var(--bg); box-shadow: var(--shadow); font-size: 14px; width: max-content; max-width: calc(100% - 32px); }
 .toast .btn { min-height: 34px; background: var(--accent); color: var(--accent-ink); border: 0; }
+.toast-x { display: grid; place-items: center; width: 34px; height: 34px; margin-left: -6px; border: 0; border-radius: 17px; background: none; color: inherit; }
 
 /* build sections */
 .bsec { display: none; }
@@ -340,7 +341,8 @@ textarea { width: 100%; min-height: 240px; border-radius: 12px; border: 1px soli
 
 /* ================= Touch: 44 px tap targets ================= */
 @media (pointer: coarse) {
-  .btn { min-height: 44px; }
+  .btn, .toast .btn { min-height: 44px; }
+  .toast-x { width: 44px; height: 44px; border-radius: 22px; }
   .btn.round.small { width: 44px; height: 44px; min-height: 44px; }
   .seg button { min-height: 44px; min-width: 44px; }
   .chip, .picker .chip { min-height: 44px; }

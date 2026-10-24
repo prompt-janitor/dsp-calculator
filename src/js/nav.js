@@ -21,8 +21,9 @@ function showMap() {
   if (!seen) hintTimer = setTimeout(() => toast(hintText()), 400);
 }
 
-// The hint is about the map, so it goes when the map does.
-function leaveMap() {
+// The hint is about the map, so it goes when the map does, or when the
+// user does what it says.
+export function hideMapHint() {
   clearTimeout(hintTimer);
   hideToast(hintText());
 }
@@ -35,7 +36,7 @@ function setTab(tab) {
     if (tab === 'plan' || tab === 'settings') draft.side = tab;
     if (tab === 'map' || tab === 'build') draft.main = tab;
   }, 'nav');
-  if (tab === 'map') showMap(); else leaveMap();
+  if (tab === 'map') showMap(); else hideMapHint();
 }
 
 function setSide(side) {
@@ -44,7 +45,7 @@ function setSide(side) {
 
 function setMain(main) {
   update((draft) => { draft.main = main; if (!isWide()) draft.tab = main; }, 'nav');
-  if (main === 'map') showMap(); else leaveMap();
+  if (main === 'map') showMap(); else hideMapHint();
 }
 
 function setBuildSection(section) {

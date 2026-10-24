@@ -1,5 +1,5 @@
 // The user's choices and the session state.
-import { ITEMS, BELTS } from './engine.js';
+import { DATA, ITEMS, RECIPES, BELTS, MACHINE_CLASS } from './engine.js';
 
 const STORE_KEY = 'dsp-calculator-v1';
 
@@ -19,27 +19,83 @@ export function defaultState() {
   };
 }
 
-const TABS = ['plan', 'map', 'build', 'settings'];
+// Limits for the mining numbers. The Settings fields use them too.
+export const MINING_LIMITS = {
+  speed: { min: 10, max: 1000 },
+  veins: { min: 1, max: 12 },
+  oil: { min: 0.1, max: 20 },
+  orbital: { min: 10, max: 100 }
+};
+export const clampMining = (key, value) => Math.min(MINING_LIMITS[key].max, Math.max(MINING_LIMITS[key].min, value));
+
+const PANES = {
+  tab: ['plan', 'map', 'build', 'settings'],
+  side: ['plan', 'settings'],
+  main: ['map', 'build'],
+  bsec: ['buildings', 'steps', 'resources']
+};
+const MODES = ['products', 'speed'];
+const THEMES = ['auto', 'dark', 'light'];
+
+const isObject = (value) => !!value && typeof value === 'object' && !Array.isArray(value);
+const isNumber = (value) => typeof value === 'number' && isFinite(value);
+const isLevel = (value) => Number.isInteger(value) && value >= 0 && value <= 3;
+
+// A proliferator choice, or null when it is not valid.
+function readProlif(saved) {
+  if (!isObject(saved) || !isLevel(saved.level) || !MODES.includes(saved.mode)) return null;
+  return { level: saved.level, mode: saved.mode };
+}
+
+// Keeps only the per-step changes that name a known item, recipe and building.
+function readOverrides(saved) {
+  const overrides = {};
+  for (const item of Object.keys(saved)) {
+    const entry = saved[item];
+    if (!ITEMS[item] || !isObject(entry)) continue;
+    const kept = {};
+    if (typeof entry.recipe === 'string' && RECIPES[entry.recipe] && RECIPES[entry.recipe].out[item]) kept.recipe = entry.recipe;
+    if (typeof entry.machine === 'string' && DATA.machines[entry.machine]) kept.machine = entry.machine;
+    const prolif = readProlif(entry.prolif);
+    if (prolif) kept.prolif = prolif;
+    if (entry.external === true) kept.external = true;
+    if (Object.keys(kept).length) overrides[item] = kept;
+  }
+  return overrides;
+}
 
 // Copies the valid parts of a saved or pasted state onto a fresh default one.
+// A plan code can come from anyone, so every value is checked.
 export function mergeState(base, saved) {
-  if (!saved || typeof saved !== 'object') return base;
+  if (!isObject(saved)) return base;
   if (Array.isArray(saved.targets)) {
     base.targets = saved.targets
-      .filter((t) => t && ITEMS[t.item] && isFinite(+t.rate))
+      .filter((t) => isObject(t) && ITEMS[t.item] && isFinite(+t.rate) && +t.rate >= 0)
       .map((t) => ({ item: t.item, rate: +t.rate }));
   }
   if (saved.unit === 's' || saved.unit === 'min') base.unit = saved.unit;
-  for (const key of ['machines', 'prolif', 'mining', 'opts']) {
-    if (saved[key] && typeof saved[key] === 'object') Object.assign(base[key], saved[key]);
+  if (isObject(saved.machines)) {
+    for (const cls of Object.keys(base.machines)) {
+      const id = saved.machines[cls];
+      if (typeof id === 'string' && MACHINE_CLASS[id] === cls && DATA.machines[id]) base.machines[cls] = id;
+    }
   }
-  if (BELTS[saved.belt]) base.belt = saved.belt;
-  if (saved.stack >= 1 && saved.stack <= 4) base.stack = +saved.stack;
-  if (saved.overrides && typeof saved.overrides === 'object') base.overrides = saved.overrides;
-  for (const key of ['tab', 'side', 'main', 'bsec']) {
-    if (typeof saved[key] === 'string') base[key] = saved[key];
+  if (typeof saved.belt === 'string' && BELTS[saved.belt]) base.belt = saved.belt;
+  if (Number.isInteger(saved.stack) && saved.stack >= 1 && saved.stack <= 4) base.stack = saved.stack;
+  base.prolif = readProlif(saved.prolif) || base.prolif;
+  if (isObject(saved.mining)) {
+    for (const key of Object.keys(MINING_LIMITS)) {
+      if (isNumber(saved.mining[key])) base.mining[key] = clampMining(key, saved.mining[key]);
+    }
   }
-  if (!TABS.includes(base.tab)) base.tab = 'plan';
+  if (isObject(saved.overrides)) base.overrides = readOverrides(saved.overrides);
+  if (isObject(saved.opts)) {
+    for (const key of ['spray', 'labels']) if (typeof saved.opts[key] === 'boolean') base.opts[key] = saved.opts[key];
+    if (THEMES.includes(saved.opts.theme)) base.opts.theme = saved.opts.theme;
+  }
+  for (const key of Object.keys(PANES)) {
+    if (PANES[key].includes(saved[key])) base[key] = saved[key];
+  }
   return base;
 }
 

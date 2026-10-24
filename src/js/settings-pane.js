@@ -3,18 +3,19 @@ import { BELTS, DATA } from './engine.js';
 import {
   $, esc, svg, itemIcon, machineIcon, machineName, count, inFrame, isStandalone, isIOS, CLASS_ORDER, CLASS_LABEL, TIER_LABEL, ROMAN,
 } from './core.js';
-import { state, ui, update, defaultState, replaceState, renderAll } from './store.js';
+import { state, ui, update, defaultState, replaceState, renderAll, clampMining } from './store.js';
 import { install } from './pwa.js';
 import { toast } from './toast.js';
 
-// Number fields: the mining setting each one changes, the step for + and -, and the limits.
+// Number fields: the mining setting each one changes and the step for + and -.
+// The limits are in store.js, which also checks plan codes.
 const NUMBERS = {
-  mspeed: { key: 'speed', step: 10, min: 10, max: 1000 },
-  mveins: { key: 'veins', step: 1, min: 1, max: 12 },
-  moil: { key: 'oil', step: 0.1, min: 0.1, max: 20 },
-  morb: { key: 'orbital', step: 5, min: 10, max: 100 }
+  mspeed: { key: 'speed', step: 10 },
+  mveins: { key: 'veins', step: 1 },
+  moil: { key: 'oil', step: 0.1 },
+  morb: { key: 'orbital', step: 5 }
 };
-const clamp = (id, value) => Math.min(NUMBERS[id].max, Math.max(NUMBERS[id].min, value));
+const clamp = (id, value) => clampMining(NUMBERS[id].key, value);
 const sub = (text) => (text ? `<small>${esc(text)}</small>` : '');
 const chevron = () => svg('i-chev', 18, 'chev');
 
@@ -35,7 +36,7 @@ function numberRow(id, label, note) {
     <div class="numrow"><label for="${id}">${esc(label)}${sub(note)}</label>
       <div class="stepper">
         <button type="button" data-nstep="${id}" data-dir="-1" aria-label="Decrease ${esc(label.toLowerCase())}">−</button>
-        <input type="text" inputmode="decimal" id="${id}" value="${state.mining[NUMBERS[id].key]}">
+        <input type="text" inputmode="decimal" id="${id}" value="${esc(state.mining[NUMBERS[id].key])}">
         <button type="button" data-nstep="${id}" data-dir="1" aria-label="Increase ${esc(label.toLowerCase())}">+</button>
       </div></div>`;
 }

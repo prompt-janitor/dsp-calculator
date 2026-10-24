@@ -1,7 +1,7 @@
 /* ---------- Map controls: buttons, options, pan, pinch and tap ---------- */
-import { $, isWide } from './core.js';
+import { $, $$, isWide } from './core.js';
 import { state, ui, update } from './store.js';
-import { applyView, fitView, zoomAt } from './map-view.js';
+import { applyView, fitView, zoomAt, nearestNode, panIntoView } from './map-view.js';
 import { selectNode, centerNode, closeInspector } from './inspector.js';
 
 const TAP_MOVE = 8;          // px a pointer can move and still count as a tap
@@ -42,7 +42,9 @@ function wireButtons() {
   $('#zfit').addEventListener('click', () => animate(() => fitView(true)));
 }
 
-function onTap(node, e, viewport) {
+const ARROWS = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] };
+
+function onTap(node, viewport) {
   selectNode(node.dataset.id);
   // On phones the inspector covers the lower part of the map.
   if (isWide()) return;
@@ -125,21 +127,39 @@ function wireGestures() {
     }
     lastTap = now;
     lastTapAt = [e.clientX, e.clientY];
-    if (node) onTap(node, e, viewport);
+    if (node) onTap(node, viewport);
     else closeInspector();
   });
   viewport.addEventListener('pointercancel', release);
+}
 
-  // Enter or Space on a focused map node opens it, as a tap does.
+// Enter or Space opens a focused node, as a tap does. Arrow keys move focus to the next node.
+function wireKeys() {
+  const viewport = $('#viewport');
   viewport.addEventListener('keydown', (e) => {
     const node = e.target.closest('.node');
-    if (!node || (e.key !== 'Enter' && e.key !== ' ')) return;
+    if (!node) return;
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      onTap(node, viewport);
+      return;
+    }
+    const dir = ARROWS[e.key];
+    if (!dir) return;
     e.preventDefault();
-    selectNode(node.dataset.id);
+    const next = nearestNode(node.dataset.id, dir[0], dir[1]);
+    const el = next && $$('#stage .node').find((n) => n.dataset.id === next);
+    if (el) el.focus();
+  });
+  viewport.addEventListener('focusin', (e) => {
+    const node = e.target.closest('.node');
+    // A tap also focuses the node. Only keyboard focus should move the map.
+    if (node && node.matches(':focus-visible')) panIntoView(node);
   });
 }
 
 export function wireMapControls() {
   wireButtons();
   wireGestures();
+  wireKeys();
 }

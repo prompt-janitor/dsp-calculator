@@ -59,6 +59,8 @@ export function smallTargets(page) {
   return page.evaluate(() => {
     const out = [];
     for (const el of document.querySelectorAll('button, a[href], input, select, textarea, [role="button"], [tabindex]:not([tabindex="-1"])')) {
+      // Map nodes scale with the zoom, so their size on screen is not fixed.
+      if (el.closest('#stage')) continue;
       if (!el.checkVisibility({ checkOpacity: true, checkVisibilityCSS: true })) continue;
       const box = (el.tagName === 'INPUT' && el.closest('label')) || el;
       const r = box.getBoundingClientRect();

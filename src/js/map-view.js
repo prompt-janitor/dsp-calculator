@@ -16,6 +16,9 @@ const FAR_ZOOM = 0.42;
 // the fit button still shows the whole map.
 const PHONE_MIN_FIT = 0.34;
 const PHONE_START_ZOOM = 0.75;
+// Keyboard focus keeps a node this far from the map edges.
+const FOCUS_MARGIN = 24;
+
 export function nodeColor(n) {
   if (n.kind === 'raw') return 'var(--c-source)';
   const cls = n.kind === 'craft' ? MACH_CLASS[n.machine] : n.kind === 'source' ? 'miner' : null;
@@ -25,16 +28,18 @@ export function nodeColor(n) {
 /* ---------- nodes ---------- */
 function rateHTML(perSec) { return `<div class="t2"><b>${rateStr(perSec)}</b>${unitLabel()}</div>`; }
 
-function nodeShell({ id, cls, pos, color, body }) {
+// label is the name a screen reader reads for the node.
+function nodeShell({ id, cls, pos, color, label, body }) {
   const style = `left:${pos.x}px;top:${pos.y}px${color ? `;--nc:${color}` : ''}`;
-  return `<div class="${cls}" data-id="${esc(id)}" style="${style}">${body}</div>`;
+  const attrs = `data-id="${esc(id)}" style="${style}" tabindex="0" role="button" aria-label="${esc(label)}"`;
+  return `<div class="${cls}" ${attrs}>${body}</div>`;
 }
 
 function targetHTML(id, n, pos) {
   const name = itemName(n.item);
   const body = `<div class="pic">${itemIcon(n.item, 34)}</div>` +
     `<div class="txt"><div class="tag">Target</div><div class="t1">${esc(name)}</div>${rateHTML(n.rate)}</div>`;
-  return nodeShell({ id, cls: 'node target', pos, body });
+  return nodeShell({ id, cls: 'node target', pos, label: `Target: ${name}, ${rateStr(n.rate)}${unitLabel()}`, body });
 }
 
 function rawHTML(id, n, pos, sel) {
@@ -42,7 +47,8 @@ function rawHTML(id, n, pos, sel) {
   const body = `<div class="pic">${itemIcon(n.item, 34)}</div>` +
     `<div class="txt"><div class="t1">${esc(name)}</div>${rateHTML(n.rate)}</div>` +
     '<div class="mrow"><span class="mn">Supplied from elsewhere</span></div>';
-  return nodeShell({ id, cls: 'node raw' + sel, pos, color: 'var(--c-source)', body });
+  const label = `${name}, ${rateStr(n.rate)}${unitLabel()}, supplied from elsewhere`;
+  return nodeShell({ id, cls: 'node raw' + sel, pos, color: 'var(--c-source)', label, body });
 }
 
 function sprayBadge(prof) {
@@ -66,7 +72,8 @@ function craftHTML(id, n, pos, sel) {
     `<div class="txt"><div class="t1${badge ? ' hb' : ''}" title="${esc(n.rec.name)}">${esc(name)}</div>${rateHTML(made)}</div>` +
     machineRow(n) +
     `<div class="util"><i style="width:${Math.round(util * 100)}%"></i></div>`;
-  return nodeShell({ id, cls: 'node' + sel, pos, color: nodeColor(n), body });
+  const label = `${name}, ${rateStr(made)}${unitLabel()}, ${machineShortName(n.machine)}: ${n.built || 0}`;
+  return nodeShell({ id, cls: 'node' + sel, pos, color: nodeColor(n), label, body });
 }
 
 function nodeHTML(id, pos) {
@@ -197,4 +204,43 @@ export function applySelection() {
     el.classList.toggle('sel', id === ui.sel);
     el.classList.toggle('rel', !!related[id]);
   }
+}
+
+/* ---------- keyboard focus ---------- */
+// The node nearest to node id in the direction (dx, dy). Distance across the
+// direction counts double, so focus stays in the same row or column.
+export function nearestNode(id, dx, dy) {
+  const nodes = ui.layout ? ui.layout.nodes.filter((n) => ui.plan.nodes[n.id]) : [];
+  const from = nodes.find((n) => n.id === id);
+  if (!from) return null;
+  const cx = (n) => n.x + NODE_WIDTH / 2, cy = (n) => n.y + n.h / 2;
+  let best = null, bestScore = Infinity;
+  for (const n of nodes) {
+    const along = (cx(n) - cx(from)) * dx + (cy(n) - cy(from)) * dy;
+    if (n === from || along <= 0) continue;
+    const across = Math.abs((cx(n) - cx(from)) * dy) + Math.abs((cy(n) - cy(from)) * dx);
+    const score = along + 2 * across;
+    if (score < bestScore) { best = n; bestScore = score; }
+  }
+  return best && best.id;
+}
+
+// Pans just enough to show a node that got keyboard focus.
+export function panIntoView(el) {
+  const vp = $('#viewport');
+  // Focus can scroll the viewport even with overflow hidden, and that would
+  // move the map away from the view transform.
+  vp.scrollLeft = 0;
+  vp.scrollTop = 0;
+  const area = freeArea(vp);
+  const box = el.getBoundingClientRect(), outer = vp.getBoundingClientRect();
+  const left = outer.left + FOCUS_MARGIN, right = outer.right - FOCUS_MARGIN;
+  const top = outer.top + area.top, bottom = outer.bottom - area.bottom;
+  let dx = 0, dy = 0;
+  if (box.left < left) dx = left - box.left; else if (box.right > right) dx = right - box.right;
+  if (box.top < top) dy = top - box.top; else if (box.bottom > bottom) dy = bottom - box.bottom;
+  if (!dx && !dy) return;
+  ui.view.x += dx;
+  ui.view.y += dy;
+  applyView();
 }

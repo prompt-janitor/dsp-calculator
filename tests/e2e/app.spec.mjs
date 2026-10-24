@@ -101,6 +101,23 @@ test.describe('sheets open and close', () => {
   });
 });
 
+test('map nodes work with the keyboard', async ({ page, hasTouch }) => {
+  test.skip(hasTouch, 'keyboard only');
+  await openApp(page);
+  await showView(page, 'map');
+  const target = page.locator('#stage .node.target').first();
+  await expect(target).toHaveAttribute('aria-label', /^Target: /);
+  await target.focus();
+  await page.keyboard.press('ArrowLeft');
+  const focused = page.locator('#stage .node:focus');
+  await expect(focused).toHaveCount(1);
+  await expect(focused).not.toHaveClass(/target/);
+  const id = await focused.getAttribute('data-id');
+  await page.keyboard.press('Enter');
+  await sheetOpen(page, 'inspector');
+  await expect(page.locator('#stage .node.sel')).toHaveAttribute('data-id', id);
+});
+
 for (const view of VIEWS) {
   test(`no horizontal page scroll: ${view}`, async ({ page }) => {
     await openApp(page);

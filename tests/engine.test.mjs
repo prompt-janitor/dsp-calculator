@@ -2,7 +2,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { baseCfg } from './lib/load.mjs';
-import { solve, defaultRecipeFor, DATA, CANDS } from '../src/js/engine.js';
+import { solve, defaultRecipeFor, DATA, RECIPES_FOR } from '../src/js/engine.js';
 
 const plan = (targets, patch = {}) => solve(Object.assign(baseCfg(), patch, { targets }));
 const close = (a, b, msg) => assert.ok(Math.abs(a - b) < 1e-6, `${msg}: ${a} != ${b}`);
@@ -30,7 +30,7 @@ test('proliferator Mk.III extra products cuts raw ore and adds spray demand', ()
 });
 
 test('every craftable item solves', () => {
-  const bad = DATA.items.filter((i) => (CANDS[i.id] || []).length)
+  const bad = DATA.items.filter((i) => (RECIPES_FOR[i.id] || []).length)
     .filter((i) => { const p = plan([{ item: i.id, rate: 1 }]); return !p.ok || !Number.isFinite(p.totals.power); })
     .map((i) => i.id);
   assert.deepEqual(bad, []);

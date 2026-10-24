@@ -1,5 +1,5 @@
 /* ---------- Inspector: details and changes for one step ---------- */
-import { RECIPES, CANDS, EXCL, defaultRecipeFor, fmt, fmtPower } from './engine.js';
+import { RECIPES, RECIPES_FOR, EXCLUDED, defaultRecipeFor, formatNumber, formatPower } from './engine.js';
 import { $, esc, svg, itemIcon, itemName, machineName, rateStr, unitLabel, optionTag, isWide, ROMAN } from './core.js';
 import { state, ui, update } from './store.js';
 import { NODE_WIDTH, applyView, applySelection } from './map-view.js';
@@ -57,11 +57,11 @@ function headHTML(node, item) {
 }
 
 function recipeOptions(item, current) {
-  return (CANDS[item] || []).map((id) => {
+  return (RECIPES_FOR[item] || []).map((id) => {
     const recipe = RECIPES[id];
     const outputs = Object.keys(recipe.out);
     const makes = outputs.length > 1 ? ' → ' + outputs.map(itemName).join(' + ') : '';
-    return optionTag(id, recipe.name + makes + (EXCL[id] ? ' (advanced)' : ''), current);
+    return optionTag(id, recipe.name + makes + (EXCLUDED[id] ? ' (advanced)' : ''), current);
   }).join('');
 }
 
@@ -98,7 +98,7 @@ function craftBodyHTML(node, item, override) {
       <div class="kpi"><b>${rateStr(node.outRate[item])}</b><span>${unitLabel()} out</span></div>
       <div class="kpi"><b>${busy}%</b><span>busy</span></div>
     </div>
-    <p class="hintp">${fmt(node.count)} machines exactly${node.power ? ' · ' + fmtPower(node.power) : ''}</p>
+    <p class="hintp">${formatNumber(node.count)} machines exactly${node.power ? ' · ' + formatPower(node.power) : ''}</p>
     ${group('Consumes', inputs)}
     ${group('Also produces', extras)}
     ${changeStepHTML(node, item, override)}

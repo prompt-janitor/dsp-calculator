@@ -1,5 +1,5 @@
 /* ---------- Flow map: render, pan, zoom and selection ---------- */
-import { MACH_CLASS, fmtPower } from './engine.js';
+import { MACHINE_CLASS, formatPower } from './engine.js';
 import { $, $$, esc, machineIcon, itemIcon, itemName, itemColor, machineShortName, rateStr, unitLabel, isWide, CLASS_COLOR, ROMAN } from './core.js';
 import { state, ui } from './store.js';
 import { layoutGraph, NODE_WIDTH } from './layout.js';
@@ -21,7 +21,7 @@ const FOCUS_MARGIN = 24;
 
 export function nodeColor(n) {
   if (n.kind === 'raw') return 'var(--c-source)';
-  const cls = n.kind === 'craft' ? MACH_CLASS[n.machine] : n.kind === 'source' ? 'miner' : null;
+  const cls = n.kind === 'craft' ? MACHINE_CLASS[n.machine] : n.kind === 'source' ? 'miner' : null;
   return CLASS_COLOR[cls] || 'var(--c-other)';
 }
 
@@ -58,7 +58,7 @@ function sprayBadge(prof) {
 
 function machineRow(n) {
   const icon = machineIcon(n.machine, 20);
-  const power = n.power > 0 ? `<span class="pw">${fmtPower(n.power)}</span>` : '';
+  const power = n.power > 0 ? `<span class="pw">${formatPower(n.power)}</span>` : '';
   return `<div class="mrow">${icon}<span class="cnt">${n.built ? n.built + '×' : '–'}</span>` +
     `<span class="mn">${esc(machineShortName(n.machine))}</span>${power}</div>`;
 }

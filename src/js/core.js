@@ -1,5 +1,5 @@
 /* ---------- Shared constants and helpers ---------- */
-import { DATA, ITEMS, fmt } from './engine.js';
+import { DATA, ITEMS, formatNumber } from './engine.js';
 import { state } from './store.js';
 
 export const $ = (selector, root = document) => root.querySelector(selector);
@@ -68,7 +68,7 @@ export function machineShortName(id) {
 // Rates are items per second inside the solver. These turn them into the unit the user picked.
 export const unitFactor = () => (state.unit === 'min' ? 60 : 1);
 export const unitLabel = () => (state.unit === 'min' ? '/min' : '/s');
-export const rateStr = (perSec) => fmt(perSec * unitFactor());
+export const rateStr = (perSec) => formatNumber(perSec * unitFactor());
 export const count = (n) => n.toLocaleString('en-US');
 
 export function optionTag(value, label, current) {

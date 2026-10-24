@@ -1,5 +1,5 @@
 /* ---------- Plan pane: targets, presets and totals ---------- */
-import { fmt, fmtPower } from './engine.js';
+import { formatNumber, formatPower } from './engine.js';
 import { $, esc, svg, itemIcon, machineIcon, itemName, machineName, rateStr, unitLabel, count, PRESETS } from './core.js';
 import { state, ui, update } from './store.js';
 import { openPicker } from './picker.js';
@@ -69,7 +69,7 @@ const sum = (counts) => Object.values(counts).reduce((a, b) => a + b, 0);
 function statsHTML(totals) {
   const sprayed = sum(totals.prolif);
   return stat(count(sum(totals.built)), 'Buildings') +
-    stat(fmtPower(totals.power), 'Power') +
+    stat(formatPower(totals.power), 'Power') +
     stat(count(totals.belts), 'Belt lines') +
     (sprayed > 0 ? stat(rateStr(sprayed), 'Proliferator ' + unitLabel()) : stat(Object.keys(totals.raw).length, 'Raw resources')) +
     (ui.plan.ok ? '' : stat('Loop', 'Recipes feed each other without surplus', ' warn wide'));
@@ -82,7 +82,7 @@ function glanceHTML(totals) {
   const rows = top.map((m) => `
     <button class="row" type="button" data-goto="build">
       <span class="ibox">${machineIcon(m, 30)}</span>
-      <span class="main-t"><span class="t">${esc(machineName(m))}</span><span class="s">${fmt(totals.exact[m])} exact</span></span>
+      <span class="main-t"><span class="t">${esc(machineName(m))}</span><span class="s">${formatNumber(totals.exact[m])} exact</span></span>
       <span class="end"><b>${totals.built[m]}</b></span>
     </button>`).join('');
   return `
@@ -94,7 +94,7 @@ function glanceHTML(totals) {
 // Parts of the plan pane that change with every solve.
 export function renderPlanTotals() {
   const totals = ui.plan.totals;
-  const brief = `${count(sum(totals.built))} buildings · ${fmtPower(totals.power)}`;
+  const brief = `${count(sum(totals.built))} buildings · ${formatPower(totals.power)}`;
   $('#planStats').innerHTML = statsHTML(totals);
   $('#glance').innerHTML = glanceHTML(totals);
   $('#miniStats').textContent = `${brief} · ${totals.belts} belt lines`;

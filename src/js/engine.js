@@ -1,8 +1,8 @@
 /* ---------- Engine: pure calculation, no DOM ---------- */
 // Filled by initEngine().
 export let DATA = null;
-export const RECIPES = {}, ITEMS = {}, CANDS = {}, EXCL = {};
-export const MACH_CLASS = {
+export const RECIPES = {}, ITEMS = {}, RECIPES_FOR = {}, EXCLUDED = {};
+export const MACHINE_CLASS = {
   'arc-smelter': 'smelter', 'plane-smelter': 'smelter', 'df-negentropy-smelter': 'smelter',
   'assembling-machine-1': 'assembler', 'assembling-machine-2': 'assembler', 'assembling-machine-3': 'assembler', 'df-recomposing-assembler': 'assembler',
   'chemical-plant': 'chem', 'quantum-chemical-plant': 'chem',
@@ -41,22 +41,22 @@ export function initEngine(data) {
   for (const recipe of data.recipes) {
     if (recipe.id === 'deuterium-fractionation') { recipe.in = { 'hydrogen': 1 }; recipe.out = { 'deuterium': 0.01 }; recipe.time = 1; }
   }
-  for (const id of data.excluded) EXCL[id] = 1;
+  for (const id of data.excluded) EXCLUDED[id] = 1;
   // FactorioLab's defaults exclude fire ice veins. Allow them, so fire ice comes from its vein by default.
-  delete EXCL['fire-ice-vein'];
+  delete EXCLUDED['fire-ice-vein'];
 
   for (const recipe of data.recipes) {
     RECIPES[recipe.id] = recipe;
-    for (const out of Object.keys(recipe.out)) (CANDS[out] = CANDS[out] || []).push(recipe.id);
+    for (const out of Object.keys(recipe.out)) (RECIPES_FOR[out] = RECIPES_FOR[out] || []).push(recipe.id);
   }
   for (const item of data.items) ITEMS[item.id] = item;
 }
 
 export function defaultRecipeFor(item) {
-  const candidates = CANDS[item];
+  const candidates = RECIPES_FOR[item];
   if (!candidates || !candidates.length) return null;
   if (DEFAULT_PICK[item] && RECIPES[DEFAULT_PICK[item]]) return DEFAULT_PICK[item];
-  let allowed = candidates.filter((id) => !EXCL[id]);
+  let allowed = candidates.filter((id) => !EXCLUDED[id]);
   if (!allowed.length) allowed = candidates;
   const plainVein = allowed.filter((id) => RECIPES[id].mining && Object.keys(RECIPES[id].out).length === 1);
   if (plainVein.length) return plainVein[0];
@@ -70,7 +70,7 @@ function beltCapacity(cfg) { return (BELTS[cfg.belt] || DEFAULT_BELT_SPEED) * (c
 function pickMachine(recipe, cfg, chosen) {
   if (chosen && recipe.prod.includes(chosen)) return chosen;
   for (const machine of recipe.prod) {
-    if (cfg.machines[MACH_CLASS[machine]] === machine) return machine;
+    if (cfg.machines[MACHINE_CLASS[machine]] === machine) return machine;
   }
   return recipe.prod[0];
 }
@@ -334,7 +334,7 @@ export function solve(cfg) {
 }
 
 /* ---------- Formatting ---------- */
-export function fmt(value, digits) {
+export function formatNumber(value, digits) {
   if (!isFinite(value)) return '–';
   const size = Math.abs(value);
   if (size === 0) return '0';
@@ -345,7 +345,7 @@ export function fmt(value, digits) {
   if (size >= 0.01) return value.toFixed(3);
   return value.toPrecision(2);
 }
-export function fmtPower(kw) {
+export function formatPower(kw) {
   if (kw >= 1e6) return (kw / 1e6).toFixed(2) + ' GW';
   if (kw >= 1000) return (kw / 1000).toFixed(kw >= 100000 ? 0 : 1) + ' MW';
   return Math.round(kw) + ' kW';

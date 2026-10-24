@@ -1,5 +1,5 @@
 /* ---------- Share sheet: text summary and plan code ---------- */
-import { BELTS, fmt, fmtPower } from './engine.js';
+import { BELTS, formatNumber, formatPower } from './engine.js';
 import { $, $$, itemName, machineName, rateStr, unitLabel, inFrame } from './core.js';
 import { state, ui, defaultState, mergeState, replaceState, renderAll } from './store.js';
 import { openSheet, closeSheet } from './sheets.js';
@@ -17,7 +17,7 @@ function summaryText() {
   const lines = [
     'Dyson Sphere plan',
     'Targets: ' + state.targets.map((t) => `${t.rate}${unit} ${itemName(t.item)}`).join(', '),
-    `Power: ${fmtPower(totals.power)} | Belt lines: ${totals.belts} (${BELTS[state.belt] * state.stack} items/s each)`,
+    `Power: ${formatPower(totals.power)} | Belt lines: ${totals.belts} (${BELTS[state.belt] * state.stack} items/s each)`,
     '', 'Buildings',
     ...byCount(totals.built).map((m) => `  ${totals.built[m]} x ${machineName(m)}`),
     '', 'Raw input' + unit,
@@ -25,7 +25,7 @@ function summaryText() {
     '', 'Steps',
     ...ui.plan.order.map((id) => {
       const node = ui.plan.nodes[id];
-      return `  ${itemName(id)}: ${rateStr(node.outRate[id])}${unit} in ${node.built} x ${machineName(node.machine)} (${fmt(node.count)} exact)`;
+      return `  ${itemName(id)}: ${rateStr(node.outRate[id])}${unit} in ${node.built} x ${machineName(node.machine)} (${formatNumber(node.count)} exact)`;
     })
   ];
   return lines.join('\n');

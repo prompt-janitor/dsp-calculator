@@ -1,5 +1,5 @@
 /* ---------- Item picker ---------- */
-import { DATA, CANDS } from './engine.js';
+import { DATA, RECIPES_FOR } from './engine.js';
 import { $, esc, icon, isWide } from './core.js';
 import { ui } from './store.js';
 import { openSheet, closeSheet } from './sheets.js';
@@ -41,7 +41,7 @@ const itemButton = (item) => `
 
 function renderGrid() {
   const query = $('#pickSearch').value.trim().toLowerCase();
-  const found = DATA.items.filter((item) => CANDS[item.id] && (!query || item.name.toLowerCase().includes(query)));
+  const found = DATA.items.filter((item) => RECIPES_FOR[item.id] && (!query || item.name.toLowerCase().includes(query)));
   const html = GROUPS.map(([id, label]) => {
     if (ui.picker.cat !== 'all' && ui.picker.cat !== id) return '';
     const list = found.filter((item) => groupOf(item) === id);

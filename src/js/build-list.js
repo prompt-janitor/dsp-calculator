@@ -1,5 +1,5 @@
 /* ---------- Build list: buildings, steps and resources ---------- */
-import { BELTS, fmt, fmtPower } from './engine.js';
+import { BELTS, formatNumber, formatPower } from './engine.js';
 import { $, esc, svg, itemIcon, machineIcon, itemName, machineName, machineShortName, rateStr, unitLabel, count, ROMAN } from './core.js';
 import { state, ui } from './store.js';
 import { nodeColor } from './map-view.js';
@@ -32,7 +32,7 @@ function buildingsHTML(totals, steps) {
       <div class="row">
         <span class="ibox">${machineIcon(m, 30)}</span>
         <span class="main-t"><span class="t">${esc(machineName(m))}</span>
-          <span class="s">${fmt(totals.exact[m])} exact${power ? ' · ' + fmtPower(power) : ''}</span></span>
+          <span class="s">${formatNumber(totals.exact[m])} exact${power ? ' · ' + formatPower(power) : ''}</span></span>
         ${end(count(totals.built[m]))}
       </div>`;
   }).join('');
@@ -40,7 +40,7 @@ function buildingsHTML(totals, steps) {
   return section('buildings', `
     ${title('Buildings to place', count(total))}
     <div class="group">${rows || '<div class="row noic"><span class="s">Nothing to build.</span></div>'}</div>
-    <p class="gnote">${fmtPower(totals.power)} with every building running. Miners, collectors and pumps are not counted.</p>`);
+    <p class="gnote">${formatPower(totals.power)} with every building running. Miners, collectors and pumps are not counted.</p>`);
 }
 
 function stepRow(node, beltsOut) {

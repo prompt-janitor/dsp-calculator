@@ -268,8 +268,10 @@ button.row:active { background: var(--panel2); }
 .layers { position: absolute; z-index: 5; right: max(12px, var(--sar)); top: calc(var(--sat) + 62px); width: 250px; padding: 6px 0; border-radius: 14px; }
 .legend { display: flex; flex-wrap: wrap; gap: 6px 12px; padding: 10px 14px 6px; border-top: 1px solid var(--sep); font-size: 12.5px; color: var(--muted); }
 .legend i { display: inline-block; width: 9px; height: 9px; border-radius: 2px; margin-right: 5px; }
-/* Shown on phones while part of the map is off the left edge. */
-.edgefade { position: absolute; z-index: 3; left: 0; top: 0; bottom: 0; width: 64px; display: flex; align-items: center; padding-left: max(8px, var(--sal));
+/* Shown on small screens while part of the map is off the left edge. On
+   phones the button sits level with the fit button, away from the target row. */
+.edgefade { position: absolute; z-index: 3; left: 0; top: 0; bottom: 0; width: 72px; display: flex; align-items: flex-end;
+  padding: 0 0 calc(var(--tab-h) + var(--sab) + 14px) max(12px, var(--sal));
   background: linear-gradient(to right, var(--bg) 20%, transparent); pointer-events: none; }
 .edgefade .btn { pointer-events: auto; }
 .svgi.flip { transform: scaleX(-1); }
@@ -366,6 +368,7 @@ textarea { width: 100%; min-height: 240px; border-radius: 12px; border: 1px soli
   .mapbar .title { display: none; }
   .layers { top: calc(var(--sat) + 60px); max-height: calc(100% - var(--sat) - 70px); overflow-y: auto; }
   .zoombar { flex-direction: row; bottom: calc(var(--sab) + 10px); }
+  .edgefade { padding-bottom: calc(var(--sab) + 10px); }
   .sheet.inspector { left: auto; top: 0; bottom: 0; width: min(360px, 46vw); max-height: none; padding-left: 0; border-radius: 16px 0 0 16px;
     border-bottom: 0; transform: translateX(105%); --drag: 0; }
   .sheet.inspector.on { transform: none; }
@@ -402,6 +405,7 @@ textarea { width: 100%; min-height: 240px; border-radius: 12px; border: 1px soli
   .mapbar .sp, .mapbar .title { display: none; }
   .layers { left: 16px; right: auto; top: 64px; }
   .zoombar { left: 16px; right: auto; bottom: calc(var(--sab) + 16px); }
+  .edgefade { align-items: center; padding-bottom: 0; }
   .toast { left: calc(50% + var(--side-w) / 2); bottom: calc(var(--sab) + 24px); }
   .bsec { display: block !important; }
   #buildBody { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); align-content: start; gap: 0 4px; padding: 0 8px calc(var(--sab) + 28px); }
@@ -419,6 +423,11 @@ textarea { width: 100%; min-height: 240px; border-radius: 12px; border: 1px soli
 @media (min-width: 600px) and (max-width: 1023px) and (min-height: 500px) {
   .brand b { display: none; }
   .side .stat b { font-size: 18px; }
+  /* Four tiers do not fit in one row here, so they go in two. */
+  .side .tiers { gap: 6px; }
+  .side .tiers[style*="--n:4"] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .side .topt { padding: 8px 2px 7px; font-size: 11px; }
+  .side .topt small { font-size: 10px; }
   /* The sidebar is too narrow for the rate field next to the item icon. */
   .target .pick { grid-row: auto; }
   .target .stepper { grid-column: 1 / -1; }

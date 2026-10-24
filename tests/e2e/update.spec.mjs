@@ -14,9 +14,9 @@ let work, server, live;
 // Both tests use one server and port.
 test.describe.configure({ mode: 'serial' });
 
-// Copies src/ and the build scripts to dir, adds a marker to the page and builds.
+// Copies what the build reads to dir, adds a marker to the page and builds.
 function build(dir, label) {
-  for (const p of ['src', 'scripts']) cpSync(p, join(dir, p), { recursive: true });
+  for (const p of ['src', 'scripts', 'LICENSE']) cpSync(p, join(dir, p), { recursive: true });
   const page = join(dir, 'src', 'index.html');
   writeFileSync(page, readFileSync(page, 'utf8').replace('<head>', `<head>\n<meta name="build" content="${label}">`));
   execFileSync(process.execPath, [join(dir, 'scripts', 'build.mjs')]);

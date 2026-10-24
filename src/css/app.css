@@ -140,7 +140,8 @@ button { cursor: pointer; -webkit-user-select: none; user-select: none; }
 .row { display: flex; align-items: center; gap: 12px; padding: 10px 14px; min-height: 52px; position: relative; width: 100%; background: none; border: 0; text-align: left; }
 .row + .row::before { content: ""; position: absolute; top: 0; left: 62px; right: 0; border-top: 1px solid var(--sep); }
 .row.noic + .row::before, .row + .row.noic::before { left: 14px; }
-button.row:active { background: var(--panel2); }
+button.row:active, a.row:active { background: var(--panel2); }
+a.row { color: inherit; text-decoration: none; }
 .row .main-t { flex: 1; min-width: 0; }
 .row .t { display: block; font-weight: 500; line-height: 1.25; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .row .s { display: block; font-size: 13px; color: var(--muted); line-height: 1.3; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }

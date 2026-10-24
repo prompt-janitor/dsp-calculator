@@ -44,6 +44,7 @@ cpSync(src('assets/sprite.webp'), join(dist, 'sprite.webp'));
 cpSync(src('manifest.webmanifest'), join(dist, 'manifest.webmanifest'));
 mkdirSync(join(dist, 'licenses'), { recursive: true });
 cpSync(src('assets/fonts/OFL-ChakraPetch.txt'), join(dist, 'licenses', 'OFL-ChakraPetch.txt'));
+cpSync(join(root, 'LICENSE'), join(dist, 'licenses', 'LICENSE.txt'));
 writeFileSync(join(dist, '.nojekyll'), '');
 
 // The cache version is a hash of every file in dist/, so any change to any

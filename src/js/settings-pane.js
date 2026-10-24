@@ -1,4 +1,4 @@
-/* ---------- Settings pane ---------- */
+// The Settings pane.
 import { BELTS, DATA } from './engine.js';
 import {
   $, esc, svg, itemIcon, machineIcon, machineName, count, inFrame, isStandalone, isIOS, CLASS_ORDER, CLASS_LABEL, TIER_LABEL, ROMAN,
@@ -43,11 +43,12 @@ function numberRow(id, label, note) {
 function installHTML() {
   if (isStandalone() || inFrame()) return '';
   if (isIOS()) {
-    return `<div class="install">${svg('i-home')}<div><b>Install on your Home Screen</b>Tap ${svg('i-share', 16)} Share in Safari,
-      then <b class="inline">Add to Home Screen</b>. It then opens full screen and works offline.</div></div>`;
+    return `<div class="install">${svg('i-home')}<div><b>Add to your Home Screen</b>In Safari, tap ${svg('i-share', 16)} Share,
+      then <b class="inline">Add to Home Screen</b>. On iPhone, tap the ••• button first if you do not see Share.
+      The app then opens full screen and works offline.</div></div>`;
   }
   if (!ui.installPrompt) return '';
-  return `<div class="install">${svg('i-home')}<div class="grow"><b>Install this app</b>Opens in its own window and works offline.</div>
+  return `<div class="install">${svg('i-home')}<div class="grow"><b>Install this app</b>It opens in its own window and works offline.</div>
     <button class="btn primary" type="button" id="btnInstall">Install</button></div>`;
 }
 
@@ -63,7 +64,7 @@ function buildingsHTML() {
   }).join('');
   return `
     <div class="gtitle">Production buildings</div><div class="group">${rows}</div>
-    <p class="gnote">Refineries, colliders and fractionators are fixed. Tap any box on the map to change one step.</p>`;
+    <p class="gnote">Refineries, colliders and fractionators have only one tier. To change a single step, open it on the map.</p>`;
 }
 
 function beltsHTML() {
@@ -126,12 +127,27 @@ const shareHTML = () => `
     </button>
   </div>`;
 
+const licenceRow = (file, title, licence) => `
+  <a class="row noic" href="licenses/${file}" target="_blank" rel="noopener">
+    <span class="main-t"><span class="t">${title}</span><span class="s">${licence}</span></span>${chevron()}
+  </a>`;
+
 const ABOUT = `
   <div class="gtitle">About the data</div>
-  <p class="gnote flush">Recipes, machine speeds and proliferator values come from the open-source FactorioLab dataset
-  for Dyson Sphere Program (October 2026), which includes game update 0.10.34 content such as the Holo Beacon.
+  <p class="gnote flush">Recipes, machine speeds and proliferator values come from the FactorioLab data
+  for Dyson Sphere Program (October 2026). It includes game update 0.10.34, with the Holo Beacon.
   Power leaves out miners, orbital collectors and pumps. Deuterium fractionation assumes a 1% chance per hydrogen
-  and one machine per full belt.</p>`;
+  and one machine per full belt.</p>
+  <div class="gtitle">About this app</div>
+  <p class="gnote flush">This is an unofficial fan project. It is not affiliated with Youthcat Studio or Gamera Games.
+  Item icons are game art from Dyson Sphere Program by Youthcat Studio, taken from FactorioLab.
+  The app collects no data. Your plans stay on this device.</p>
+  <p class="gnote">AI-generated. May contain errors. Provided as is, without warranty or liability.</p>
+  <div class="gtitle">Licences</div><div class="group">
+    ${licenceRow('LICENSE.txt', 'App code', 'MIT')}
+    ${licenceRow('FactorioLab-LICENSE.txt', 'Recipe data from FactorioLab', 'MIT')}
+    ${licenceRow('OFL-ChakraPetch.txt', 'Chakra Petch font', 'SIL Open Font License 1.1')}
+  </div>`;
 
 export function renderSettings() {
   $('#setBody').innerHTML = installHTML() + buildingsHTML() + beltsHTML() + proliferatorHTML() +

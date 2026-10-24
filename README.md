@@ -47,9 +47,9 @@ npm run test:e2e    # Playwright tests on phone, tablet and desktop sizes
 
 Pushing to `main` deploys the site to GitHub Pages.
 
-## Licences
+## Licenses
 
-- The code is under the MIT licence. See [LICENSE](LICENSE).
-- The recipe data comes from [FactorioLab](https://github.com/factoriolab/factoriolab), under the MIT licence.
+- The code is under the MIT license. See [LICENSE](LICENSE).
+- The recipe data comes from [FactorioLab](https://github.com/factoriolab/factoriolab), under the MIT license.
 - The Chakra Petch font is under the SIL Open Font License 1.1.
 - The game art belongs to Youthcat Studio.

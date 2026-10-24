@@ -22,5 +22,7 @@ SOFTWARE.
 
 ---
 
-This licence covers the source code only. The data file and the fonts have
-their own licences; see LICENSE-DATA.
+This license covers the source code only. The recipe data (FactorioLab, MIT)
+and the Chakra Petch font (SIL Open Font License 1.1) have their own licenses.
+The built site has all three in licenses/, and the font license is also in
+src/assets/fonts/OFL-ChakraPetch.txt.

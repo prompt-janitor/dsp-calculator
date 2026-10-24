@@ -115,7 +115,7 @@ export function applyTheme() {
   if (theme === 'dark' || theme === 'light') root.dataset.theme = theme;
   else delete root.dataset.theme;
   // index.html has one theme-color per system scheme. A theme picked in
-  // Settings sets both, and Auto puts the original colours back.
+  // Settings sets both, and Auto puts the original colors back.
   const bg = getComputedStyle(root).getPropertyValue('--bg').trim();
   for (const meta of $$('meta[name="theme-color"]')) {
     meta.dataset.auto ??= meta.getAttribute('content');

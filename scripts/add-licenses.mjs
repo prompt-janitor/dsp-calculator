@@ -1,4 +1,4 @@
-// Downloads FactorioLab's MIT licence into dist/licenses/, after the build.
+// Downloads FactorioLab's MIT license into dist/licenses/, after the build.
 // Its terms ask for the notice to ship with the data. The Pages workflow
 // runs this, so the file is not kept in the repo.
 // Usage: npm run build && node scripts/add-licenses.mjs
@@ -12,10 +12,10 @@ const URL = 'https://raw.githubusercontent.com/factoriolab/factoriolab/11e7be16d
 const SHA256 = '1b17e7ef58a7fe1f0278c5423fa5da9fb2a1829a23f180c1315e359eceec146d';
 
 const res = await fetch(URL);
-if (!res.ok) throw new Error(`Could not download the FactorioLab licence: HTTP ${res.status}`);
+if (!res.ok) throw new Error(`Could not download the FactorioLab license: HTTP ${res.status}`);
 const text = await res.text();
 const sum = createHash('sha256').update(text).digest('hex');
-if (sum !== SHA256) throw new Error(`The FactorioLab licence changed (sha256 ${sum}). Check it and update this script.`);
+if (sum !== SHA256) throw new Error(`The FactorioLab license changed (sha256 ${sum}). Check it and update this script.`);
 
 const dir = join(dirname(fileURLToPath(import.meta.url)), '..', 'dist', 'licenses');
 mkdirSync(dir, { recursive: true });

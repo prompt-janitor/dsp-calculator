@@ -164,7 +164,7 @@ function orderLayers(verts) {
 }
 
 // Layers 1 to top going down, or top - 1 to 0 going up. The first layer of
-// each sweep has no neighbours on the side it reads from.
+// each sweep has no neighbors on the side it reads from.
 function layerRange(top, down) {
   const out = [];
   if (down) for (let l = 1; l <= top; l++) out.push(l);
@@ -175,7 +175,7 @@ function layerRange(top, down) {
 function centerY(v) { return v.y + v.height / 2; }
 
 // Sets x and y on every vertex. Each node moves toward the middle of its
-// neighbours, then the column is pushed apart so nothing overlaps.
+// neighbors, then the column is pushed apart so nothing overlaps.
 function placeVertices(verts, layers) {
   const top = layers.length - 1;
   const gap = (a, b) => (verts[a].placeholder || verts[b].placeholder) ? PLACEHOLDER_GAP : ROW_GAP;
@@ -200,7 +200,7 @@ function placeVertices(verts, layers) {
       });
       const ys = want.slice();
       for (let i = 1; i < ids.length; i++) ys[i] = Math.max(ys[i], ys[i - 1] + verts[ids[i - 1]].height + gap(ids[i - 1], ids[i]));
-      // Shift the column back by the average push, so it stays centred on what it wanted.
+      // Shift the column back by the average push, so it stays centered on what it wanted.
       let shift = 0;
       for (let j = 0; j < ids.length; j++) shift += want[j] - ys[j];
       shift /= ids.length;
@@ -243,7 +243,7 @@ function assignPorts(verts, routes) {
 
 const xy = (p) => p[0].toFixed(1) + ',' + p[1].toFixed(1);
 
-// A chain of cubic curves through the placeholder centres. The label point
+// A chain of cubic curves through the placeholder centers. The label point
 // is the middle of the last segment.
 function edgePath(verts, { edge, chain }, outY, inY) {
   const a = verts[chain[0]], b = verts[chain[chain.length - 1]];
@@ -263,7 +263,7 @@ function edgePath(verts, { edge, chain }, outY, inY) {
   return { edge, d, labelX: (p0[0] + p1[0]) / 2, labelY: (p0[1] + p1[1]) / 2 };
 }
 
-// Spray links go straight from node centre to node centre. A link that runs
+// Spray links go straight from node center to node center. A link that runs
 // right to left starts and ends on the other sides and bends the other way.
 function sprayPath(a, b, e) {
   let x1 = a.x + NODE_WIDTH, x2 = b.x;

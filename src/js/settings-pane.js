@@ -128,9 +128,9 @@ const shareHTML = () => `
     </button>
   </div>`;
 
-const licenceRow = (file, title, licence) => `
+const licenseRow = (file, title, license) => `
   <a class="row noic" href="licenses/${file}" target="_blank" rel="noopener">
-    <span class="main-t"><span class="t">${title}</span><span class="s">${licence}</span></span>${chevron()}
+    <span class="main-t"><span class="t">${title}</span><span class="s">${license}</span></span>${chevron()}
   </a>`;
 
 const ABOUT = `
@@ -144,10 +144,10 @@ const ABOUT = `
   Item icons are game art from Dyson Sphere Program by Youthcat Studio, taken from FactorioLab.
   The app collects no data. Your plans stay on this device.</p>
   <p class="gnote">This app was made with AI and may contain errors. It is provided as is, without warranty or liability.</p>
-  <div class="gtitle">Licences</div><div class="group">
-    ${licenceRow('LICENSE.txt', 'App code', 'MIT')}
-    ${licenceRow('FactorioLab-LICENSE.txt', 'Recipe data from FactorioLab', 'MIT')}
-    ${licenceRow('OFL-ChakraPetch.txt', 'Chakra Petch font', 'SIL Open Font License 1.1')}
+  <div class="gtitle">Licenses</div><div class="group">
+    ${licenseRow('LICENSE.txt', 'App code', 'MIT')}
+    ${licenseRow('FactorioLab-LICENSE.txt', 'Recipe data from FactorioLab', 'MIT')}
+    ${licenseRow('OFL-ChakraPetch.txt', 'Chakra Petch font', 'SIL Open Font License 1.1')}
   </div>`;
 
 export function renderSettings() {

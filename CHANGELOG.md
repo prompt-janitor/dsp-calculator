@@ -22,9 +22,9 @@ The first public release.
 - New layouts for phones in landscape, iPads in portrait, small laptops and large screens. Touch controls are at least 44 px.
 - Keyboard shortcuts: `/` to search for an item, F to fit the map, + and - to zoom, Esc to close.
 - The update prompt also shows for an update that was found on an earlier visit.
-- The installed app keeps controls out of the notch and the home indicator, and the theme sets the browser bar colour.
+- The installed app keeps controls out of the notch and the home indicator, and the theme sets the browser bar color.
 - The icon sheet is less than half its old size.
 - New launch screens for iPhone Air and iPad Pro 11 (M4 and M5).
-- Settings has an About section with credits and licences.
+- Settings has an About section with credits and licenses.
 - All text was rewritten in plain words.
 - Tests run on GitHub for every push and pull request.

@@ -328,7 +328,7 @@ textarea { width: 100%; min-height: 240px; border-radius: 12px; border: 1px soli
 .sh-actions .btn { flex: 1; min-height: 48px; }
 
 .toast { position: fixed; z-index: 60; left: 50%; bottom: calc(var(--tab-h) + var(--sab) + 18px); transform: translateX(-50%); display: flex; gap: 12px; align-items: center;
-  padding: 10px 10px 10px 16px; border-radius: 14px; background: var(--fg); color: var(--bg); box-shadow: var(--shadow); font-size: 14px; max-width: calc(100% - 32px); }
+  padding: 10px 10px 10px 16px; border-radius: 14px; background: var(--fg); color: var(--bg); box-shadow: var(--shadow); font-size: 14px; width: max-content; max-width: calc(100% - 32px); }
 .toast .btn { min-height: 34px; background: var(--accent); color: var(--accent-ink); border: 0; }
 
 /* build sections */

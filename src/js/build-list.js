@@ -1,4 +1,4 @@
-/* ---------- Build list: buildings, steps and resources ---------- */
+// The build list: buildings, steps and resources.
 import { BELTS, formatNumber, formatPower } from './engine.js';
 import { $, esc, svg, itemIcon, machineIcon, itemName, machineName, machineShortName, rateStr, unitLabel, count, ROMAN } from './core.js';
 import { state, ui } from './store.js';
@@ -65,7 +65,7 @@ function stepsHTML(steps) {
   return section('steps', `
     ${title('Production steps', sorted.length)}
     <div class="group">${sorted.map((n) => stepRow(n, beltsOut)).join('')}</div>
-    <p class="gnote">The bar shows how busy the built machines are. Tap a step to find it on the map.</p>`);
+    <p class="gnote">The bar shows how busy the built machines are. Pick a step to see it on the map.</p>`);
 }
 
 function resourcesHTML(totals) {
@@ -97,7 +97,6 @@ export function renderBuildList() {
   $('#buildBody').innerHTML = (ui.plan.ok ? '' : LOOP_WARNING) + buildingsHTML(totals, steps) + stepsHTML(steps) + resourcesHTML(totals);
 }
 
-// Opens the map and selects the step.
 function showOnMap(id) {
   if (!ui.plan.nodes[id]) return;
   goTo('map');

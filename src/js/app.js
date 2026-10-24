@@ -1,29 +1,37 @@
+/* ---------- App: panes, sheets, events and boot ---------- */
+import recipes from './recipes.js';
+import { initEngine, solve, defaultRecipeFor, fmt, fmtPower, RECIPES, CANDS, EXCL, BELTS, DATA } from './engine.js';
+import { $, $$, esc, svg, ic, itemIc, machIc, itemName, machName, machShort, rateStr, ul, opt, isWide, inFrame, isStandalone, isIOS, buildCfg,
+  CLASS_ORDER, CLASS_LABEL, TIER_LABEL, ROMAN, PRESETS } from './core.js';
+import { state, ui, defaultState, mergeState, loadState, saveState, replaceState } from './store.js';
+import { NW, nodeColor, renderMap, applyView, fitView, zoomAt, applySelection } from './map.js';
+
 /* ---------- navigation ---------- */
 function setTab(t) {
   // compact tab bar; keeps regular-width sidebar/main state in step
-  S.tab = t;
-  if (t === 'plan' || t === 'settings') S.side = t;
-  if (t === 'map' || t === 'build') S.main = t;
+  state.tab = t;
+  if (t === 'plan' || t === 'settings') state.side = t;
+  if (t === 'map' || t === 'build') state.main = t;
   if (t !== 'map') closeInspector(true);
   syncNav(); saveState();
-  if (t === 'map') { requestAnimationFrame(function () { if (NEED_FIT) fitView(); }); mapHint(); }
+  if (t === 'map') { requestAnimationFrame(function () { if (ui.needFit) fitView(); }); mapHint(); }
 }
 function mapHint() {
   var seen = false; try { seen = localStorage.getItem('dsp-map-hint') === '1'; localStorage.setItem('dsp-map-hint', '1'); } catch (e) { }
   if (!seen) setTimeout(function () { toast('Drag to pan, pinch to zoom. Tap a box for details.'); }, 400);
 }
-function setSide(v) { S.side = v; if (!isWide()) S.tab = v; syncNav(); saveState(); }
-function setMain(v) { S.main = v; if (!isWide()) S.tab = v; syncNav(); saveState(); if (v === 'map') { requestAnimationFrame(function () { if (NEED_FIT) fitView(); }); mapHint(); } }
+function setSide(v) { state.side = v; if (!isWide()) state.tab = v; syncNav(); saveState(); }
+function setMain(v) { state.main = v; if (!isWide()) state.tab = v; syncNav(); saveState(); if (v === 'map') { requestAnimationFrame(function () { if (ui.needFit) fitView(); }); mapHint(); } }
 function syncNav() {
   var app = $('#app');
-  app.setAttribute('data-tab', S.tab); app.setAttribute('data-side', S.side); app.setAttribute('data-main', S.main); app.setAttribute('data-bsec', S.bsec);
-  $$('.tabbar [data-tab]').forEach(function (b) { b.setAttribute('aria-selected', b.getAttribute('data-tab') === S.tab); });
-  $$('.wide-head [data-side]').forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-side') === S.side); });
-  $$('.wide-head [data-main]').forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-main') === S.main); });
-  $$('.segbar [data-bsec]').forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-bsec') === S.bsec); });
+  app.setAttribute('data-tab', state.tab); app.setAttribute('data-side', state.side); app.setAttribute('data-main', state.main); app.setAttribute('data-bsec', state.bsec);
+  $$('.tabbar [data-tab]').forEach(function (b) { b.setAttribute('aria-selected', b.getAttribute('data-tab') === state.tab); });
+  $$('.wide-head [data-side]').forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-side') === state.side); });
+  $$('.wide-head [data-main]').forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-main') === state.main); });
+  $$('.segbar [data-bsec]').forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-bsec') === state.bsec); });
 }
 function applyTheme() {
-  var t = S.opts.theme;
+  var t = state.opts.theme;
   if (t === 'dark' || t === 'light') document.documentElement.setAttribute('data-theme', t);
   else document.documentElement.removeAttribute('data-theme');
   var meta = document.querySelector('meta[name="theme-color"]:not([media])');
@@ -32,16 +40,16 @@ function applyTheme() {
 
 /* ---------- plan pane ---------- */
 function stepFor(v, dir) {
-  if (S.unit === 'min') { var s = v < 30 ? 5 : v < 300 ? 10 : 60; if (dir < 0 && v <= 30 && v > 5) s = 5; return s; }
+  if (state.unit === 'min') { var s = v < 30 ? 5 : v < 300 ? 10 : 60; if (dir < 0 && v <= 30 && v > 5) s = 5; return s; }
   return v < 1 ? 0.1 : v < 10 ? 0.5 : 5;
 }
 function renderPlan() {
   var h = '<div class="stats" id="planStats"></div>';
   h += '<div class="gtitle">Targets<span class="act" style="margin-left:auto"></span><span class="seg" role="group" aria-label="Rate unit">' +
-    '<button type="button" data-unit="min" aria-pressed="' + (S.unit === 'min') + '">per min</button><button type="button" data-unit="s" aria-pressed="' + (S.unit === 's') + '">per sec</button></span></div>';
+    '<button type="button" data-unit="min" aria-pressed="' + (state.unit === 'min') + '">per min</button><button type="button" data-unit="s" aria-pressed="' + (state.unit === 's') + '">per sec</button></span></div>';
   h += '<div class="group">';
-  if (!S.targets.length) h += '<div class="row noic"><span class="main-t"><span class="t">No targets yet</span><span class="s">Add the item you want a factory for.</span></span></div>';
-  S.targets.forEach(function (t, i) {
+  if (!state.targets.length) h += '<div class="row noic"><span class="main-t"><span class="t">No targets yet</span><span class="s">Add the item you want a factory for.</span></span></div>';
+  state.targets.forEach(function (t, i) {
     h += '<div class="target"><button class="pick" type="button" data-pick="' + i + '" aria-label="Change item, now ' + esc(itemName(t.item)) + '">' + itemIc(t.item, 40) + '</button>' +
       '<div class="nm"><span>' + esc(itemName(t.item)) + '</span><button class="del" type="button" data-del="' + i + '" aria-label="Remove ' + esc(itemName(t.item)) + '">' + svg('i-x', 18) + '</button></div>' +
       '<div class="stepper"><button type="button" data-tstep="' + i + '" data-dir="-1" aria-label="Less">−</button>' +
@@ -59,14 +67,14 @@ function renderPlan() {
   $('#planBody').innerHTML = h;
 }
 function renderPlanLive() {
-  var T = PLAN.totals, machines = 0; for (var k in T.built) machines += T.built[k];
+  var T = ui.plan.totals, machines = 0; for (var k in T.built) machines += T.built[k];
   var pr = 0; for (var p in T.prolif) pr += T.prolif[p];
   var h = '<div class="stat"><b>' + machines.toLocaleString('en-US') + '</b><span>Buildings</span></div>' +
     '<div class="stat"><b>' + fmtPower(T.power) + '</b><span>Power</span></div>' +
     '<div class="stat"><b>' + T.belts.toLocaleString('en-US') + '</b><span>Belt lines</span></div>' +
     (pr > 0 ? '<div class="stat"><b>' + rateStr(pr) + '</b><span>Proliferator ' + ul() + '</span></div>'
       : '<div class="stat"><b>' + Object.keys(T.raw).length + '</b><span>Raw resources</span></div>');
-  if (!PLAN.ok) h += '<div class="stat warn" style="grid-column:1/-1"><b>Loop</b><span>Recipes feed each other without surplus</span></div>';
+  if (!ui.plan.ok) h += '<div class="stat warn" style="grid-column:1/-1"><b>Loop</b><span>Recipes feed each other without surplus</span></div>';
   var el = $('#planStats'); if (el) el.innerHTML = h;
   // glance (compact only, via CSS)
   var g = '';
@@ -99,7 +107,7 @@ function renderSettings() {
   var h = '';
   if (!isStandalone() && !inFrame()) {
     if (isIOS()) h += '<div class="install">' + svg('i-home') + '<div><b>Install on your Home Screen</b>Tap ' + svg('i-share', 16) + ' Share in Safari, then <b style="display:inline">Add to Home Screen</b>. It then opens full screen and works offline.</div></div>';
-    else if (window.__installPrompt) h += '<div class="install">' + svg('i-home') + '<div style="flex:1"><b>Install this app</b>Opens in its own window and works offline.</div><button class="btn primary" type="button" id="btnInstall">Install</button></div>';
+    else if (ui.installPrompt) h += '<div class="install">' + svg('i-home') + '<div style="flex:1"><b>Install this app</b>Opens in its own window and works offline.</div><button class="btn primary" type="button" id="btnInstall">Install</button></div>';
   }
   h += '<div class="gtitle">Production buildings</div><div class="group">';
   Object.keys(CLASS_ORDER).forEach(function (c) {
@@ -107,35 +115,35 @@ function renderSettings() {
     CLASS_ORDER[c].forEach(function (id) {
       if (!DATA.machines[id]) return;
       var sp = DATA.machines[id].speed;
-      h += tierBtn('data-mtier="' + c + '" data-val', id, S.machines[c], machIc(id, 30), TIER_LABEL[id] || machName(id), c === 'miner' ? (sp + '×') : (sp + '× speed'));
+      h += tierBtn('data-mtier="' + c + '" data-val', id, state.machines[c], machIc(id, 30), TIER_LABEL[id] || machName(id), c === 'miner' ? (sp + '×') : (sp + '× speed'));
     });
     h += '</div></div>';
   });
   h += '</div><p class="gnote">Refineries, colliders and fractionators are fixed. Tap any box on the map to change one step.</p>';
 
   h += '<div class="gtitle">Belts</div><div class="group"><div class="tier"><div class="lab">Belt tier</div><div class="tiers" style="--n:3">';
-  Object.keys(BELTS).forEach(function (b) { h += tierBtn('data-belt', b, S.belt, itemIc(b, 30), 'Mk.' + ROMAN[+b.slice(-1)], BELTS[b] + '/s'); });
+  Object.keys(BELTS).forEach(function (b) { h += tierBtn('data-belt', b, state.belt, itemIc(b, 30), 'Mk.' + ROMAN[+b.slice(-1)], BELTS[b] + '/s'); });
   h += '</div></div><div class="numrow"><label>Stack size<small>Needs cargo stacking research</small></label><div class="seg">';
-  [1, 2, 3, 4].forEach(function (n) { h += '<button type="button" data-stack="' + n + '" aria-pressed="' + (S.stack === n) + '">' + n + '×</button>'; });
-  h += '</div></div></div><p class="gnote">One belt carries ' + (BELTS[S.belt] * S.stack) + ' items/s (' + (BELTS[S.belt] * S.stack * 60).toLocaleString('en-US') + '/min).</p>';
+  [1, 2, 3, 4].forEach(function (n) { h += '<button type="button" data-stack="' + n + '" aria-pressed="' + (state.stack === n) + '">' + n + '×</button>'; });
+  h += '</div></div></div><p class="gnote">One belt carries ' + (BELTS[state.belt] * state.stack) + ' items/s (' + (BELTS[state.belt] * state.stack * 60).toLocaleString('en-US') + '/min).</p>';
 
   h += '<div class="gtitle">Proliferator</div><div class="group"><div class="tier"><div class="lab">Spray on every machine that accepts it</div><div class="tiers" style="--n:4">';
-  h += tierBtn('data-plevel', 0, S.prolif.level, '<span class="ic0" style="width:30px;height:30px;display:grid;place-items:center">' + svg('i-x', 18) + '</span>', 'Off');
-  [1, 2, 3].forEach(function (l) { h += tierBtn('data-plevel', l, S.prolif.level, itemIc('proliferator-' + l, 30), 'Mk.' + ROMAN[l]); });
+  h += tierBtn('data-plevel', 0, state.prolif.level, '<span class="ic0" style="width:30px;height:30px;display:grid;place-items:center">' + svg('i-x', 18) + '</span>', 'Off');
+  [1, 2, 3].forEach(function (l) { h += tierBtn('data-plevel', l, state.prolif.level, itemIc('proliferator-' + l, 30), 'Mk.' + ROMAN[l]); });
   h += '</div></div><div class="numrow"><label>Effect</label><div class="seg">' +
-    '<button type="button" data-pmode="products" aria-pressed="' + (S.prolif.mode === 'products') + '">Extra products</button>' +
-    '<button type="button" data-pmode="speed" aria-pressed="' + (S.prolif.mode === 'speed') + '">Speed up</button></div></div></div>' +
+    '<button type="button" data-pmode="products" aria-pressed="' + (state.prolif.mode === 'products') + '">Extra products</button>' +
+    '<button type="button" data-pmode="speed" aria-pressed="' + (state.prolif.mode === 'speed') + '">Speed up</button></div></div></div>' +
     '<p class="gnote">The plan adds the proliferator you need to spray. Extra products only works on recipes that allow it.</p>';
 
   h += '<div class="gtitle">Resources</div><div class="group">' +
-    numRow('mspeed', 'Mining speed', 'Research level, %', S.mining.speed) +
-    numRow('mveins', 'Veins per miner', '0.5 ore/s per vein', S.mining.veins) +
-    numRow('moil', 'Oil per extractor', 'Per second, from the seep', S.mining.oil) +
-    numRow('morb', 'Collector net yield', '% left after self-power', S.mining.orbital) + '</div>' +
+    numRow('mspeed', 'Mining speed', 'Research level, %', state.mining.speed) +
+    numRow('mveins', 'Veins per miner', '0.5 ore/s per vein', state.mining.veins) +
+    numRow('moil', 'Oil per extractor', 'Per second, from the seep', state.mining.oil) +
+    numRow('morb', 'Collector net yield', '% left after self-power', state.mining.orbital) + '</div>' +
     '<p class="gnote">About 55% of the gross hydrogen is left on a standard gas giant.</p>';
 
   h += '<div class="gtitle">Display</div><div class="group"><div class="numrow"><label>Appearance</label><div class="seg">';
-  [['auto', 'Auto'], ['dark', 'Dark'], ['light', 'Light']].forEach(function (x) { h += '<button type="button" data-theme-set="' + x[0] + '" aria-pressed="' + (S.opts.theme === x[0]) + '">' + x[1] + '</button>'; });
+  [['auto', 'Auto'], ['dark', 'Dark'], ['light', 'Light']].forEach(function (x) { h += '<button type="button" data-theme-set="' + x[0] + '" aria-pressed="' + (state.opts.theme === x[0]) + '">' + x[1] + '</button>'; });
   h += '</div></div></div>';
 
   h += '<div class="gtitle">Share and backup</div><div class="group">' +
@@ -149,9 +157,9 @@ function renderSettings() {
 
 /* ---------- build pane ---------- */
 function renderBuild() {
-  var T = PLAN.totals, nodes = PLAN.nodes, h = '';
-  if (!PLAN.ok) h += '<div class="warnbox">These recipe choices feed each other without producing a surplus, so the plan cannot settle. Change one of the recipes on the map.</div>';
-  var steps = PLAN.order.map(function (id) { return nodes[id]; });
+  var T = ui.plan.totals, nodes = ui.plan.nodes, h = '';
+  if (!ui.plan.ok) h += '<div class="warnbox">These recipe choices feed each other without producing a surplus, so the plan cannot settle. Change one of the recipes on the map.</div>';
+  var steps = ui.plan.order.map(function (id) { return nodes[id]; });
   var mrows = Object.keys(T.built).sort(function (a, b) { return T.built[b] - T.built[a]; });
   var total = 0; mrows.forEach(function (m) { total += T.built[m]; });
   h += '<div class="bsec" data-sec="buildings"><div class="gtitle">Buildings to place<span style="margin-left:auto" class="num">' + total.toLocaleString('en-US') + '</span></div><div class="group">';
@@ -162,7 +170,7 @@ function renderBuild() {
   if (!mrows.length) h += '<div class="row noic"><span class="s">Nothing to build.</span></div>';
   h += '</div><p class="gnote">' + fmtPower(T.power) + ' with every building running. Miners, collectors and pumps are not counted.</p></div>';
 
-  var outBelts = {}; PLAN.edges.forEach(function (e) { if (!e.fluid) outBelts[e.from] = (outBelts[e.from] || 0) + e.belts; });
+  var outBelts = {}; ui.plan.edges.forEach(function (e) { if (!e.fluid) outBelts[e.from] = (outBelts[e.from] || 0) + e.belts; });
   steps.sort(function (a, b) { return (b.power - a.power) || (b.count - a.count); });
   h += '<div class="bsec" data-sec="steps"><div class="gtitle">Production steps<span style="margin-left:auto" class="num">' + steps.length + '</span></div><div class="group">';
   steps.forEach(function (n) {
@@ -185,8 +193,8 @@ function renderBuild() {
   var bi = Object.keys(T.beltsByItem).sort(function (a, b) { return T.beltsByItem[b] - T.beltsByItem[a]; });
   h += '<div class="gtitle">Belt lines<span style="margin-left:auto" class="num">' + T.belts + '</span></div><div class="group">';
   bi.forEach(function (k) { h += '<div class="row"><span class="ibox">' + itemIc(k, 30) + '</span><span class="main-t"><span class="t">' + esc(itemName(k)) + '</span></span><span class="end"><b>' + T.beltsByItem[k] + '</b></span></div>'; });
-  h += '</div><p class="gnote">Each link on the map is its own line at ' + (BELTS[S.belt] * S.stack) + ' items/s. Merge lines of the same item where you can.</p>';
-  var fl = {}; PLAN.edges.forEach(function (e) { if (e.fluid) fl[e.item] = (fl[e.item] || 0) + e.flow; });
+  h += '</div><p class="gnote">Each link on the map is its own line at ' + (BELTS[state.belt] * state.stack) + ' items/s. Merge lines of the same item where you can.</p>';
+  var fl = {}; ui.plan.edges.forEach(function (e) { if (e.fluid) fl[e.item] = (fl[e.item] || 0) + e.flow; });
   var extra = '';
   Object.keys(fl).forEach(function (k) { extra += '<div class="row"><span class="ibox">' + itemIc(k, 30) + '</span><span class="main-t"><span class="t">' + esc(itemName(k)) + '</span><span class="s">Pipe flow</span></span><span class="end"><b>' + rateStr(fl[k]) + '</b><small>' + ul() + '</small></span></div>'; });
   Object.keys(T.surplus).forEach(function (k) { extra += '<div class="row"><span class="ibox">' + itemIc(k, 30) + '</span><span class="main-t"><span class="t">' + esc(itemName(k)) + '</span><span class="s">Surplus by-product</span></span><span class="end"><b>' + rateStr(T.surplus[k]) + '</b><small>' + ul() + '</small></span></div>'; });
@@ -197,21 +205,19 @@ function renderBuild() {
 }
 
 /* ---------- sheets ---------- */
-var openSheets = {};
 function openSheet(id, scrim) {
-  var el = $('#' + id); el.hidden = false; openSheets[id] = 1;
+  var el = $('#' + id); el.hidden = false;
   if (scrim) { var sc = $('#scrim'); sc.hidden = false; sc.setAttribute('data-for', id); requestAnimationFrame(function () { sc.classList.add('on'); }); }
   requestAnimationFrame(function () { requestAnimationFrame(function () { el.classList.add('on'); }); });
 }
 function closeSheet(id, instant) {
   var el = $('#' + id); if (!el || el.hidden) return;
-  delete openSheets[id];
   el.classList.remove('on'); el.style.transform = '';
   var sc = $('#scrim');
   if (sc.getAttribute('data-for') === id) { sc.classList.remove('on'); setTimeout(function () { if (!sc.classList.contains('on')) sc.hidden = true; }, instant ? 0 : 260); }
   setTimeout(function () { if (!el.classList.contains('on')) el.hidden = true; }, instant ? 0 : 330);
 }
-function closeInspector(instant) { if (SEL) { SEL = null; applySelection(); } closeSheet('inspector', instant); }
+function closeInspector(instant) { if (ui.sel) { ui.sel = null; applySelection(); } closeSheet('inspector', instant); }
 
 function attachDrag(handle, sheetId, onClose) {
   var y0 = null, dy = 0, t0 = 0, pid = null;
@@ -247,8 +253,8 @@ function protoOptions(item, cur) {
   return h;
 }
 function renderInspector() {
-  if (!SEL || !PLAN || !PLAN.nodes[SEL] || PLAN.nodes[SEL].kind === 'target') { closeSheet('inspector'); return; }
-  var n = PLAN.nodes[SEL], item = SEL, ov = S.overrides[item] || {};
+  if (!ui.sel || !ui.plan || !ui.plan.nodes[ui.sel] || ui.plan.nodes[ui.sel].kind === 'target') { closeSheet('inspector'); return; }
+  var n = ui.plan.nodes[ui.sel], item = ui.sel, ov = state.overrides[item] || {};
   $('#inspHead').innerHTML = '<span class="ibox">' + itemIc(item, 34) + '</span><h3>' + esc(itemName(item)) + '<small>' + (n.kind === 'raw' ? 'Supplied from elsewhere' : esc(n.rec.name) + ' · ' + esc(machName(n.machine))) + '</small></h3>' +
     '<button class="btn round" type="button" id="inspClose" aria-label="Close" style="width:36px;height:36px;min-height:36px">' + svg('i-x', 18) + '</button>';
   var h = '';
@@ -278,28 +284,27 @@ function renderInspector() {
     [1, 2, 3].forEach(function (l) { h += opt(l + ':products', 'Mk.' + ROMAN[l] + ' extra products', pv) + opt(l + ':speed', 'Mk.' + ROMAN[l] + ' speed up', pv); });
     h += '</select></label>';
     h += '<label class="togrow"><span>Supplied from elsewhere<small class="mut" style="display:block;font-size:12.5px">Stop building its ingredients</small></span><input class="switch" type="checkbox" id="i_ext"' + (ov.external ? ' checked' : '') + '></label></div>';
-    if (S.prolif.level && !n.prof && !n.rec.prolif && S.prolif.mode === 'products') h += '<p class="hintp">This recipe does not accept extra products.</p>';
+    if (state.prolif.level && !n.prof && !n.rec.prolif && state.prolif.mode === 'products') h += '<p class="hintp">This recipe does not accept extra products.</p>';
   } else {
     h += '<div class="kpis"><div class="kpi"><b>' + rateStr(n.rate) + '</b><span>' + ul() + ' needed</span></div></div>';
     h += '<div class="gtitle">Change this step</div><div class="group"><label class="togrow"><span>Supplied from elsewhere</span><input class="switch" type="checkbox" id="i_ext" checked></label></div>';
   }
-  if (S.overrides[item]) h += '<div class="sh-actions"><button class="btn" type="button" id="i_reset">Undo changes to this step</button></div>';
+  if (state.overrides[item]) h += '<div class="sh-actions"><button class="btn" type="button" id="i_reset">Undo changes to this step</button></div>';
   $('#inspBody').innerHTML = h;
   if ($('#inspector').hidden) openSheet('inspector', false);
 }
 
 /* ---------- picker ---------- */
-var pickCb = null, pickCat = 'all';
 var CATS = [['all', 'All'], ['science', 'Matrices'], ['components', 'Components'], ['buildings', 'Buildings'], ['df', 'Dark Fog']];
 function openPicker(cb) {
-  pickCb = cb; pickCat = 'all';
+  ui.picker.onPick = cb; ui.picker.cat = 'all';
   var s = $('#pickSearch'); s.value = '';
   renderPickCats(); renderPickGrid('');
   openSheet('picker', true);
   if (isWide()) setTimeout(function () { s.focus(); }, 250);
 }
 function renderPickCats() {
-  $('#pickCats').innerHTML = CATS.map(function (c) { return '<button type="button" class="chip" data-cat="' + c[0] + '" aria-pressed="' + (pickCat === c[0]) + '">' + c[1] + '</button>'; }).join('');
+  $('#pickCats').innerHTML = CATS.map(function (c) { return '<button type="button" class="chip" data-cat="' + c[0] + '" aria-pressed="' + (ui.picker.cat === c[0]) + '">' + c[1] + '</button>'; }).join('');
 }
 function itemCat(it) {
   if (it.id.indexOf('df-') === 0) return 'df';
@@ -313,7 +318,7 @@ function renderPickGrid(q) {
     if (!CANDS[it.id]) return;
     if (q && it.name.toLowerCase().indexOf(q) < 0) return;
     var c = itemCat(it);
-    if (pickCat !== 'all' && pickCat !== c) return;
+    if (ui.picker.cat !== 'all' && ui.picker.cat !== c) return;
     groups[c].push(it);
   });
   var h = '';
@@ -328,23 +333,21 @@ function renderPickGrid(q) {
 
 /* ---------- export ---------- */
 function summaryText() {
-  var T = PLAN.totals, lines = [];
+  var T = ui.plan.totals, lines = [];
   lines.push('Dyson Sphere plan');
-  lines.push('Targets: ' + S.targets.map(function (t) { return t.rate + ul() + ' ' + itemName(t.item); }).join(', '));
-  lines.push('Power: ' + fmtPower(T.power) + ' | Belt lines: ' + T.belts + ' (' + BELTS[S.belt] * S.stack + ' items/s each)');
+  lines.push('Targets: ' + state.targets.map(function (t) { return t.rate + ul() + ' ' + itemName(t.item); }).join(', '));
+  lines.push('Power: ' + fmtPower(T.power) + ' | Belt lines: ' + T.belts + ' (' + BELTS[state.belt] * state.stack + ' items/s each)');
   lines.push(''); lines.push('Buildings');
   Object.keys(T.built).sort(function (a, b) { return T.built[b] - T.built[a]; }).forEach(function (m) { lines.push('  ' + T.built[m] + ' x ' + machName(m)); });
   lines.push(''); lines.push('Raw input' + ul());
   Object.keys(T.raw).forEach(function (k) { lines.push('  ' + itemName(k) + ': ' + rateStr(T.raw[k])); });
   lines.push(''); lines.push('Steps');
-  PLAN.order.forEach(function (id) { var n = PLAN.nodes[id]; lines.push('  ' + itemName(id) + ': ' + rateStr(n.outRate[id]) + ul() + ' in ' + n.built + ' x ' + machName(n.machine) + ' (' + fmt(n.count) + ' exact)'); });
+  ui.plan.order.forEach(function (id) { var n = ui.plan.nodes[id]; lines.push('  ' + itemName(id) + ': ' + rateStr(n.outRate[id]) + ul() + ' in ' + n.built + ' x ' + machName(n.machine) + ' (' + fmt(n.count) + ' exact)'); });
   return lines.join('\n');
 }
-var expMode = 'summary';
 function openExport(mode) {
-  expMode = mode;
   $$('[data-exp]').forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-exp') === mode); });
-  $('#expText').value = mode === 'summary' ? summaryText() : JSON.stringify(S);
+  $('#expText').value = mode === 'summary' ? summaryText() : JSON.stringify(state);
   $('#expText').readOnly = mode === 'summary';
   $('#expHint').textContent = mode === 'summary' ? 'Paste this into a note, Discord or a message.' : 'Copy this code to back up the plan. To load one, paste a code here and tap Load.';
   $('#expLoad').hidden = mode !== 'code';
@@ -359,53 +362,51 @@ function copyText(txt) {
 }
 
 /* ---------- toast ---------- */
-var toastTimer = null;
 function toast(text, actionLabel, action) {
   var el = $('#toast');
   el.innerHTML = '<span>' + esc(text) + '</span>' + (actionLabel ? '<button class="btn" type="button" id="toastAct">' + esc(actionLabel) + '</button>' : '');
   el.hidden = false;
   if (actionLabel) $('#toastAct').onclick = function () { el.hidden = true; action(); };
-  clearTimeout(toastTimer);
-  if (!actionLabel) toastTimer = setTimeout(function () { el.hidden = true; }, 3400);
+  clearTimeout(ui.toastTimer);
+  if (!actionLabel) ui.toastTimer = setTimeout(function () { el.hidden = true; }, 3400);
 }
 
 /* ---------- compute ---------- */
-var recalcTimer = null;
-function recalcSoon() { clearTimeout(recalcTimer); recalcTimer = setTimeout(recalc, 160); }
+function recalcSoon() { clearTimeout(ui.solveTimer); ui.solveTimer = setTimeout(recalc, 160); }
 function recalc() {
   saveState();
-  PLAN = solve(buildCfg());
-  if (SEL && !PLAN.nodes[SEL]) SEL = null;
+  ui.plan = solve(buildCfg(state));
+  if (ui.sel && !ui.plan.nodes[ui.sel]) ui.sel = null;
   renderPlanLive(); renderMap(); renderBuild();
-  if (SEL) renderInspector(); else closeSheet('inspector');
+  if (ui.sel) renderInspector(); else closeSheet('inspector');
 }
 
 /* ---------- map focus ---------- */
 function centerNode(id) {
-  if (!LAYOUT) return;
-  var ln = null; LAYOUT.nodes.forEach(function (n) { if (n.id === id) ln = n; });
+  if (!ui.layout) return;
+  var ln = null; ui.layout.nodes.forEach(function (n) { if (n.id === id) ln = n; });
   if (!ln) return;
   var vp = $('#viewport'), vw = vp.clientWidth, vh = vp.clientHeight;
-  var k = Math.max(VIEW.k, isWide() ? 0.75 : 0.9);
+  var k = Math.max(ui.view.k, isWide() ? 0.75 : 0.9);
   var visH = vh, cx = vw / 2;
   if (!isWide()) visH = vh * 0.42; else cx = (vw - 380) / 2;
-  VIEW.k = k; VIEW.x = cx - (ln.x + NW / 2) * k; VIEW.y = Math.max(60, visH / 2 + 20) - (ln.y + ln.h / 2) * k;
+  ui.view.k = k; ui.view.x = cx - (ln.x + NW / 2) * k; ui.view.y = Math.max(60, visH / 2 + 20) - (ln.y + ln.h / 2) * k;
   var st = $('#stage'); st.classList.add('anim'); applyView(); setTimeout(function () { st.classList.remove('anim'); }, 340);
 }
 function focusNode(id) {
-  if (!PLAN.nodes[id]) return;
+  if (!ui.plan.nodes[id]) return;
   if (!isWide()) setTab('map'); else setMain('map');
-  requestAnimationFrame(function () { selectNode(id); centerNode(SEL); });
+  requestAnimationFrame(function () { selectNode(id); centerNode(ui.sel); });
 }
 function selectNode(id) {
-  if (!PLAN || !PLAN.nodes[id]) return;
-  if (PLAN.nodes[id].kind === 'target') { id = PLAN.nodes[id].item; if (!PLAN.nodes[id]) return; }
-  SEL = id; applySelection(); renderInspector();
+  if (!ui.plan || !ui.plan.nodes[id]) return;
+  if (ui.plan.nodes[id].kind === 'target') { id = ui.plan.nodes[id].item; if (!ui.plan.nodes[id]) return; }
+  ui.sel = id; applySelection(); renderInspector();
 }
 function setOverride(item, key, val) {
-  var o = S.overrides[item] || (S.overrides[item] = {});
+  var o = state.overrides[item] || (state.overrides[item] = {});
   if (val === undefined || val === null || val === false) delete o[key]; else o[key] = val;
-  if (!Object.keys(o).length) delete S.overrides[item];
+  if (!Object.keys(o).length) delete state.overrides[item];
 }
 
 /* ---------- events ---------- */
@@ -417,7 +418,7 @@ function wire() {
     if ((a = b.getAttribute('data-tab')) && b.closest('.tabbar')) { setTab(a); return; }
     if ((a = b.getAttribute('data-side')) && b.closest('.wide-head')) { setSide(a); return; }
     if ((a = b.getAttribute('data-main')) && b.closest('.wide-head')) { setMain(a); return; }
-    if ((a = b.getAttribute('data-bsec'))) { S.bsec = a; syncNav(); saveState(); $('#buildBody').scrollTop = 0; return; }
+    if ((a = b.getAttribute('data-bsec'))) { state.bsec = a; syncNav(); saveState(); $('#buildBody').scrollTop = 0; return; }
     if ((a = b.getAttribute('data-goto'))) { if (isWide()) setMain(a); else setTab(a); return; }
     if ((a = b.getAttribute('data-act'))) { if (a === 'share') openExport('summary'); if (a === 'code') openExport('code'); return; }
     if ((a = b.getAttribute('data-close'))) { closeSheet(a); return; }
@@ -428,31 +429,31 @@ function wire() {
   plan.addEventListener('click', function (e) {
     var t = e.target.closest('button'); if (!t) return;
     if (t.hasAttribute('data-unit')) {
-      var nu = t.getAttribute('data-unit'); if (nu === S.unit) return;
+      var nu = t.getAttribute('data-unit'); if (nu === state.unit) return;
       var f = nu === 'min' ? 60 : 1 / 60;
-      S.targets.forEach(function (x) { x.rate = +(x.rate * f).toPrecision(6); });
-      S.unit = nu; renderPlan(); recalc(); return;
+      state.targets.forEach(function (x) { x.rate = +(x.rate * f).toPrecision(6); });
+      state.unit = nu; renderPlan(); recalc(); return;
     }
-    if (t.hasAttribute('data-del')) { S.targets.splice(+t.getAttribute('data-del'), 1); renderPlan(); recalc(); return; }
-    if (t.hasAttribute('data-pick')) { var i = +t.getAttribute('data-pick'); openPicker(function (id) { S.targets[i].item = id; renderPlan(); recalc(); }); return; }
+    if (t.hasAttribute('data-del')) { state.targets.splice(+t.getAttribute('data-del'), 1); renderPlan(); recalc(); return; }
+    if (t.hasAttribute('data-pick')) { var i = +t.getAttribute('data-pick'); openPicker(function (id) { state.targets[i].item = id; renderPlan(); recalc(); }); return; }
     if (t.hasAttribute('data-tstep')) {
-      var j = +t.getAttribute('data-tstep'), dir = +t.getAttribute('data-dir'), v = S.targets[j].rate;
+      var j = +t.getAttribute('data-tstep'), dir = +t.getAttribute('data-dir'), v = state.targets[j].rate;
       var s = stepFor(v, dir), nv = dir > 0 ? Math.floor(v / s + 1e-9) * s + s : Math.ceil(v / s - 1e-9) * s - s;
-      S.targets[j].rate = Math.max(0, +nv.toPrecision(6));
-      var inp = $('#rate' + j); if (inp) inp.value = S.targets[j].rate;
+      state.targets[j].rate = Math.max(0, +nv.toPrecision(6));
+      var inp = $('#rate' + j); if (inp) inp.value = state.targets[j].rate;
       recalcSoon(); return;
     }
-    if (t.id === 'addTarget') { openPicker(function (id) { S.targets.push({ item: id, rate: S.unit === 'min' ? 60 : 1 }); renderPlan(); recalc(); }); return; }
+    if (t.id === 'addTarget') { openPicker(function (id) { state.targets.push({ item: id, rate: state.unit === 'min' ? 60 : 1 }); renderPlan(); recalc(); }); return; }
     if (t.hasAttribute('data-preset')) {
       var p = PRESETS.filter(function (x) { return x.id === t.getAttribute('data-preset'); })[0];
-      S.targets = p.items.map(function (x) { return { item: x[0], rate: S.unit === 'min' ? x[1] : +(x[1] / 60).toPrecision(6) }; });
-      SEL = null; LAST_SIG = ''; renderPlan(); recalc(); toast('Loaded ' + p.name.toLowerCase());
+      state.targets = p.items.map(function (x) { return { item: x[0], rate: state.unit === 'min' ? x[1] : +(x[1] / 60).toPrecision(6) }; });
+      ui.sel = null; ui.mapSig = ''; renderPlan(); recalc(); toast('Loaded ' + p.name.toLowerCase());
     }
   });
   plan.addEventListener('input', function (e) {
     var t = e.target; if (!t.hasAttribute('data-rate')) return;
     var v = parseFloat(String(t.value).replace(',', '.'));
-    S.targets[+t.getAttribute('data-rate')].rate = isFinite(v) && v > 0 ? v : 0; recalcSoon();
+    state.targets[+t.getAttribute('data-rate')].rate = isFinite(v) && v > 0 ? v : 0; recalcSoon();
   });
   plan.addEventListener('keydown', function (e) { if (e.key === 'Enter' && e.target.tagName === 'INPUT') e.target.blur(); });
 
@@ -461,28 +462,28 @@ function wire() {
   set.addEventListener('click', function (e) {
     var t = e.target.closest('button'); if (!t) return;
     var a;
-    if ((a = t.getAttribute('data-mtier'))) { S.machines[a] = t.getAttribute('data-val'); renderSettings(); recalc(); return; }
-    if ((a = t.getAttribute('data-belt'))) { S.belt = a; renderSettings(); recalc(); return; }
-    if ((a = t.getAttribute('data-stack'))) { S.stack = +a; renderSettings(); recalc(); return; }
-    if ((a = t.getAttribute('data-plevel')) !== null) { S.prolif.level = +a; renderSettings(); recalc(); return; }
-    if ((a = t.getAttribute('data-pmode'))) { S.prolif.mode = a; renderSettings(); recalc(); return; }
-    if ((a = t.getAttribute('data-theme-set'))) { S.opts.theme = a; applyTheme(); renderSettings(); saveState(); return; }
+    if ((a = t.getAttribute('data-mtier'))) { state.machines[a] = t.getAttribute('data-val'); renderSettings(); recalc(); return; }
+    if ((a = t.getAttribute('data-belt'))) { state.belt = a; renderSettings(); recalc(); return; }
+    if ((a = t.getAttribute('data-stack'))) { state.stack = +a; renderSettings(); recalc(); return; }
+    if ((a = t.getAttribute('data-plevel')) !== null) { state.prolif.level = +a; renderSettings(); recalc(); return; }
+    if ((a = t.getAttribute('data-pmode'))) { state.prolif.mode = a; renderSettings(); recalc(); return; }
+    if ((a = t.getAttribute('data-theme-set'))) { state.opts.theme = a; applyTheme(); renderSettings(); saveState(); return; }
     if ((a = t.getAttribute('data-nstep'))) {
-      var c = NUMS[a], cur = S.mining[c[0]], nv = clampNum(a, +(cur + c[1] * +t.getAttribute('data-dir')).toPrecision(6));
-      S.mining[c[0]] = nv; $('#' + a).value = nv; recalcSoon(); return;
+      var c = NUMS[a], cur = state.mining[c[0]], nv = clampNum(a, +(cur + c[1] * +t.getAttribute('data-dir')).toPrecision(6));
+      state.mining[c[0]] = nv; $('#' + a).value = nv; recalcSoon(); return;
     }
-    if (t.id === 'btnInstall' && window.__installPrompt) { window.__installPrompt.prompt(); window.__installPrompt = null; renderSettings(); return; }
+    if (t.id === 'btnInstall' && ui.installPrompt) { ui.installPrompt.prompt(); ui.installPrompt = null; renderSettings(); return; }
     if (t.id === 'btnReset') {
       if (t.getAttribute('data-armed') !== '1') { t.setAttribute('data-armed', '1'); t.querySelector('.t').textContent = 'Tap again to reset everything'; return; }
-      var th = S.opts.theme; S = defaultState(); S.opts.theme = th; SEL = null; LAST_SIG = ''; renderAll(); toast('Plan reset');
+      var next = defaultState(); next.opts.theme = state.opts.theme; replaceState(next); renderAll(); toast('Plan reset');
     }
   });
   set.addEventListener('input', function (e) {
     var t = e.target; if (!NUMS[t.id]) return;
     var v = parseFloat(String(t.value).replace(',', '.'));
-    if (isFinite(v)) { S.mining[NUMS[t.id][0]] = clampNum(t.id, v); recalcSoon(); }
+    if (isFinite(v)) { state.mining[NUMS[t.id][0]] = clampNum(t.id, v); recalcSoon(); }
   });
-  set.addEventListener('change', function (e) { var t = e.target; if (NUMS[t.id]) t.value = S.mining[NUMS[t.id][0]]; });
+  set.addEventListener('change', function (e) { var t = e.target; if (NUMS[t.id]) t.value = state.mining[NUMS[t.id][0]]; });
 
   // build pane
   $('#buildBody').addEventListener('click', function (e) { var r = e.target.closest('[data-sel]'); if (r) focusNode(r.getAttribute('data-sel')); });
@@ -492,10 +493,10 @@ function wire() {
 
   // picker
   $('#pickSearch').addEventListener('input', function (e) { renderPickGrid(e.target.value); });
-  $('#pickCats').addEventListener('click', function (e) { var c = e.target.closest('[data-cat]'); if (!c) return; pickCat = c.getAttribute('data-cat'); renderPickCats(); renderPickGrid($('#pickSearch').value); });
+  $('#pickCats').addEventListener('click', function (e) { var c = e.target.closest('[data-cat]'); if (!c) return; ui.picker.cat = c.getAttribute('data-cat'); renderPickCats(); renderPickGrid($('#pickSearch').value); });
   $('#pickGrid').addEventListener('click', function (e) {
     var b = e.target.closest('[data-item]'); if (!b) return;
-    closeSheet('picker'); $('#pickSearch').blur(); if (pickCb) pickCb(b.getAttribute('data-item'));
+    closeSheet('picker'); $('#pickSearch').blur(); if (ui.picker.onPick) ui.picker.onPick(b.getAttribute('data-item'));
   });
   $('#scrim').addEventListener('click', function () { var f = this.getAttribute('data-for'); if (f) closeSheet(f); });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { closeSheet('picker'); closeSheet('export'); closeInspector(); } });
@@ -510,24 +511,24 @@ function wire() {
     try { navigator.share({ title: 'Dyson Sphere plan', text: $('#expText').value }).catch(function () { }); } catch (e) { }
   });
   $('#expLoad').addEventListener('click', function () {
-    try { S = mergeState(defaultState(), JSON.parse($('#expText').value)); SEL = null; LAST_SIG = ''; renderAll(); closeSheet('export'); toast('Plan loaded'); }
+    try { replaceState(mergeState(defaultState(), JSON.parse($('#expText').value))); renderAll(); closeSheet('export'); toast('Plan loaded'); }
     catch (err) { $('#expMsg').textContent = 'That code could not be read. Paste a code copied from this app.'; }
   });
 
   // map controls
   $('#btnLayers').addEventListener('click', function () { var l = $('#layers'); l.hidden = !l.hidden; this.setAttribute('aria-expanded', !l.hidden); });
-  $('#optSpray').addEventListener('change', function (e) { S.opts.spray = e.target.checked; LAST_SIG = ''; recalc(); });
-  $('#optLabels').addEventListener('change', function (e) { S.opts.labels = e.target.checked; $('#stage').classList.toggle('nolabels', !S.opts.labels); saveState(); });
+  $('#optSpray').addEventListener('change', function (e) { state.opts.spray = e.target.checked; ui.mapSig = ''; recalc(); });
+  $('#optLabels').addEventListener('change', function (e) { state.opts.labels = e.target.checked; $('#stage').classList.toggle('nolabels', !state.opts.labels); saveState(); });
   $('#zin').addEventListener('click', function () { var v = $('#viewport'); zoomAt(v.clientWidth / 2, v.clientHeight / 2, 1.3); });
   $('#zout').addEventListener('click', function () { var v = $('#viewport'); zoomAt(v.clientWidth / 2, v.clientHeight / 2, 0.77); });
-  $('#zfit').addEventListener('click', function () { var st = $('#stage'); st.classList.add('anim'); FIT_ALL = true; fitView(); FIT_ALL = false; setTimeout(function () { st.classList.remove('anim'); }, 340); });
+  $('#zfit').addEventListener('click', function () { var st = $('#stage'); st.classList.add('anim'); fitView(true); setTimeout(function () { st.classList.remove('anim'); }, 340); });
 
   // pan / pinch / tap / double-tap
   var vp = $('#viewport'), ptrs = {}, moved = 0, pinch = 0, downTarget = null, lastTap = 0, lastXY = null;
   vp.addEventListener('wheel', function (e) {
     e.preventDefault(); var r = vp.getBoundingClientRect();
     var f = e.ctrlKey ? Math.exp(-e.deltaY * 0.01) : Math.exp(-e.deltaY * 0.0015);
-    if (!e.ctrlKey && Math.abs(e.deltaX) > Math.abs(e.deltaY)) { VIEW.x -= e.deltaX; applyView(); return; }
+    if (!e.ctrlKey && Math.abs(e.deltaX) > Math.abs(e.deltaY)) { ui.view.x -= e.deltaX; applyView(); return; }
     zoomAt(e.clientX - r.left, e.clientY - r.top, f);
   }, { passive: false });
   ['gesturestart', 'gesturechange'].forEach(function (ev) { vp.addEventListener(ev, function (e) { e.preventDefault(); }, { passive: false }); });
@@ -546,12 +547,12 @@ function wire() {
       ptrs[e.pointerId] = { x: e.clientX, y: e.clientY };
       var a = ptrs[ks[0]], b = ptrs[ks[1]], d = Math.hypot(a.x - b.x, a.y - b.y), r = vp.getBoundingClientRect();
       if (pinch) zoomAt((a.x + b.x) / 2 - r.left, (a.y + b.y) / 2 - r.top, d / pinch);
-      VIEW.x += (e.clientX - ox) / 2; VIEW.y += (e.clientY - oy) / 2; applyView();
+      ui.view.x += (e.clientX - ox) / 2; ui.view.y += (e.clientY - oy) / 2; applyView();
       pinch = d; moved += 20; return;
     }
     var dx = e.clientX - p.x, dy = e.clientY - p.y;
     moved += Math.abs(dx) + Math.abs(dy); p.x = e.clientX; p.y = e.clientY;
-    VIEW.x += dx; VIEW.y += dy; applyView();
+    ui.view.x += dx; ui.view.y += dy; applyView();
   });
   function up(e) { delete ptrs[e.pointerId]; if (Object.keys(ptrs).length < 2) pinch = 0; if (!Object.keys(ptrs).length) vp.classList.remove('drag'); }
   vp.addEventListener('pointerup', function (e) {
@@ -566,38 +567,38 @@ function wire() {
     lastTap = now; lastXY = [e.clientX, e.clientY];
     if (n) {
       selectNode(n.getAttribute('data-id'));
-      if (!isWide()) { var nb = n.getBoundingClientRect(); if (nb.bottom > r.top + r.height * 0.42) centerNode(SEL); }
+      if (!isWide()) { var nb = n.getBoundingClientRect(); if (nb.bottom > r.top + r.height * 0.42) centerNode(ui.sel); }
     } else closeInspector();
   });
   vp.addEventListener('pointercancel', up);
 
   // inspector
   $('#inspector').addEventListener('change', function (e) {
-    var t = e.target; if (!SEL) return;
-    if (t.id === 'i_rec') { setOverride(SEL, 'recipe', t.value === defaultRecipeFor(SEL) ? null : t.value); setOverride(SEL, 'machine', null); }
-    else if (t.id === 'i_mach') setOverride(SEL, 'machine', t.value);
-    else if (t.id === 'i_pro') { if (t.value === 'global') setOverride(SEL, 'prolif', null); else { var q = t.value.split(':'); setOverride(SEL, 'prolif', { level: +q[0], mode: q[1] }); } }
-    else if (t.id === 'i_ext') setOverride(SEL, 'external', t.checked);
-    LAST_SIG = ''; recalc();
+    var t = e.target; if (!ui.sel) return;
+    if (t.id === 'i_rec') { setOverride(ui.sel, 'recipe', t.value === defaultRecipeFor(ui.sel) ? null : t.value); setOverride(ui.sel, 'machine', null); }
+    else if (t.id === 'i_mach') setOverride(ui.sel, 'machine', t.value);
+    else if (t.id === 'i_pro') { if (t.value === 'global') setOverride(ui.sel, 'prolif', null); else { var q = t.value.split(':'); setOverride(ui.sel, 'prolif', { level: +q[0], mode: q[1] }); } }
+    else if (t.id === 'i_ext') setOverride(ui.sel, 'external', t.checked);
+    ui.mapSig = ''; recalc();
   });
   $('#inspector').addEventListener('click', function (e) {
     var t = e.target.closest('button'); if (!t) return;
     if (t.id === 'inspClose') closeInspector();
-    else if (t.id === 'i_reset') { delete S.overrides[SEL]; LAST_SIG = ''; recalc(); }
-    else if (t.hasAttribute('data-jump')) { var id = t.getAttribute('data-jump'); if (PLAN.nodes[id]) { selectNode(id); centerNode(id); } }
+    else if (t.id === 'i_reset') { delete state.overrides[ui.sel]; ui.mapSig = ''; recalc(); }
+    else if (t.hasAttribute('data-jump')) { var id = t.getAttribute('data-jump'); if (ui.plan.nodes[id]) { selectNode(id); centerNode(id); } }
   });
 
   var lastW = window.innerWidth, lastH = window.innerHeight;
   window.addEventListener('resize', function () {
     if (Math.abs(window.innerWidth - lastW) < 2 && Math.abs(window.innerHeight - lastH) < 120) return; // ignore keyboard show/hide
     lastW = window.innerWidth; lastH = window.innerHeight;
-    if (isWide() && S.tab !== S.main && (S.tab === 'map' || S.tab === 'build')) S.main = S.tab;
+    if (isWide() && state.tab !== state.main && (state.tab === 'map' || state.tab === 'build')) state.main = state.tab;
     renderSettings(); syncNav(); fitView();
   });
   window.matchMedia('(prefers-color-scheme: dark)').addEventListener && window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyTheme);
 }
 
-function renderAll() { applyTheme(); syncNav(); renderPlan(); renderSettings(); $('#optSpray').checked = !!S.opts.spray; $('#optLabels').checked = !!S.opts.labels; recalc(); }
+function renderAll() { applyTheme(); syncNav(); renderPlan(); renderSettings(); $('#optSpray').checked = !!state.opts.spray; $('#optLabels').checked = !!state.opts.labels; recalc(); }
 
 /* ---------- PWA ---------- */
 function registerSW() {
@@ -615,15 +616,14 @@ function registerSW() {
     navigator.serviceWorker.addEventListener('controllerchange', function () { if (!reloading) { reloading = true; location.reload(); } });
   } catch (e) { }
 }
-window.addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); window.__installPrompt = e; if (S) renderSettings(); });
 
 /* ---------- boot ---------- */
-function boot() {
-  initEngine(DATA);
-  S = loadState();
-  if (isWide()) { S.tab = S.main === 'build' ? 'build' : 'map'; }
+export function boot() {
+  initEngine(recipes);
+  loadState();
+  window.addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); ui.installPrompt = e; renderSettings(); });
+  if (isWide()) { state.tab = state.main === 'build' ? 'build' : 'map'; }
   wire(); renderAll();
   requestAnimationFrame(function () { fitView(); });
   registerSW();
 }
-boot();

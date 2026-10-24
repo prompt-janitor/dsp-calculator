@@ -4,7 +4,9 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, readdirSync } from 'node:fs';
-import { loadApp, plainPlan, plainLayout } from './lib/load.mjs';
+import { plainPlan, plainLayout } from './lib/load.mjs';
+import { solve } from '../src/js/engine.js';
+import { layoutGraph } from '../src/js/map.js';
 import { solverPlans, layoutPlans } from './lib/plans.mjs';
 
 const TOL = 1e-9;
@@ -36,8 +38,7 @@ function check(got, want) {
   assert.deepEqual(d.slice(0, 20), [], `${d.length} differences`);
 }
 
-const ctx = loadApp();
-const plans = solverPlans(ctx);
+const plans = solverPlans();
 const layouts = layoutPlans();
 
 test('every fixture has a plan and every plan has a fixture', () => {
@@ -47,7 +48,7 @@ test('every fixture has a plan and every plan has a fixture', () => {
 
 for (const [name, cfg] of Object.entries(plans)) {
   test(`solver snapshot: ${name}`, () => {
-    const p = ctx.solve(cfg);
+    const p = solve(cfg);
     assert.equal(p.ok, true);
     check(plainPlan(p), fixture('solver', name));
   });
@@ -55,7 +56,6 @@ for (const [name, cfg] of Object.entries(plans)) {
 
 for (const [name, { spray, cfg }] of Object.entries(layouts)) {
   test(`layout snapshot: ${name}`, () => {
-    ctx.S = { opts: { spray } };
-    check(plainLayout(ctx.layoutGraph(ctx.solve(cfg))), fixture('layout', name));
+    check(plainLayout(layoutGraph(solve(cfg), { spray })), fixture('layout', name));
   });
 }

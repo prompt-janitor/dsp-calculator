@@ -2,13 +2,14 @@
 // Changing a plan here means the fixtures must be made again with
 // `npm run snapshot`, so add new plans instead of editing old ones.
 import { baseCfg } from './load.mjs';
+import { PRESETS } from '../../src/js/core.js';
 
 const cfg = (targets, patch = {}) => ({ ...baseCfg(), ...patch, targets });
 
-export function solverPlans(ctx) {
+export function solverPlans() {
   const plans = {};
   // Preset rates are per minute, as in the app.
-  for (const p of ctx.PRESETS) {
+  for (const p of PRESETS) {
     plans['preset-' + p.id] = cfg(p.items.map(([item, rate]) => ({ item, rate: rate / 60 })));
   }
   Object.assign(plans, {

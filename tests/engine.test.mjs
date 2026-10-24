@@ -1,21 +1,10 @@
 // Solver checks. Expected values are worked out by hand from the recipe data.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
-import vm from 'node:vm';
+import { baseCfg } from './lib/load.mjs';
+import { solve, DATA, CANDS } from '../src/js/engine.js';
 
-const ctx = { DATA: JSON.parse(readFileSync(new URL('../src/data/recipes.json', import.meta.url), 'utf8')), console };
-vm.createContext(ctx);
-vm.runInContext(readFileSync(new URL('../src/js/engine.js', import.meta.url), 'utf8'), ctx);
-ctx.initEngine(ctx.DATA);
-
-const base = () => ({
-  targets: [],
-  machines: { smelter: 'plane-smelter', assembler: 'assembling-machine-3', chem: 'chemical-plant', lab: 'matrix-lab', miner: 'mining-machine' },
-  belt: 'conveyor-belt-3', stack: 1, prolif: { level: 0, mode: 'products' },
-  mining: { speed: 100, veins: 8, oil: 1, orbital: 55 }, overrides: {},
-});
-const plan = (targets, patch = {}) => ctx.solve(Object.assign(base(), patch, { targets }));
+const plan = (targets, patch = {}) => solve(Object.assign(baseCfg(), patch, { targets }));
 const close = (a, b, msg) => assert.ok(Math.abs(a - b) < 1e-6, `${msg}: ${a} != ${b}`);
 
 test('electromagnetic matrix at 1/s', () => {
@@ -41,7 +30,7 @@ test('proliferator Mk.III extra products cuts raw ore and adds spray demand', ()
 });
 
 test('every craftable item solves', () => {
-  const bad = ctx.DATA.items.filter((i) => (ctx.CANDS[i.id] || []).length)
+  const bad = DATA.items.filter((i) => (CANDS[i.id] || []).length)
     .filter((i) => { const p = plan([{ item: i.id, rate: 1 }]); return !p.ok || !Number.isFinite(p.totals.power); })
     .map((i) => i.id);
   assert.deepEqual(bad, []);

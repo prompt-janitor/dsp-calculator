@@ -1,19 +1,11 @@
-// Loads the browser scripts into a Node vm context, in the same order as
-// scripts/build.mjs, so tests can call solve() and layoutGraph() directly.
+// Loads the recipe data into the engine once, as boot() does in the app.
+// Import this before calling solve() or layoutGraph().
 import { readFileSync } from 'node:fs';
-import vm from 'node:vm';
+import { initEngine } from '../../src/js/engine.js';
 
-const read = (p) => readFileSync(new URL('../../src/' + p, import.meta.url), 'utf8');
+initEngine(JSON.parse(readFileSync(new URL('../../src/data/recipes.json', import.meta.url), 'utf8')));
 
-export function loadApp() {
-  const ctx = { DATA: JSON.parse(read('data/recipes.json')), console };
-  vm.createContext(ctx);
-  for (const f of ['js/engine.js', 'js/core.js', 'js/map.js']) vm.runInContext(read(f), ctx, { filename: f });
-  ctx.initEngine(ctx.DATA);
-  return ctx;
-}
-
-// Same machine choices as defaultState() in core.js. Rates are per second.
+// Same machine choices as defaultState() in store.js. Rates are per second.
 export function baseCfg() {
   return {
     targets: [],

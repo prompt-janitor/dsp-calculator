@@ -1,22 +1,25 @@
 /* ---------- Engine: pure calculation, no DOM ---------- */
-var RECIPES = {}, ITEMS = {}, CANDS = {}, EXCL = {};
-var MACH_CLASS = {
+// Filled by initEngine().
+export let DATA = null;
+export const RECIPES = {}, ITEMS = {}, CANDS = {}, EXCL = {};
+export const MACH_CLASS = {
   'arc-smelter': 'smelter', 'plane-smelter': 'smelter', 'df-negentropy-smelter': 'smelter',
   'assembling-machine-1': 'assembler', 'assembling-machine-2': 'assembler', 'assembling-machine-3': 'assembler', 'df-recomposing-assembler': 'assembler',
   'chemical-plant': 'chem', 'quantum-chemical-plant': 'chem',
   'matrix-lab': 'lab', 'df-self-evolution-lab': 'lab',
   'mining-machine': 'miner', 'advanced-mining-machine': 'miner'
 };
-var FLUIDS = { 'water': 1, 'crude-oil': 1, 'refined-oil': 1, 'sulfuric-acid': 1 };
-var BELTS = { 'conveyor-belt-1': 6, 'conveyor-belt-2': 12, 'conveyor-belt-3': 30 };
-var DEFAULT_PICK = {
+const FLUIDS = { 'water': 1, 'crude-oil': 1, 'refined-oil': 1, 'sulfuric-acid': 1 };
+export const BELTS = { 'conveyor-belt-1': 6, 'conveyor-belt-2': 12, 'conveyor-belt-3': 30 };
+const DEFAULT_PICK = {
   'deuterium': 'deuterium-fractionation',
   'critical-photon': 'critical-photon',
   'hydrogen': 'gas-giant-hydrogen',
   'refined-oil': 'plasma-refining'
 };
 
-function initEngine(D) {
+export function initEngine(D) {
+  DATA = D;
   // The source data lists deuterium fractionation as 0.01 : 0.01, which hides the 1% chance.
   // In game, each hydrogen has a 1% chance to become deuterium and a fractionator handles one belt of hydrogen.
   D.recipes.forEach(function (r) {
@@ -31,7 +34,7 @@ function initEngine(D) {
   D.items.forEach(function (i) { ITEMS[i.id] = i; });
 }
 
-function defaultRecipeFor(item) {
+export function defaultRecipeFor(item) {
   var c = CANDS[item];
   if (!c || !c.length) return null;
   if (DEFAULT_PICK[item] && RECIPES[DEFAULT_PICK[item]]) return DEFAULT_PICK[item];
@@ -57,7 +60,7 @@ function pickMachine(rec, cfg, ovMachine) {
 function sumVals(o) { var s = 0; for (var k in o) s += o[k]; return s; }
 
 /* cfg: {targets:[{item,rate(/s)}], machines:{}, belt, stack, prolif:{level,mode}, mining:{speed,veins,oil}, overrides:{item:{recipe,machine,prolif,external}}} */
-function solve(cfg) {
+export function solve(cfg) {
   var MODS = DATA.mods, MACH = DATA.machines;
   var ov = cfg.overrides || {};
   var cap = beltCap(cfg);
@@ -251,7 +254,7 @@ function solve(cfg) {
 }
 
 /* ---------- Formatting ---------- */
-function fmt(n, d) {
+export function fmt(n, d) {
   if (!isFinite(n)) return '–';
   var a = Math.abs(n);
   if (a === 0) return '0';
@@ -262,7 +265,7 @@ function fmt(n, d) {
   if (a >= 0.01) return n.toFixed(3);
   return n.toPrecision(2);
 }
-function fmtPower(kw) {
+export function fmtPower(kw) {
   if (kw >= 1e6) return (kw / 1e6).toFixed(2) + ' GW';
   if (kw >= 1000) return (kw / 1000).toFixed(kw >= 100000 ? 0 : 1) + ' MW';
   return Math.round(kw) + ' kW';

@@ -16,6 +16,7 @@
 <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="preload" href="sprite.webp" as="image" type="image/webp">
+<!-- MODULES -->
 <!-- SPLASH -->
 <style>
 /* CSS */
@@ -23,8 +24,9 @@
 </head>
 <body>
 <!-- BODY -->
-<script>
-/* JS */
+<script type="module">
+import { boot } from './js/app.js';
+boot();
 </script>
 </body>
 </html>

@@ -3,7 +3,7 @@ import { RECIPES, CANDS, EXCL, defaultRecipeFor, fmt, fmtPower } from './engine.
 import { $, esc, svg, itemIcon, itemName, machineName, rateStr, unitLabel, optionTag, isWide, ROMAN } from './core.js';
 import { state, ui, update } from './store.js';
 import { NODE_WIDTH, applyView, applySelection } from './map-view.js';
-import { openSheet, closeSheet } from './sheets.js';
+import { openSheet, closeSheet, focusKey, refocus } from './sheets.js';
 
 export function closeInspector(instant) {
   if (ui.sel) { ui.sel = null; applySelection(); }
@@ -117,10 +117,14 @@ export function renderInspector() {
   const node = item && ui.plan && ui.plan.nodes[item];
   if (!node || node.kind === 'target') { closeSheet('inspector'); return; }
   const override = state.overrides[item] || {};
+  const sheet = $('#inspector');
+  const active = sheet.contains(document.activeElement) ? document.activeElement : null;
+  const key = focusKey(active);
   $('#inspHead').innerHTML = headHTML(node, item);
   const reset = state.overrides[item] ? '<div class="sh-actions"><button class="btn" type="button" id="i_reset">Undo changes to this step</button></div>' : '';
   $('#inspBody').innerHTML = (node.kind === 'raw' ? rawBodyHTML(node) : craftBodyHTML(node, item, override)) + reset;
-  openSheet('inspector');
+  if (active) refocus(null, key);
+  openSheet('inspector', { focus: $('#inspClose') });
 }
 
 function setOverride(draft, item, key, value) {

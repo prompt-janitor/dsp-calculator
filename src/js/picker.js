@@ -21,10 +21,11 @@ export function openPicker(onPick) {
   search.value = '';
   renderCategories();
   renderGrid();
-  // Only on wide screens, so the phone keyboard does not cover the list.
+  // On phones focus goes to the sheet, so the keyboard does not cover the list.
   openSheet('picker', { modal: true, focus: isWide() ? search : null });
 }
 
+// Sets the pressed chip in place, so keyboard focus stays on it.
 function renderCategories() {
   const box = $('#pickCats');
   if (!box.children.length) {

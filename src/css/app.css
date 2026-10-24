@@ -271,6 +271,7 @@ button.row:active, .row.tap:active { background: var(--panel2); }
   max-height: calc(100% - var(--sat) - 24px); display: flex; flex-direction: column; transform: translateY(105%); transition: transform .32s cubic-bezier(.2, .8, .2, 1);
   padding-left: var(--sal); padding-right: var(--sar); }
 .sheet.on { transform: none; }
+.sheet:focus { outline: none; }
 .sheet.dragging { transition: none; }
 .grab { padding: 8px 16px 4px; touch-action: none; cursor: grab; }
 .grab::before { content: ""; display: block; width: 38px; height: 5px; border-radius: 3px; background: var(--raised); margin: 0 auto 8px; }

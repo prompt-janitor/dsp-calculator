@@ -93,12 +93,12 @@
 
 <div class="scrim" id="scrim" hidden></div>
 
-<section class="sheet inspector" id="inspector" hidden role="dialog" aria-label="Step details">
+<section class="sheet inspector" id="inspector" hidden role="dialog" aria-label="Step details" tabindex="-1">
   <div class="grab"><div class="sh-head" id="inspHead"></div></div>
   <div class="sh-body" id="inspBody"></div>
 </section>
 
-<section class="sheet picker" id="picker" hidden role="dialog" aria-modal="true" aria-label="Choose an item">
+<section class="sheet picker" id="picker" hidden role="dialog" aria-modal="true" aria-label="Choose an item" tabindex="-1">
   <div class="grab">
     <div class="sh-head"><h3>Choose an item</h3><button class="btn plain" type="button" data-close="picker">Cancel</button></div>
     <div class="search"><svg class="svgi mut s18" aria-hidden="true"><use href="#i-search"/></svg><input type="search" id="pickSearch" placeholder="Search 170+ items" aria-label="Search items" autocomplete="off" enterkeyhint="search"></div>
@@ -107,7 +107,7 @@
   <div class="sh-body" id="pickGrid"></div>
 </section>
 
-<section class="sheet export" id="export" hidden role="dialog" aria-modal="true" aria-label="Share plan">
+<section class="sheet export" id="export" hidden role="dialog" aria-modal="true" aria-label="Share plan" tabindex="-1">
   <div class="grab">
     <div class="sh-head"><h3>Share plan</h3><button class="btn plain" type="button" data-close="export">Done</button></div>
     <div class="seg full gap-top" role="group" aria-label="Format"><button type="button" data-exp="summary" aria-pressed="true">Summary</button><button type="button" data-exp="code" aria-pressed="false">Plan code</button></div>

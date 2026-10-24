@@ -232,8 +232,20 @@ test('map options close with Esc and with a tap on the map', async ({ page, hasT
     await expect(button).toHaveAttribute('aria-expanded', 'false');
     await button.click();
   }
-  const box = await page.locator('#viewport').boundingBox();
-  await page.mouse.click(box.x + box.width / 2, box.y + box.height - 120);
+  // Tap an empty part of the map. Fonts differ between machines, so look for a spot instead of using a fixed one.
+  const spot = await page.evaluate(() => {
+    const viewport = document.getElementById('viewport'), r = viewport.getBoundingClientRect();
+    // Start in the middle, away from the map controls, which can move while the layout settles.
+    for (let y = r.top + r.height / 2; y > r.top + 80; y -= 20) {
+      for (let x = r.left + r.width / 2; x > r.left + 40; x -= 20) {
+        const el = document.elementFromPoint(x, y);
+        if (el && viewport.contains(el) && !el.closest('.node, button, #layers, .zoombar, .edgefade')) return { x, y };
+      }
+    }
+    return null;
+  });
+  expect(spot).not.toBeNull();
+  await page.mouse.click(spot.x, spot.y);
   await expect(layers).toBeHidden();
   await expect(button).toHaveAttribute('aria-expanded', 'false');
 });

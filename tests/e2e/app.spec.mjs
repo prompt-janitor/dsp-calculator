@@ -99,6 +99,22 @@ test.describe('sheets open and close', () => {
     await page.keyboard.press('Escape');
     await expect(page.locator('#inspector')).toBeHidden();
   });
+
+  test('Tab stays inside the item picker and focus returns on close', async ({ page, hasTouch }) => {
+    test.skip(hasTouch, 'keyboard only');
+    await openApp(page);
+    await showView(page, 'plan');
+    await page.locator('#addTarget').focus();
+    await page.keyboard.press('Enter');
+    await sheetOpen(page, 'picker');
+    for (let i = 0; i < 40; i++) {
+      await page.keyboard.press(i % 7 === 6 ? 'Shift+Tab' : 'Tab');
+      expect(await page.evaluate(() => document.querySelector('#picker').contains(document.activeElement)), `Tab ${i + 1}`).toBe(true);
+    }
+    await page.keyboard.press('Escape');
+    await expect(page.locator('#picker')).toBeHidden();
+    await expect(page.locator('#addTarget')).toBeFocused();
+  });
 });
 
 test('map nodes work with the keyboard', async ({ page, hasTouch }) => {

@@ -5,7 +5,7 @@ const FOCUSABLE = 'button, input, select, textarea, [href], [tabindex]:not([tabi
 const openers = {};
 
 const isShown = (el) => !!el && el.isConnected && el.getClientRects().length > 0;
-const focusables = (root) => $$(FOCUSABLE, root).filter((el) => !el.disabled && isShown(el));
+const focusables = (root) => $$(FOCUSABLE, root).filter((el) => !el.disabled && el.tabIndex >= 0 && isShown(el));
 
 // A way to find the same control again after its pane is drawn again.
 export function focusKey(el) {
@@ -53,7 +53,11 @@ export function openSheet(id, { modal = false, focus = null } = {}) {
 export function closeSheet(id, instant) {
   const sheet = $('#' + id);
   if (!sheet || !('open' in sheet.dataset)) return;
-  const hadFocus = sheet.contains(document.activeElement);
+  // In a modal sheet, focus on the page body also counts. Safari leaves it
+  // there after a click on a part of the sheet that cannot take focus.
+  const active = document.activeElement;
+  const onBody = !active || active === document.body;
+  const hadFocus = sheet.contains(active) || (onBody && sheet.getAttribute('aria-modal') === 'true');
   delete sheet.dataset.open;
   sheet.classList.remove('on');
   sheet.style.transform = '';
@@ -76,19 +80,18 @@ export function closeSheet(id, instant) {
   });
 }
 
-// Keeps Tab and Shift+Tab inside an open modal sheet.
+// Keeps Tab and Shift+Tab inside an open modal sheet. Focus is moved here
+// for every Tab, because Safari skips buttons by default and would leave the sheet.
 function trapFocus(e) {
   const sheet = openModal();
   if (e.key !== 'Tab' || !sheet) return;
+  e.preventDefault();
   const list = focusables(sheet);
-  if (!list.length) { e.preventDefault(); return; }
-  const first = list[0], last = list[list.length - 1];
-  const inside = sheet.contains(document.activeElement);
-  if (e.shiftKey && (!inside || document.activeElement === first || document.activeElement === sheet)) {
-    e.preventDefault(); last.focus();
-  } else if (!e.shiftKey && (!inside || document.activeElement === last)) {
-    e.preventDefault(); first.focus();
-  }
+  if (!list.length) return;
+  const step = e.shiftKey ? -1 : 1;
+  const at = list.indexOf(document.activeElement);
+  const next = at < 0 ? (e.shiftKey ? list.length - 1 : 0) : (at + step + list.length) % list.length;
+  list[next].focus();
 }
 
 // CSS sets --drag to 0 on sheets that are cards or dialogs and not bottom sheets.

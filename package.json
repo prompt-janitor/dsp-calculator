@@ -8,7 +8,7 @@
     "build": "node scripts/build.mjs",
     "test": "node --test tests/*.test.mjs",
     "lint:copy": "node scripts/lint-copy.mjs",
-    "serve": "npm run build && npx --yes serve dist -l 8080",
+    "serve": "npm run build && node scripts/serve.mjs",
     "assets": "node scripts/gen-assets.cjs",
     "snapshot": "node scripts/snapshot.mjs"
   },

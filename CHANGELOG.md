@@ -16,15 +16,16 @@ The first public release.
 
 ### Changes in the cleanup before release
 
-- The scripts are now ES modules with a small store, and the solver and map layout are split from the drawing code.
-- Snapshot tests check that the solver numbers stay the same. The solver results now use clear field names.
 - Tabs, sheets and map nodes work with a keyboard and a screen reader.
 - New layouts for phones in landscape, iPads in portrait, small laptops and large screens. Touch controls are at least 44 px.
 - Keyboard shortcuts: `/` to search for an item, F to fit the map, + and - to zoom, Esc to close.
 - The update prompt also shows for an update that was found on an earlier visit.
 - The installed app keeps controls out of the notch and the home indicator, and the theme sets the browser bar color.
-- The icon sheet is less than half its old size.
-- New launch screens for iPhone Air and iPad Pro 11 (M4 and M5).
-- Settings has an About section with credits and licenses.
+- The icon sheet is less than half its old size, so the app loads faster.
+- New launch screens for iPhone Air, iPhone Duo and iPad Pro 11 (M4 and M5).
+- Switching between per minute and per second no longer changes the rates.
+- Plan codes are checked before they load.
+- Settings has an About section with credits and licenses that also open offline.
 - All text was rewritten in plain words.
-- Tests run on GitHub for every push and pull request.
+
+For developers: the code is now plain ES modules with tests that keep the solver numbers the same. Tests run on GitHub for each pull request and each push to main.

@@ -23,9 +23,9 @@ function tierButton(attrs, pressed, iconHTML, label, note) {
 
 const tierRow = (label, buttons, n) => `
   <div class="tier"><div class="lab">${label}</div>
-    <div class="tiers" style="--n:${n}">${buttons.join('')}</div></div>`;
+    <div class="tiers" style="--n:${n}" role="group" aria-label="${esc(label)}">${buttons.join('')}</div></div>`;
 
-const segment = (label, buttons) => `<div class="seg">${buttons}</div>`;
+const segment = (label, buttons) => `<div class="seg" role="group" aria-label="${esc(label)}">${buttons}</div>`;
 const segButton = (attr, value, label, pressed) => `<button type="button" ${attr}="${value}" aria-pressed="${pressed}">${label}</button>`;
 
 function numberRow(id, label, note) {

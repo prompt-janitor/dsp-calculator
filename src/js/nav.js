@@ -45,28 +45,47 @@ export function goTo(view) {
   if (isWide()) setMain(view); else setTab(view);
 }
 
-// Each switch, the state key it shows and how to change it.
-const SWITCHES = [
-  { list: '.tabbar', key: 'tab', select: setTab, attr: 'aria-selected' },
-  { list: '.side .wide-head .seg', key: 'side', select: setSide, attr: 'aria-pressed' },
-  { list: '.main-head .seg', key: 'main', select: setMain, attr: 'aria-pressed' },
-  { list: '.segbar .seg', key: 'bsec', select: setBuildSection, attr: 'aria-pressed' }
+// Each tab list, the state key it shows and how to switch it.
+const TAB_LISTS = [
+  { list: '#tabBar', key: 'tab', select: setTab },
+  { list: '#sideTabs', key: 'side', select: setSide },
+  { list: '#mainTabs', key: 'main', select: setMain },
+  { list: '#buildTabs', key: 'bsec', select: setBuildSection }
 ];
 
 export function syncNav() {
   const app = $('#app');
-  for (const { list, key, attr } of SWITCHES) {
+  for (const { list, key } of TAB_LISTS) {
     app.dataset[key] = state[key];
-    for (const button of $$(`[data-${key}]`, $(list))) button.setAttribute(attr, button.dataset[key] === state[key]);
+    for (const tab of $$('[role="tab"]', $(list))) {
+      const selected = tab.dataset[key] === state[key];
+      tab.setAttribute('aria-selected', selected);
+      tab.tabIndex = selected ? 0 : -1;
+    }
   }
 }
 
+// Arrow keys move between tabs and open the one they land on.
+function onTabKey(e, list, key, select) {
+  const tabs = $$('[role="tab"]', list);
+  const at = tabs.indexOf(document.activeElement);
+  if (at < 0) return;
+  const next = { ArrowRight: at + 1, ArrowLeft: at - 1, Home: 0, End: tabs.length - 1 }[e.key];
+  if (next === undefined) return;
+  e.preventDefault();
+  const tab = tabs[(next + tabs.length) % tabs.length];
+  tab.focus();
+  select(tab.dataset[key]);
+}
+
 export function wireNav() {
-  for (const { list, key, select } of SWITCHES) {
-    $(list).addEventListener('click', (e) => {
-      const button = e.target.closest(`[data-${key}]`);
-      if (button) select(button.dataset[key]);
+  for (const { list, key, select } of TAB_LISTS) {
+    const el = $(list);
+    el.addEventListener('click', (e) => {
+      const tab = e.target.closest('[role="tab"]');
+      if (tab) select(tab.dataset[key]);
     });
+    el.addEventListener('keydown', (e) => onTabKey(e, el, key, select));
   }
   document.addEventListener('click', (e) => {
     const link = e.target.closest('[data-goto]');

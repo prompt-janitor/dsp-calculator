@@ -10,7 +10,7 @@ const byValue = (counts) => Object.keys(counts).sort((a, b) => counts[b] - count
 const plural = (n, word) => `${n} ${word}${n > 1 ? 's' : ''}`;
 
 // One section, shown on its own on phones and side by side on wide screens.
-const section = (id, html) => `<div class="bsec" data-sec="${id}">${html}</div>`;
+const section = (id, html) => `<div class="bsec" data-sec="${id}" id="bsec-${id}" role="tabpanel" aria-labelledby="btab-${id}">${html}</div>`;
 const title = (text, number) => `<div class="gtitle">${text}${number === undefined ? '' : `<span class="num push">${number}</span>`}</div>`;
 const end = (value, unit) => `<span class="end"><b>${value}</b>${unit ? `<small>${unit}</small>` : ''}</span>`;
 

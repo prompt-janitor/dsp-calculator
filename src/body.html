@@ -21,17 +21,17 @@
   <aside class="side">
     <header class="wide-head">
       <div class="brand"><svg aria-hidden="true"><use href="#mark"/></svg><b>DSP Calculator</b></div>
-      <div class="seg" role="tablist" aria-label="Sidebar">
-        <button type="button" data-side="plan" aria-pressed="true">Plan</button>
-        <button type="button" data-side="settings" aria-pressed="false">Settings</button>
+      <div class="seg" role="tablist" aria-label="Sidebar" id="sideTabs">
+        <button type="button" role="tab" id="stab-plan" data-side="plan" aria-controls="pane-plan" aria-selected="true">Plan</button>
+        <button type="button" role="tab" id="stab-settings" data-side="settings" aria-controls="pane-settings" aria-selected="false" tabindex="-1">Settings</button>
       </div>
     </header>
-    <section class="pane" id="pane-plan" aria-label="Plan">
+    <section class="pane" id="pane-plan" role="tabpanel" aria-label="Plan">
       <header class="phone-head"><h1>Plan<span class="sub">What do you want to make?</span></h1>
-        <button class="btn round" type="button" data-act="share" aria-label="Share plan"><svg class="svgi"><use href="#i-share"/></svg></button></header>
+        <button class="btn round" type="button" data-act="share" aria-label="Share plan"><svg class="svgi" aria-hidden="true"><use href="#i-share"/></svg></button></header>
       <div class="pane-body" id="planBody"></div>
     </section>
-    <section class="pane" id="pane-settings" aria-label="Settings">
+    <section class="pane" id="pane-settings" role="tabpanel" aria-label="Settings">
       <header class="phone-head"><h1>Settings<span class="sub">Tiers, belts and research</span></h1></header>
       <div class="pane-body" id="setBody"></div>
     </section>
@@ -39,21 +39,21 @@
 
   <main class="main">
     <header class="wide-head main-head">
-      <div class="seg" role="tablist" aria-label="View">
-        <button type="button" data-main="map" aria-pressed="true">Flow map</button>
-        <button type="button" data-main="build" aria-pressed="false">Build list</button>
+      <div class="seg" role="tablist" aria-label="View" id="mainTabs">
+        <button type="button" role="tab" id="mtab-map" data-main="map" aria-controls="pane-map" aria-selected="true">Flow map</button>
+        <button type="button" role="tab" id="mtab-build" data-main="build" aria-controls="pane-build" aria-selected="false" tabindex="-1">Build list</button>
       </div>
       <div class="mini" id="miniStats"></div>
-      <button class="btn" type="button" data-act="share"><svg class="svgi" style="width:20px;height:20px"><use href="#i-share"/></svg>Share</button>
+      <button class="btn" type="button" data-act="share"><svg class="svgi s20" aria-hidden="true"><use href="#i-share"/></svg>Share</button>
     </header>
 
-    <section class="pane" id="pane-map" aria-label="Flow map">
+    <section class="pane" id="pane-map" role="tabpanel" aria-label="Flow map">
       <div class="vpwrap">
         <div class="viewport" id="viewport"><div class="stage" id="stage"></div></div>
         <div class="mapbar">
           <div class="pill title"><b>Flow map</b><small id="mapSub"></small></div>
           <span class="sp"></span>
-          <button class="btn round" type="button" id="btnLayers" aria-label="Map options" aria-expanded="false"><svg class="svgi"><use href="#i-layers"/></svg></button>
+          <button class="btn round" type="button" id="btnLayers" aria-label="Map options" aria-expanded="false"><svg class="svgi" aria-hidden="true"><use href="#i-layers"/></svg></button>
         </div>
         <div class="pill layers" id="layers" hidden>
           <label class="togrow"><span>Rates on links</span><input class="switch" type="checkbox" id="optLabels" checked></label>
@@ -64,53 +64,53 @@
           </div>
         </div>
         <div class="zoombar">
-          <button class="btn round" type="button" id="zin" aria-label="Zoom in"><svg class="svgi"><use href="#i-plus"/></svg></button>
-          <button class="btn round" type="button" id="zout" aria-label="Zoom out"><svg class="svgi"><use href="#i-minus"/></svg></button>
-          <button class="btn round" type="button" id="zfit" aria-label="Fit whole map"><svg class="svgi"><use href="#i-fit"/></svg></button>
+          <button class="btn round" type="button" id="zin" aria-label="Zoom in"><svg class="svgi" aria-hidden="true"><use href="#i-plus"/></svg></button>
+          <button class="btn round" type="button" id="zout" aria-label="Zoom out"><svg class="svgi" aria-hidden="true"><use href="#i-minus"/></svg></button>
+          <button class="btn round" type="button" id="zfit" aria-label="Fit whole map"><svg class="svgi" aria-hidden="true"><use href="#i-fit"/></svg></button>
         </div>
         <div class="empty" id="mapEmpty" hidden><div><b>Nothing to build yet</b>Add an item on the Plan tab.</div></div>
       </div>
     </section>
 
-    <section class="pane" id="pane-build" aria-label="Build list">
+    <section class="pane" id="pane-build" role="tabpanel" aria-label="Build list">
       <header class="phone-head"><h1>Build<span class="sub" id="buildSub"></span></h1></header>
-      <div class="segbar"><div class="seg full" role="tablist" aria-label="Build list section">
-        <button type="button" data-bsec="buildings" aria-pressed="true">Buildings</button>
-        <button type="button" data-bsec="steps" aria-pressed="false">Steps</button>
-        <button type="button" data-bsec="resources" aria-pressed="false">Resources</button>
+      <div class="segbar"><div class="seg full" role="tablist" aria-label="Build list section" id="buildTabs">
+        <button type="button" role="tab" id="btab-buildings" data-bsec="buildings" aria-controls="bsec-buildings" aria-selected="true">Buildings</button>
+        <button type="button" role="tab" id="btab-steps" data-bsec="steps" aria-controls="bsec-steps" aria-selected="false" tabindex="-1">Steps</button>
+        <button type="button" role="tab" id="btab-resources" data-bsec="resources" aria-controls="bsec-resources" aria-selected="false" tabindex="-1">Resources</button>
       </div></div>
       <div class="pane-body" id="buildBody"></div>
     </section>
   </main>
 
-  <nav class="tabbar" role="tablist" aria-label="Sections">
-    <button type="button" data-tab="plan" aria-selected="true"><svg class="svgi"><use href="#i-plan"/></svg>Plan</button>
-    <button type="button" data-tab="map" aria-selected="false"><svg class="svgi"><use href="#i-map"/></svg>Map</button>
-    <button type="button" data-tab="build" aria-selected="false"><svg class="svgi"><use href="#i-build"/></svg>Build</button>
-    <button type="button" data-tab="settings" aria-selected="false"><svg class="svgi"><use href="#i-set"/></svg>Settings</button>
-  </nav>
+  <div class="tabbar" role="tablist" aria-label="Sections" id="tabBar">
+    <button type="button" role="tab" id="tab-plan" data-tab="plan" aria-controls="pane-plan" aria-selected="true"><svg class="svgi" aria-hidden="true"><use href="#i-plan"/></svg>Plan</button>
+    <button type="button" role="tab" id="tab-map" data-tab="map" aria-controls="pane-map" aria-selected="false" tabindex="-1"><svg class="svgi" aria-hidden="true"><use href="#i-map"/></svg>Map</button>
+    <button type="button" role="tab" id="tab-build" data-tab="build" aria-controls="pane-build" aria-selected="false" tabindex="-1"><svg class="svgi" aria-hidden="true"><use href="#i-build"/></svg>Build</button>
+    <button type="button" role="tab" id="tab-settings" data-tab="settings" aria-controls="pane-settings" aria-selected="false" tabindex="-1"><svg class="svgi" aria-hidden="true"><use href="#i-set"/></svg>Settings</button>
+  </div>
 </div>
 
 <div class="scrim" id="scrim" hidden></div>
 
 <section class="sheet inspector" id="inspector" hidden role="dialog" aria-label="Step details">
-  <div class="grab" id="inspGrab"><div class="sh-head" id="inspHead"></div></div>
+  <div class="grab"><div class="sh-head" id="inspHead"></div></div>
   <div class="sh-body" id="inspBody"></div>
 </section>
 
 <section class="sheet picker" id="picker" hidden role="dialog" aria-modal="true" aria-label="Choose an item">
-  <div class="grab" data-grab="picker">
+  <div class="grab">
     <div class="sh-head"><h3>Choose an item</h3><button class="btn plain" type="button" data-close="picker">Cancel</button></div>
-    <div class="search"><svg class="svgi mut" style="width:18px;height:18px"><use href="#i-search"/></svg><input type="search" id="pickSearch" placeholder="Search 170+ items" aria-label="Search items" autocomplete="off" enterkeyhint="search"></div>
-    <div class="chips" id="pickCats"></div>
+    <div class="search"><svg class="svgi mut s18" aria-hidden="true"><use href="#i-search"/></svg><input type="search" id="pickSearch" placeholder="Search 170+ items" aria-label="Search items" autocomplete="off" enterkeyhint="search"></div>
+    <div class="chips" id="pickCats" role="group" aria-label="Category"></div>
   </div>
   <div class="sh-body" id="pickGrid"></div>
 </section>
 
 <section class="sheet export" id="export" hidden role="dialog" aria-modal="true" aria-label="Share plan">
-  <div class="grab" data-grab="export">
+  <div class="grab">
     <div class="sh-head"><h3>Share plan</h3><button class="btn plain" type="button" data-close="export">Done</button></div>
-    <div class="seg full" style="margin-top:12px"><button type="button" data-exp="summary" aria-pressed="true">Summary</button><button type="button" data-exp="code" aria-pressed="false">Plan code</button></div>
+    <div class="seg full gap-top" role="group" aria-label="Format"><button type="button" data-exp="summary" aria-pressed="true">Summary</button><button type="button" data-exp="code" aria-pressed="false">Plan code</button></div>
   </div>
   <div class="sh-body">
     <textarea id="expText" aria-label="Export text" spellcheck="false" autocapitalize="off" autocorrect="off"></textarea>

@@ -3,7 +3,7 @@
 import { writeFileSync, mkdirSync } from 'node:fs';
 import { plainPlan, plainLayout } from '../tests/lib/load.mjs';
 import { solve } from '../src/js/engine.js';
-import { layoutGraph } from '../src/js/map.js';
+import { layoutGraph } from '../src/js/layout.js';
 import { solverPlans, layoutPlans } from '../tests/lib/plans.mjs';
 
 const dir = (p) => new URL('../tests/fixtures/' + p + '/', import.meta.url);

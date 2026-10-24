@@ -6,7 +6,7 @@ import assert from 'node:assert/strict';
 import { readFileSync, readdirSync } from 'node:fs';
 import { plainPlan, plainLayout } from './lib/load.mjs';
 import { solve } from '../src/js/engine.js';
-import { layoutGraph } from '../src/js/map.js';
+import { layoutGraph } from '../src/js/layout.js';
 import { solverPlans, layoutPlans } from './lib/plans.mjs';
 
 const TOL = 1e-9;

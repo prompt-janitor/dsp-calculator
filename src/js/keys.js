@@ -2,7 +2,7 @@
 import { $ } from './core.js';
 import { openModal, closeSheet } from './sheets.js';
 import { closeInspector } from './inspector.js';
-import { zoomBy, fitAll, ZOOM_STEP } from './map-controls.js';
+import { zoomBy, fitAll, closeLayers, ZOOM_STEP } from './map-controls.js';
 import { addTarget } from './plan-pane.js';
 
 // Letters typed into these fields are text, not shortcuts.
@@ -24,11 +24,11 @@ function focusSearch() {
   else if (modal.id === 'picker') $('#pickSearch').focus();
 }
 
-// Esc closes the top sheet: a modal sheet first, then the inspector.
+// Esc closes the top thing: a modal sheet first, then the map options, then the inspector.
 function closeTop() {
   const modal = openModal();
   if (modal) closeSheet(modal.id);
-  else closeInspector();
+  else if (!closeLayers()) closeInspector();
 }
 
 export function wireKeys() {

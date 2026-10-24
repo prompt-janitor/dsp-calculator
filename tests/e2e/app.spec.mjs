@@ -218,3 +218,22 @@ test('the theme picked in Settings sets the browser color', async ({ page }) => 
   await page.locator('[data-theme-set="auto"]').click();
   expect(await colors()).toEqual(['#0a1117', '#eef2f5']);
 });
+
+test('map options close with Esc and with a tap on the map', async ({ page, hasTouch }) => {
+  await openApp(page);
+  await showView(page, 'map');
+  const button = page.locator('#btnLayers'), layers = page.locator('#layers');
+  await button.click();
+  await expect(layers).toBeVisible();
+  await expect(button).toHaveAttribute('aria-expanded', 'true');
+  if (!hasTouch) {
+    await page.keyboard.press('Escape');
+    await expect(layers).toBeHidden();
+    await expect(button).toHaveAttribute('aria-expanded', 'false');
+    await button.click();
+  }
+  const box = await page.locator('#viewport').boundingBox();
+  await page.mouse.click(box.x + box.width / 2, box.y + box.height - 120);
+  await expect(layers).toBeHidden();
+  await expect(button).toHaveAttribute('aria-expanded', 'false');
+});

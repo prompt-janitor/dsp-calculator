@@ -31,12 +31,23 @@ export function syncMapOptions() {
   $('#optLabels').checked = !!state.opts.labels;
 }
 
+function showLayers(show) {
+  $('#layers').hidden = !show;
+  $('#btnLayers').setAttribute('aria-expanded', show);
+}
+
+// Closes the map options. Returns true if they were open.
+export function closeLayers() {
+  const layers = $('#layers');
+  if (layers.hidden) return false;
+  const hadFocus = layers.contains(document.activeElement);
+  showLayers(false);
+  if (hadFocus) $('#btnLayers').focus();
+  return true;
+}
+
 function wireButtons() {
-  $('#btnLayers').addEventListener('click', (e) => {
-    const layers = $('#layers');
-    layers.hidden = !layers.hidden;
-    e.currentTarget.setAttribute('aria-expanded', !layers.hidden);
-  });
+  $('#btnLayers').addEventListener('click', () => showLayers($('#layers').hidden));
   $('#optSpray').addEventListener('change', (e) => update((draft) => { draft.opts.spray = e.target.checked; }, 'refit', 'solve'));
   $('#optLabels').addEventListener('change', (e) => {
     update((draft) => { draft.opts.labels = e.target.checked; });
@@ -82,7 +93,7 @@ function wireGestures() {
     downTarget = e.target;
     viewport.setPointerCapture(e.pointerId);
     viewport.classList.add('drag');
-    $('#layers').hidden = true;
+    showLayers(false);
     const ids = Object.keys(pointers);
     if (ids.length === 2) {
       const [a, b] = [pointers[ids[0]], pointers[ids[1]]];

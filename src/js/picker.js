@@ -1,4 +1,4 @@
-/* ---------- Item picker ---------- */
+// The item picker.
 import { DATA, RECIPES_FOR } from './engine.js';
 import { $, esc, icon, isWide } from './core.js';
 import { ui } from './store.js';

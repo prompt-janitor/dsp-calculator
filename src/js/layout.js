@@ -1,8 +1,6 @@
-/* ---------- Flow map layout ----------
- * A small layered (Sugiyama-style) layout. It takes a plan from solve() and
- * returns node positions and SVG edge paths. It has no DOM or store access,
- * so tests can run it in Node.
- */
+// Flow map layout: a small layered (Sugiyama-style) layout. It takes a plan
+// from solve() and returns node positions and SVG edge paths. It has no DOM
+// or store access, so tests can run it in Node.
 
 // Sizes in px. NODE_WIDTH and the two heights must match .node in app.css.
 export const NODE_WIDTH = 228;

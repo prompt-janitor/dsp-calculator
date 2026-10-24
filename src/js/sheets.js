@@ -1,4 +1,4 @@
-/* ---------- Sheets: open, close, focus and drag to close ---------- */
+// Sheets: open, close, focus and drag to close.
 import { $, $$ } from './core.js';
 
 const FOCUSABLE = 'button, input, select, textarea, [href], [tabindex]:not([tabindex="-1"])';

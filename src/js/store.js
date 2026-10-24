@@ -1,4 +1,4 @@
-/* ---------- Store: the user's choices and the session state ---------- */
+// The user's choices and the session state.
 import { ITEMS, BELTS } from './engine.js';
 
 const STORE_KEY = 'dsp-calculator-v1';

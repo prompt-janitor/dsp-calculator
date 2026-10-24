@@ -1,4 +1,4 @@
-/* ---------- Map controls: buttons, options, pan, pinch and tap ---------- */
+// Map buttons, map options, and pan, pinch and tap on the map.
 import { $, $$ } from './core.js';
 import { state, ui, update } from './store.js';
 import { applyView, fitView, zoomAt, nearestNode, panIntoView, isHidden } from './map-view.js';

@@ -1,4 +1,4 @@
-/* ---------- Plan pane: targets, presets and totals ---------- */
+// The Plan pane: targets, presets and totals.
 import { formatNumber, formatPower } from './engine.js';
 import { $, esc, svg, itemIcon, machineIcon, itemName, machineName, rateStr, unitLabel, count, PRESETS } from './core.js';
 import { state, ui, update } from './store.js';

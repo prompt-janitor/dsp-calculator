@@ -1,4 +1,4 @@
-/* ---------- Install prompt and service worker ---------- */
+// Install prompt and service worker.
 import { inFrame } from './core.js';
 import { ui, render } from './store.js';
 import { toast } from './toast.js';

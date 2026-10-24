@@ -1,4 +1,4 @@
-/* ---------- Keyboard shortcuts for the whole page ---------- */
+// Keyboard shortcuts for the whole page.
 import { $ } from './core.js';
 import { openModal, closeSheet } from './sheets.js';
 import { closeInspector } from './inspector.js';

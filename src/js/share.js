@@ -1,4 +1,4 @@
-/* ---------- Share sheet: text summary and plan code ---------- */
+// The share sheet: text summary and plan code.
 import { BELTS, formatNumber, formatPower } from './engine.js';
 import { $, $$, itemName, machineName, rateStr, unitLabel, inFrame } from './core.js';
 import { state, ui, defaultState, mergeState, replaceState, renderAll } from './store.js';

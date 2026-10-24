@@ -1,4 +1,4 @@
-/* ---------- Navigation: tabs, panes and theme ---------- */
+// Tabs, panes and theme.
 import { $, $$, isWide, hasMouse } from './core.js';
 import { state, ui, update } from './store.js';
 import { fitView } from './map-view.js';

@@ -1,4 +1,4 @@
-/* ---------- Engine: pure calculation, no DOM ---------- */
+// The solver. It has no DOM access, so the tests can run it in Node.
 // Filled by initEngine().
 export let DATA = null;
 export const RECIPES = {}, ITEMS = {}, RECIPES_FOR = {}, EXCLUDED = {};
@@ -338,7 +338,7 @@ export function solve(cfg) {
     demand: demand, supply: supply, beltCapacity: capacity, order: order };
 }
 
-/* ---------- Formatting ---------- */
+// Formatting
 export function formatNumber(value, digits) {
   if (!isFinite(value)) return '–';
   const size = Math.abs(value);

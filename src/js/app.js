@@ -1,4 +1,4 @@
-/* ---------- App entry point ---------- */
+// Entry point. index.html calls boot().
 import recipes from './recipes.js';
 import { initEngine, solve } from './engine.js';
 import { isWide, buildCfg } from './core.js';

@@ -1,4 +1,4 @@
-/* ---------- Layout breakpoints ---------- */
+// Layout breakpoints.
 // The @media rules in app.css use the same values. CSS cannot read them from
 // here, so change both together.
 

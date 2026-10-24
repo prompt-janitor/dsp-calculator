@@ -1,4 +1,4 @@
-/* ---------- Flow map: render, pan, zoom and selection ---------- */
+// Draws the flow map, and handles its view and selection.
 import { MACHINE_CLASS, formatPower } from './engine.js';
 import {
   $, $$, esc, machineIcon, itemIcon, itemName, itemColor, machineShortName, rateStr, unitLabel, isFull, CLASS_COLOR, ROMAN,
@@ -27,7 +27,7 @@ export function nodeColor(n) {
   return CLASS_COLOR[cls] || 'var(--c-other)';
 }
 
-/* ---------- nodes ---------- */
+// Nodes
 function rateHTML(perSec) { return `<div class="t2"><b>${rateStr(perSec)}</b>${unitLabel()}</div>`; }
 
 // A node has no aria-label, so its name is the text people see on it.
@@ -83,7 +83,7 @@ function nodeHTML(id, pos) {
   return craftHTML(id, n, pos, sel);
 }
 
-/* ---------- edges ---------- */
+// Edges
 function edgeWidth(e, beltCapacity) {
   if (e.fluid) return 3;
   return Math.min(9, 1.6 + 3.2 * Math.min(1, e.flow / beltCapacity) + (e.belts - 1) * 0.9);
@@ -109,7 +109,7 @@ function edgesSVG(layout, beltCapacity) {
   return `<svg width="${layout.width}" height="${layout.height + 10}">${paths}${labels}</svg>`;
 }
 
-/* ---------- render ---------- */
+// Render
 export function renderMap() {
   const stage = $('#stage');
   const hasTargets = state.targets.some((t) => t.rate > 0);
@@ -132,7 +132,7 @@ export function renderMap() {
   applySelection();
 }
 
-/* ---------- view ---------- */
+// View
 export function applyView() {
   const stage = $('#stage');
   stage.style.transform = `translate(${ui.view.x}px,${ui.view.y}px) scale(${ui.view.k})`;
@@ -247,7 +247,7 @@ export function zoomAt(cx, cy, f) {
   applyView();
 }
 
-/* ---------- selection ---------- */
+// Selection
 export function applySelection() {
   const stage = $('#stage');
   const any = !!ui.sel && !!ui.plan && !!ui.plan.nodes[ui.sel];
@@ -267,7 +267,7 @@ export function applySelection() {
   }
 }
 
-/* ---------- keyboard focus ---------- */
+// Keyboard focus
 // The node nearest to node id in the direction (dx, dy). Distance across the
 // direction counts double, so focus stays in the same row or column.
 export function nearestNode(id, dx, dy) {

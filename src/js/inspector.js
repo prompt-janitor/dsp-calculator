@@ -1,4 +1,4 @@
-/* ---------- Inspector: details and changes for one step ---------- */
+// Step details: the numbers for one step, and changes to it.
 import { RECIPES, RECIPES_FOR, EXCLUDED, defaultRecipeFor, formatNumber, formatPower } from './engine.js';
 import { $, esc, svg, itemIcon, itemName, machineName, rateStr, unitLabel, optionTag, isWide, ROMAN } from './core.js';
 import { state, ui, update } from './store.js';

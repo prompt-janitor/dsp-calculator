@@ -1,4 +1,4 @@
-/* ---------- Toast: a short message at the bottom of the screen ---------- */
+// A short message at the bottom of the screen.
 import { $, esc } from './core.js';
 import { ui } from './store.js';
 

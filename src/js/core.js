@@ -1,4 +1,4 @@
-/* ---------- Shared constants and helpers ---------- */
+// Constants and helpers that many modules share.
 import { DATA, ITEMS, formatNumber } from './engine.js';
 import { state } from './store.js';
 import { SPLIT, FULL, MOUSE } from './breakpoints.js';

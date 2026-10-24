@@ -10,12 +10,14 @@
     "lint:copy": "node scripts/lint-copy.mjs",
     "serve": "npm run build && node scripts/serve.mjs",
     "assets": "node scripts/gen-assets.cjs",
-    "snapshot": "node scripts/snapshot.mjs"
+    "snapshot": "node scripts/snapshot.mjs",
+    "test:e2e": "npm run build && playwright test"
   },
   "engines": {
     "node": ">=20"
   },
   "devDependencies": {
+    "@playwright/test": "^1.64.1",
     "playwright": "^1.47.0"
   }
 }

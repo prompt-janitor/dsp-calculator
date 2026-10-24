@@ -82,6 +82,14 @@ const unitFactor = () => (state.unit === 'min' ? 60 : 1);
 export const unitLabel = () => (state.unit === 'min' ? '/min' : '/s');
 export const rateStr = (perSec) => formatNumber(perSec * unitFactor());
 export const count = (n) => n.toLocaleString('en-US');
+// Changes a target rate to the given unit. A rate per second keeps 12 digits
+// and a rate per minute is rounded to 10, so 7/min comes back as 7/min after
+// a switch to /s and back, and the plan does not change.
+export function rateInUnit(rate, unit) {
+  return unit === 'min' ? +(rate * 60).toPrecision(10) : +(rate / 60).toPrecision(12);
+}
+// A target rate as the rate field shows it.
+export const shortRate = (rate) => +rate.toPrecision(6);
 
 export function optionTag(value, label, current) {
   return `<option value="${esc(value)}"${value === current ? ' selected' : ''}>${esc(label)}</option>`;

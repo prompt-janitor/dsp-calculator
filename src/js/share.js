@@ -1,6 +1,6 @@
 // The share sheet: text summary and plan code.
 import { BELTS, formatNumber, formatPower } from './engine.js';
-import { $, $$, itemName, machineName, rateStr, unitLabel, inFrame } from './core.js';
+import { $, $$, itemName, machineName, rateStr, unitLabel, shortRate, inFrame } from './core.js';
 import { state, ui, defaultState, mergeState, replaceState, renderAll } from './store.js';
 import { openSheet, closeSheet } from './sheets.js';
 import { toast } from './toast.js';
@@ -16,7 +16,7 @@ function summaryText() {
   const totals = ui.plan.totals, unit = unitLabel();
   const lines = [
     'Dyson Sphere plan',
-    'Targets: ' + state.targets.map((t) => `${t.rate}${unit} ${itemName(t.item)}`).join(', '),
+    'Targets: ' + state.targets.map((t) => `${shortRate(t.rate)}${unit} ${itemName(t.item)}`).join(', '),
     `Power: ${formatPower(totals.power)} | Belt lines: ${totals.belts} (${BELTS[state.belt] * state.stack} items/s each)`,
     '', 'Buildings',
     ...byCount(totals.built).map((m) => `  ${totals.built[m]} x ${machineName(m)}`),

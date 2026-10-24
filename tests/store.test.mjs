@@ -3,7 +3,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import './lib/load.mjs';
 import { solve } from '../src/js/engine.js';
-import { buildCfg } from '../src/js/core.js';
+import { buildCfg, rateInUnit } from '../src/js/core.js';
 import { defaultState, mergeState, MINING_LIMITS } from '../src/js/store.js';
 
 const merge = (saved) => mergeState(defaultState(), saved);
@@ -53,4 +53,12 @@ test('stack must be a whole number from 1 to 4', () => {
 test('targets with an unknown item or a bad rate are dropped', () => {
   const merged = merge({ targets: [{ item: 'nope', rate: 1 }, { item: 'gear', rate: 'x' }, { item: 'gear', rate: -1 }, { item: 'gear', rate: '5' }] });
   assert.deepEqual(merged.targets, [{ item: 'gear', rate: 5 }]);
+});
+
+test('switching the unit to /s and back keeps every rate from 1 to 240/min', () => {
+  for (let perMin = 1; perMin <= 240; perMin++) {
+    assert.equal(rateInUnit(rateInUnit(perMin, 's'), 'min'), perMin);
+  }
+  for (const perMin of [0.5, 7.5, 33.3, 0.333333, 1234.5]) assert.equal(rateInUnit(rateInUnit(perMin, 's'), 'min'), perMin);
+  for (const perSec of [0.1, 0.5, 1, 2.5, 7, 30]) assert.equal(rateInUnit(rateInUnit(perSec, 'min'), 's'), perSec);
 });

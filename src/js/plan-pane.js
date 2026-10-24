@@ -1,6 +1,6 @@
 // The Plan pane: targets, presets and totals.
 import { formatNumber, formatPower } from './engine.js';
-import { $, esc, svg, itemIcon, machineIcon, itemName, machineName, rateStr, unitLabel, count, PRESETS } from './core.js';
+import { $, esc, svg, itemIcon, machineIcon, itemName, machineName, rateStr, unitLabel, count, rateInUnit, shortRate, PRESETS } from './core.js';
 import { state, ui, update } from './store.js';
 import { openPicker } from './picker.js';
 import { toast } from './toast.js';
@@ -35,7 +35,7 @@ function targetHTML(target, i) {
         <button class="del" type="button" data-del="${i}" aria-label="Remove ${name}">${svg('i-x', 18)}</button></div>
       <div class="stepper">
         <button type="button" data-tstep="${i}" data-dir="-1" aria-label="Less">−</button>
-        <input type="text" inputmode="decimal" enterkeyhint="done" value="${target.rate}"
+        <input type="text" inputmode="decimal" enterkeyhint="done" value="${shortRate(target.rate)}"
           data-rate="${i}" id="rate${i}" aria-label="Rate for ${name}">
         <button type="button" data-tstep="${i}" data-dir="1" aria-label="More">+</button>
         <span class="u">${unitLabel()}</span>
@@ -105,9 +105,8 @@ export function renderPlanTotals() {
 
 function switchUnit(unit) {
   if (unit === state.unit) return;
-  const factor = unit === 'min' ? 60 : 1 / 60;
   update((draft) => {
-    for (const t of draft.targets) t.rate = +(t.rate * factor).toPrecision(6);
+    for (const t of draft.targets) t.rate = rateInUnit(t.rate, unit);
     draft.unit = unit;
   }, 'plan', 'solve');
 }
@@ -122,7 +121,7 @@ function loadPreset(id) {
   const preset = PRESETS.find((p) => p.id === id);
   ui.sel = null;
   update((draft) => {
-    draft.targets = preset.items.map(([item, perMin]) => ({ item, rate: draft.unit === 'min' ? perMin : +(perMin / 60).toPrecision(6) }));
+    draft.targets = preset.items.map(([item, perMin]) => ({ item, rate: draft.unit === 'min' ? perMin : rateInUnit(perMin, 's') }));
   }, 'plan', 'refit', 'solve');
   toast('Loaded ' + preset.name.toLowerCase());
 }

@@ -1,11 +1,16 @@
 /* ---------- Navigation: tabs, panes and theme ---------- */
-import { $, $$, isWide } from './core.js';
+import { $, $$, isWide, hasMouse } from './core.js';
 import { state, ui, update } from './store.js';
 import { fitView } from './map-view.js';
 import { closeInspector } from './inspector.js';
-import { toast } from './toast.js';
+import { toast, hideToast } from './toast.js';
 
 const HINT_KEY = 'dsp-map-hint';
+
+const hintText = () => (hasMouse()
+  ? 'Drag to pan, scroll to zoom. Click a box for details.'
+  : 'Drag to pan, pinch to zoom. Tap a box for details.');
+let hintTimer = 0;
 
 function showMap() {
   // Fit now, before the next frame, so the map does not jump after it shows.
@@ -13,7 +18,13 @@ function showMap() {
   let seen = false;
   // localStorage throws in some private modes. The hint then shows each time.
   try { seen = localStorage.getItem(HINT_KEY) === '1'; localStorage.setItem(HINT_KEY, '1'); } catch (e) { }
-  if (!seen) setTimeout(() => toast('Drag to pan, pinch to zoom. Tap a box for details.'), 400);
+  if (!seen) hintTimer = setTimeout(() => toast(hintText()), 400);
+}
+
+// The hint is about the map, so it goes when the map does.
+function leaveMap() {
+  clearTimeout(hintTimer);
+  hideToast(hintText());
 }
 
 // The compact tab bar also sets the sidebar and main pane of the wide layout.
@@ -24,7 +35,7 @@ function setTab(tab) {
     if (tab === 'plan' || tab === 'settings') draft.side = tab;
     if (tab === 'map' || tab === 'build') draft.main = tab;
   }, 'nav');
-  if (tab === 'map') showMap();
+  if (tab === 'map') showMap(); else leaveMap();
 }
 
 function setSide(side) {
@@ -33,7 +44,7 @@ function setSide(side) {
 
 function setMain(main) {
   update((draft) => { draft.main = main; if (!isWide()) draft.tab = main; }, 'nav');
-  if (main === 'map') showMap();
+  if (main === 'map') showMap(); else leaveMap();
 }
 
 function setBuildSection(section) {

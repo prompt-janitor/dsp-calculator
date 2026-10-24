@@ -3,25 +3,33 @@ import recipes from './recipes.js';
 import { initEngine, solve, defaultRecipeFor, fmt, fmtPower, RECIPES, CANDS, EXCL, BELTS, DATA } from './engine.js';
 import { $, $$, esc, svg, ic, itemIc, machIc, itemName, machName, machShort, rateStr, ul, opt, isWide, inFrame, isStandalone, isIOS, buildCfg,
   CLASS_ORDER, CLASS_LABEL, TIER_LABEL, ROMAN, PRESETS } from './core.js';
-import { state, ui, defaultState, mergeState, loadState, saveState, replaceState } from './store.js';
+import { state, ui, defaultState, mergeState, loadState, replaceState, update, render, onRender } from './store.js';
 import { NW, nodeColor, renderMap, applyView, fitView, zoomAt, applySelection } from './map.js';
 
 /* ---------- navigation ---------- */
 function setTab(t) {
-  // compact tab bar; keeps regular-width sidebar/main state in step
-  state.tab = t;
-  if (t === 'plan' || t === 'settings') state.side = t;
-  if (t === 'map' || t === 'build') state.main = t;
   if (t !== 'map') closeInspector(true);
-  syncNav(); saveState();
-  if (t === 'map') { requestAnimationFrame(function () { if (ui.needFit) fitView(); }); mapHint(); }
+  // The compact tab bar also sets the sidebar and main pane of the wide layout.
+  update(function (s) {
+    s.tab = t;
+    if (t === 'plan' || t === 'settings') s.side = t;
+    if (t === 'map' || t === 'build') s.main = t;
+  }, 'nav');
+  if (t === 'map') showMap();
+}
+function showMap() {
+  requestAnimationFrame(function () { if (ui.needFit) fitView(); });
+  mapHint();
 }
 function mapHint() {
   var seen = false; try { seen = localStorage.getItem('dsp-map-hint') === '1'; localStorage.setItem('dsp-map-hint', '1'); } catch (e) { }
   if (!seen) setTimeout(function () { toast('Drag to pan, pinch to zoom. Tap a box for details.'); }, 400);
 }
-function setSide(v) { state.side = v; if (!isWide()) state.tab = v; syncNav(); saveState(); }
-function setMain(v) { state.main = v; if (!isWide()) state.tab = v; syncNav(); saveState(); if (v === 'map') { requestAnimationFrame(function () { if (ui.needFit) fitView(); }); mapHint(); } }
+function setSide(v) { update(function (s) { s.side = v; if (!isWide()) s.tab = v; }, 'nav'); }
+function setMain(v) {
+  update(function (s) { s.main = v; if (!isWide()) s.tab = v; }, 'nav');
+  if (v === 'map') showMap();
+}
 function syncNav() {
   var app = $('#app');
   app.setAttribute('data-tab', state.tab); app.setAttribute('data-side', state.side); app.setAttribute('data-main', state.main); app.setAttribute('data-bsec', state.bsec);
@@ -372,9 +380,7 @@ function toast(text, actionLabel, action) {
 }
 
 /* ---------- compute ---------- */
-function recalcSoon() { clearTimeout(ui.solveTimer); ui.solveTimer = setTimeout(recalc, 160); }
 function recalc() {
-  saveState();
   ui.plan = solve(buildCfg(state));
   if (ui.sel && !ui.plan.nodes[ui.sel]) ui.sel = null;
   renderPlanLive(); renderMap(); renderBuild();
@@ -403,10 +409,10 @@ function selectNode(id) {
   if (ui.plan.nodes[id].kind === 'target') { id = ui.plan.nodes[id].item; if (!ui.plan.nodes[id]) return; }
   ui.sel = id; applySelection(); renderInspector();
 }
-function setOverride(item, key, val) {
-  var o = state.overrides[item] || (state.overrides[item] = {});
+function setOverride(s, item, key, val) {
+  var o = s.overrides[item] || (s.overrides[item] = {});
   if (val === undefined || val === null || val === false) delete o[key]; else o[key] = val;
-  if (!Object.keys(o).length) delete state.overrides[item];
+  if (!Object.keys(o).length) delete s.overrides[item];
 }
 
 /* ---------- events ---------- */
@@ -418,7 +424,7 @@ function wire() {
     if ((a = b.getAttribute('data-tab')) && b.closest('.tabbar')) { setTab(a); return; }
     if ((a = b.getAttribute('data-side')) && b.closest('.wide-head')) { setSide(a); return; }
     if ((a = b.getAttribute('data-main')) && b.closest('.wide-head')) { setMain(a); return; }
-    if ((a = b.getAttribute('data-bsec'))) { state.bsec = a; syncNav(); saveState(); $('#buildBody').scrollTop = 0; return; }
+    if ((a = b.getAttribute('data-bsec'))) { update(function (s) { s.bsec = a; }, 'nav'); $('#buildBody').scrollTop = 0; return; }
     if ((a = b.getAttribute('data-goto'))) { if (isWide()) setMain(a); else setTab(a); return; }
     if ((a = b.getAttribute('data-act'))) { if (a === 'share') openExport('summary'); if (a === 'code') openExport('code'); return; }
     if ((a = b.getAttribute('data-close'))) { closeSheet(a); return; }
@@ -431,29 +437,36 @@ function wire() {
     if (t.hasAttribute('data-unit')) {
       var nu = t.getAttribute('data-unit'); if (nu === state.unit) return;
       var f = nu === 'min' ? 60 : 1 / 60;
-      state.targets.forEach(function (x) { x.rate = +(x.rate * f).toPrecision(6); });
-      state.unit = nu; renderPlan(); recalc(); return;
+      update(function (s) {
+        s.targets.forEach(function (x) { x.rate = +(x.rate * f).toPrecision(6); });
+        s.unit = nu;
+      }, 'plan', 'solve');
+      return;
     }
-    if (t.hasAttribute('data-del')) { state.targets.splice(+t.getAttribute('data-del'), 1); renderPlan(); recalc(); return; }
-    if (t.hasAttribute('data-pick')) { var i = +t.getAttribute('data-pick'); openPicker(function (id) { state.targets[i].item = id; renderPlan(); recalc(); }); return; }
+    if (t.hasAttribute('data-del')) { var d = +t.getAttribute('data-del'); update(function (s) { s.targets.splice(d, 1); }, 'plan', 'solve'); return; }
+    if (t.hasAttribute('data-pick')) { var i = +t.getAttribute('data-pick'); openPicker(function (id) { update(function (s) { s.targets[i].item = id; }, 'plan', 'solve'); }); return; }
     if (t.hasAttribute('data-tstep')) {
       var j = +t.getAttribute('data-tstep'), dir = +t.getAttribute('data-dir'), v = state.targets[j].rate;
-      var s = stepFor(v, dir), nv = dir > 0 ? Math.floor(v / s + 1e-9) * s + s : Math.ceil(v / s - 1e-9) * s - s;
-      state.targets[j].rate = Math.max(0, +nv.toPrecision(6));
+      var step = stepFor(v, dir), nv = dir > 0 ? Math.floor(v / step + 1e-9) * step + step : Math.ceil(v / step - 1e-9) * step - step;
+      update(function (s) { s.targets[j].rate = Math.max(0, +nv.toPrecision(6)); }, 'solveSoon');
       var inp = $('#rate' + j); if (inp) inp.value = state.targets[j].rate;
-      recalcSoon(); return;
+      return;
     }
-    if (t.id === 'addTarget') { openPicker(function (id) { state.targets.push({ item: id, rate: state.unit === 'min' ? 60 : 1 }); renderPlan(); recalc(); }); return; }
+    if (t.id === 'addTarget') { openPicker(function (id) { update(function (s) { s.targets.push({ item: id, rate: s.unit === 'min' ? 60 : 1 }); }, 'plan', 'solve'); }); return; }
     if (t.hasAttribute('data-preset')) {
       var p = PRESETS.filter(function (x) { return x.id === t.getAttribute('data-preset'); })[0];
-      state.targets = p.items.map(function (x) { return { item: x[0], rate: state.unit === 'min' ? x[1] : +(x[1] / 60).toPrecision(6) }; });
-      ui.sel = null; ui.mapSig = ''; renderPlan(); recalc(); toast('Loaded ' + p.name.toLowerCase());
+      ui.sel = null;
+      update(function (s) {
+        s.targets = p.items.map(function (x) { return { item: x[0], rate: s.unit === 'min' ? x[1] : +(x[1] / 60).toPrecision(6) }; });
+      }, 'plan', 'refit', 'solve');
+      toast('Loaded ' + p.name.toLowerCase());
     }
   });
   plan.addEventListener('input', function (e) {
     var t = e.target; if (!t.hasAttribute('data-rate')) return;
     var v = parseFloat(String(t.value).replace(',', '.'));
-    state.targets[+t.getAttribute('data-rate')].rate = isFinite(v) && v > 0 ? v : 0; recalcSoon();
+    var k = +t.getAttribute('data-rate');
+    update(function (s) { s.targets[k].rate = isFinite(v) && v > 0 ? v : 0; }, 'solveSoon');
   });
   plan.addEventListener('keydown', function (e) { if (e.key === 'Enter' && e.target.tagName === 'INPUT') e.target.blur(); });
 
@@ -462,17 +475,17 @@ function wire() {
   set.addEventListener('click', function (e) {
     var t = e.target.closest('button'); if (!t) return;
     var a;
-    if ((a = t.getAttribute('data-mtier'))) { state.machines[a] = t.getAttribute('data-val'); renderSettings(); recalc(); return; }
-    if ((a = t.getAttribute('data-belt'))) { state.belt = a; renderSettings(); recalc(); return; }
-    if ((a = t.getAttribute('data-stack'))) { state.stack = +a; renderSettings(); recalc(); return; }
-    if ((a = t.getAttribute('data-plevel')) !== null) { state.prolif.level = +a; renderSettings(); recalc(); return; }
-    if ((a = t.getAttribute('data-pmode'))) { state.prolif.mode = a; renderSettings(); recalc(); return; }
-    if ((a = t.getAttribute('data-theme-set'))) { state.opts.theme = a; applyTheme(); renderSettings(); saveState(); return; }
+    if ((a = t.getAttribute('data-mtier'))) { var val = t.getAttribute('data-val'); update(function (s) { s.machines[a] = val; }, 'settings', 'solve'); return; }
+    if ((a = t.getAttribute('data-belt'))) { update(function (s) { s.belt = a; }, 'settings', 'solve'); return; }
+    if ((a = t.getAttribute('data-stack'))) { update(function (s) { s.stack = +a; }, 'settings', 'solve'); return; }
+    if ((a = t.getAttribute('data-plevel')) !== null) { update(function (s) { s.prolif.level = +a; }, 'settings', 'solve'); return; }
+    if ((a = t.getAttribute('data-pmode'))) { update(function (s) { s.prolif.mode = a; }, 'settings', 'solve'); return; }
+    if ((a = t.getAttribute('data-theme-set'))) { update(function (s) { s.opts.theme = a; }, 'theme', 'settings'); return; }
     if ((a = t.getAttribute('data-nstep'))) {
       var c = NUMS[a], cur = state.mining[c[0]], nv = clampNum(a, +(cur + c[1] * +t.getAttribute('data-dir')).toPrecision(6));
-      state.mining[c[0]] = nv; $('#' + a).value = nv; recalcSoon(); return;
+      update(function (s) { s.mining[c[0]] = nv; }, 'solveSoon'); $('#' + a).value = nv; return;
     }
-    if (t.id === 'btnInstall' && ui.installPrompt) { ui.installPrompt.prompt(); ui.installPrompt = null; renderSettings(); return; }
+    if (t.id === 'btnInstall' && ui.installPrompt) { ui.installPrompt.prompt(); ui.installPrompt = null; render('settings'); return; }
     if (t.id === 'btnReset') {
       if (t.getAttribute('data-armed') !== '1') { t.setAttribute('data-armed', '1'); t.querySelector('.t').textContent = 'Tap again to reset everything'; return; }
       var next = defaultState(); next.opts.theme = state.opts.theme; replaceState(next); renderAll(); toast('Plan reset');
@@ -481,7 +494,7 @@ function wire() {
   set.addEventListener('input', function (e) {
     var t = e.target; if (!NUMS[t.id]) return;
     var v = parseFloat(String(t.value).replace(',', '.'));
-    if (isFinite(v)) { state.mining[NUMS[t.id][0]] = clampNum(t.id, v); recalcSoon(); }
+    if (isFinite(v)) update(function (s) { s.mining[NUMS[t.id][0]] = clampNum(t.id, v); }, 'solveSoon');
   });
   set.addEventListener('change', function (e) { var t = e.target; if (NUMS[t.id]) t.value = state.mining[NUMS[t.id][0]]; });
 
@@ -517,8 +530,8 @@ function wire() {
 
   // map controls
   $('#btnLayers').addEventListener('click', function () { var l = $('#layers'); l.hidden = !l.hidden; this.setAttribute('aria-expanded', !l.hidden); });
-  $('#optSpray').addEventListener('change', function (e) { state.opts.spray = e.target.checked; ui.mapSig = ''; recalc(); });
-  $('#optLabels').addEventListener('change', function (e) { state.opts.labels = e.target.checked; $('#stage').classList.toggle('nolabels', !state.opts.labels); saveState(); });
+  $('#optSpray').addEventListener('change', function (e) { update(function (s) { s.opts.spray = e.target.checked; }, 'refit', 'solve'); });
+  $('#optLabels').addEventListener('change', function (e) { update(function (s) { s.opts.labels = e.target.checked; }); $('#stage').classList.toggle('nolabels', !state.opts.labels); });
   $('#zin').addEventListener('click', function () { var v = $('#viewport'); zoomAt(v.clientWidth / 2, v.clientHeight / 2, 1.3); });
   $('#zout').addEventListener('click', function () { var v = $('#viewport'); zoomAt(v.clientWidth / 2, v.clientHeight / 2, 0.77); });
   $('#zfit').addEventListener('click', function () { var st = $('#stage'); st.classList.add('anim'); fitView(true); setTimeout(function () { st.classList.remove('anim'); }, 340); });
@@ -574,17 +587,18 @@ function wire() {
 
   // inspector
   $('#inspector').addEventListener('change', function (e) {
-    var t = e.target; if (!ui.sel) return;
-    if (t.id === 'i_rec') { setOverride(ui.sel, 'recipe', t.value === defaultRecipeFor(ui.sel) ? null : t.value); setOverride(ui.sel, 'machine', null); }
-    else if (t.id === 'i_mach') setOverride(ui.sel, 'machine', t.value);
-    else if (t.id === 'i_pro') { if (t.value === 'global') setOverride(ui.sel, 'prolif', null); else { var q = t.value.split(':'); setOverride(ui.sel, 'prolif', { level: +q[0], mode: q[1] }); } }
-    else if (t.id === 'i_ext') setOverride(ui.sel, 'external', t.checked);
-    ui.mapSig = ''; recalc();
+    var t = e.target, item = ui.sel; if (!item) return;
+    update(function (s) {
+      if (t.id === 'i_rec') { setOverride(s, item, 'recipe', t.value === defaultRecipeFor(item) ? null : t.value); setOverride(s, item, 'machine', null); }
+      else if (t.id === 'i_mach') setOverride(s, item, 'machine', t.value);
+      else if (t.id === 'i_pro') { if (t.value === 'global') setOverride(s, item, 'prolif', null); else { var q = t.value.split(':'); setOverride(s, item, 'prolif', { level: +q[0], mode: q[1] }); } }
+      else if (t.id === 'i_ext') setOverride(s, item, 'external', t.checked);
+    }, 'refit', 'solve');
   });
   $('#inspector').addEventListener('click', function (e) {
     var t = e.target.closest('button'); if (!t) return;
     if (t.id === 'inspClose') closeInspector();
-    else if (t.id === 'i_reset') { delete state.overrides[ui.sel]; ui.mapSig = ''; recalc(); }
+    else if (t.id === 'i_reset') { var item = ui.sel; update(function (s) { delete s.overrides[item]; }, 'refit', 'solve'); }
     else if (t.hasAttribute('data-jump')) { var id = t.getAttribute('data-jump'); if (ui.plan.nodes[id]) { selectNode(id); centerNode(id); } }
   });
 
@@ -592,13 +606,17 @@ function wire() {
   window.addEventListener('resize', function () {
     if (Math.abs(window.innerWidth - lastW) < 2 && Math.abs(window.innerHeight - lastH) < 120) return; // ignore keyboard show/hide
     lastW = window.innerWidth; lastH = window.innerHeight;
-    if (isWide() && state.tab !== state.main && (state.tab === 'map' || state.tab === 'build')) state.main = state.tab;
-    renderSettings(); syncNav(); fitView();
+    update(function (s) { if (isWide() && s.tab !== s.main && (s.tab === 'map' || s.tab === 'build')) s.main = s.tab; }, 'nav', 'settings');
+    fitView();
   });
   window.matchMedia('(prefers-color-scheme: dark)').addEventListener && window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyTheme);
 }
 
-function renderAll() { applyTheme(); syncNav(); renderPlan(); renderSettings(); $('#optSpray').checked = !!state.opts.spray; $('#optLabels').checked = !!state.opts.labels; recalc(); }
+function renderAll() {
+  $('#optSpray').checked = !!state.opts.spray;
+  $('#optLabels').checked = !!state.opts.labels;
+  render('theme', 'nav', 'plan', 'settings', 'solve');
+}
 
 /* ---------- PWA ---------- */
 function registerSW() {
@@ -621,8 +639,13 @@ function registerSW() {
 export function boot() {
   initEngine(recipes);
   loadState();
-  window.addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); ui.installPrompt = e; renderSettings(); });
-  if (isWide()) { state.tab = state.main === 'build' ? 'build' : 'map'; }
+  onRender('theme', applyTheme);
+  onRender('nav', syncNav);
+  onRender('plan', renderPlan);
+  onRender('settings', renderSettings);
+  onRender('solve', recalc);
+  window.addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); ui.installPrompt = e; render('settings'); });
+  if (isWide()) update(function (s) { s.tab = s.main === 'build' ? 'build' : 'map'; });
   wire(); renderAll();
   requestAnimationFrame(function () { fitView(); });
   registerSW();

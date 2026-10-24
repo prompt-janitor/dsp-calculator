@@ -67,3 +67,32 @@ export function replaceState(next) {
   ui.mapSig = '';
   saveState();
 }
+
+// Parts of the page that a change can draw again, in the order they run.
+// app.js gives each one a function with onRender().
+const PARTS = ['theme', 'nav', 'plan', 'settings', 'solve'];
+const renderers = {};
+
+export function onRender(part, fn) {
+  renderers[part] = fn;
+}
+
+// Draws the given parts again. Two more names are allowed: 'refit' makes the
+// map fit the new graph, and 'solveSoon' runs 'solve' after a short pause so
+// typing in a number does not solve on every key.
+export function render(...parts) {
+  if (parts.includes('refit')) ui.mapSig = '';
+  if (parts.includes('solveSoon')) {
+    clearTimeout(ui.solveTimer);
+    ui.solveTimer = setTimeout(() => render('solve'), 160);
+  }
+  if (parts.includes('solve')) clearTimeout(ui.solveTimer);
+  for (const p of PARTS) if (parts.includes(p)) renderers[p]();
+}
+
+// Changes the saved choices, saves them and draws the given parts again.
+export function update(change, ...parts) {
+  change(state);
+  saveState();
+  render(...parts);
+}

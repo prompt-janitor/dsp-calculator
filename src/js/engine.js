@@ -77,200 +77,260 @@ function pickMachine(recipe, cfg, chosen) {
 
 function sumValues(obj) { let total = 0; for (const key in obj) total += obj[key]; return total; }
 
-/* cfg: {targets:[{item,rate(/s)}], machines:{}, belt, stack, prolif:{level,mode}, mining:{speed,veins,oil}, overrides:{item:{recipe,machine,prolif,external}}} */
+function addTo(totals, key, amount) { totals[key] = (totals[key] || 0) + amount; }
+
+function activeTargets(cfg) { return cfg.targets.filter((t) => t.item && t.rate > 0); }
+
+// A proliferator set on the step wins over the one in Settings.
+function sprayChoice(item, cfg, overrides) {
+  return (overrides[item] && overrides[item].prolif) || cfg.prolif;
+}
+
+// The proliferator effect on a recipe, or null when it gets none.
+function sprayFor(recipe, choice) {
+  if (!choice || !choice.level) return null;
+  if (recipe.mining || recipe.id.startsWith('proliferator-') || recipe.id.startsWith('critical-photon')) return null;
+  if (Object.keys(recipe.in).length === 0) return null;
+  const mode = choice.mode === 'speed' ? 'speed' : 'products';
+  const mod = DATA.mods['proliferator-' + choice.level + '-' + mode];
+  if (!mod) return null;
+  if (mode === 'products' && !recipe.prolif) return null;
+  return { level: choice.level, mode: mode, item: mod.proliferator, sprays: mod.sprays,
+    prod: mod.productivity || 0, speed: mod.speed || 0, cons: mod.consumption };
+}
+
+function outputBoost(node) { return node.prof && node.prof.mode === 'products' ? 1 + node.prof.prod : 1; }
+
+function sprayUse(node) { return node.runs * sumValues(node.rec.in) / node.prof.sprays; }
+
+function machinesNeeded(node, speed) { return node.runs * node.rec.time / speed; }
+
+// Walks from the targets through every input, and picks a recipe for each item.
+// Items with no recipe, or set as external, are supplied from outside.
+function chooseRecipes(cfg, overrides) {
+  const recipeOf = {}, external = {}, sprayItems = {};
+  const queue = activeTargets(cfg).map((t) => t.item);
+  while (queue.length) {
+    const item = queue.pop();
+    if (recipeOf[item] || external[item]) continue;
+    const override = overrides[item];
+    if (override && override.external) { external[item] = 1; continue; }
+    const recipeId = (override && override.recipe && RECIPES[override.recipe]) ? override.recipe : defaultRecipeFor(item);
+    if (!recipeId) { external[item] = 1; continue; }
+    recipeOf[item] = recipeId;
+    const recipe = RECIPES[recipeId];
+    queue.push(...Object.keys(recipe.in));
+    const spray = sprayFor(recipe, sprayChoice(item, cfg, overrides));
+    if (spray && !sprayItems[spray.item]) { sprayItems[spray.item] = 1; queue.push(spray.item); }
+    const machine = DATA.machines[pickMachine(recipe, cfg, override && override.machine)];
+    if (machine && machine.cons) queue.push(...Object.keys(machine.cons));
+  }
+  return { recipeOf, external };
+}
+
+function makeSteps(order, recipeOf, cfg, overrides) {
+  const nodes = {};
+  for (const item of order) {
+    const recipe = RECIPES[recipeOf[item]];
+    const machine = pickMachine(recipe, cfg, (overrides[item] || {}).machine);
+    nodes[item] = { item: item, rec: recipe, machine: machine, mach: DATA.machines[machine],
+      prof: sprayFor(recipe, sprayChoice(item, cfg, overrides)), runs: 0, kind: recipe.mining ? 'source' : 'craft' };
+  }
+  return nodes;
+}
+
+// How fast one machine works through the recipe time. 1 means the recipe's own time.
+function machineSpeed(node, cfg, capacity) {
+  const mining = cfg.mining;
+  let speed = node.mach.speed || 1;
+  // One fractionator handles a full belt of hydrogen. Source: dsp-wiki.com/Fractionator
+  if (node.machine === 'fractionator') speed = capacity;
+  else if (node.rec.mining && (node.machine === 'mining-machine' || node.machine === 'advanced-mining-machine'))
+    speed = speed * (mining.veins || 1) * ((mining.speed || DEFAULT_MINING_SPEED) / 100);
+  else if (node.machine === 'orbital-collector') speed = speed * ((mining.orbital || DEFAULT_ORBITAL_NET) / 100);
+  else if (node.machine === 'oil-extractor') speed = (mining.oil || 1) * ((mining.speed || DEFAULT_MINING_SPEED) / 100);
+  if (node.prof && node.prof.mode === 'speed') speed *= (1 + node.prof.speed);
+  return speed;
+}
+
+// Demand and byproduct supply per item when each step runs at its current rate.
+function tallyFlows(targets, order, nodes, speedOf) {
+  const demand = {}, supply = {};
+  for (const t of targets) addTo(demand, t.item, t.rate);
+  for (const item of order) {
+    const node = nodes[item], recipe = node.rec;
+    for (const input in recipe.in) addTo(demand, input, node.runs * recipe.in[input]);
+    if (node.prof) addTo(demand, node.prof.item, sprayUse(node));
+    const machineUse = node.mach && node.mach.cons;
+    if (machineUse) {
+      const machines = machinesNeeded(node, speedOf(node));
+      for (const used in machineUse) addTo(demand, used, machines * machineUse[used]);
+    }
+    const boost = outputBoost(node);
+    for (const out in recipe.out) if (out !== item) addTo(supply, out, node.runs * recipe.out[out] * boost);
+  }
+  return { demand, supply };
+}
+
+// Each pass sets every step's run rate from the demand of the last pass,
+// until the rates stop changing. Byproduct loops need more than one pass.
+function balance(targets, order, nodes, speedOf) {
+  let flows = { demand: {}, supply: {} }, ok = true, pass;
+  for (pass = 0; pass < MAX_PASSES; pass++) {
+    flows = tallyFlows(targets, order, nodes, speedOf);
+    let change = 0, runaway = false;
+    for (const item of order) {
+      const node = nodes[item];
+      const need = Math.max(0, (flows.demand[item] || 0) - (flows.supply[item] || 0));
+      const runs = need / (node.rec.out[item] * outputBoost(node));
+      change = Math.max(change, Math.abs(runs - node.runs) / (1 + Math.abs(runs)));
+      node.runs = runs;
+      if (runs > RUNAWAY_RATE) runaway = true;
+    }
+    if (runaway) { ok = false; break; }
+    if (change < CONVERGED) break;
+  }
+  if (pass >= MAX_PASSES) ok = false;
+  return { ok, passes: pass, demand: flows.demand, supply: flows.supply };
+}
+
+// Sets machine counts, rates and power on each step, and adds up the totals.
+function finishSteps(order, nodes, demand, speedOf, totals) {
+  for (const item of order) {
+    const node = nodes[item], recipe = node.rec;
+    node.count = machinesNeeded(node, speedOf(node));
+    node.built = node.count > ROUND_SLACK ? Math.ceil(node.count - ROUND_SLACK) : 0;
+    const boost = outputBoost(node);
+    node.outRate = {};
+    for (const out in recipe.out) node.outRate[out] = node.runs * recipe.out[out] * boost;
+    node.inRate = {};
+    for (const input in recipe.in) node.inRate[input] = node.runs * recipe.in[input];
+    let power = (node.mach.usage || 0) * (node.prof ? 1 + node.prof.cons : 1);
+    // The data has no reliable power figure for miners.
+    if (node.machine === 'mining-machine') power = 0;
+    node.power = node.built * power;           // kW if all built machines run
+    node.powerAvg = node.count * power;
+    totals.power += node.power;
+    addTo(totals.built, node.machine, node.built);
+    addTo(totals.exact, node.machine, node.count);
+    if (node.kind === 'source') totals.raw[item] = demand[item] || 0;
+    if (node.prof) totals.prolif[node.prof.item] = (demand[node.prof.item] || 0);
+  }
+}
+
+function externalSteps(external, demand, supply, totals) {
+  const nodes = {};
+  for (const item of Object.keys(external)) {
+    const net = Math.max(0, (demand[item] || 0) - (supply[item] || 0));
+    nodes[item] = { item: item, kind: 'raw', runs: 0, rate: net };
+    totals.raw[item] = net;
+  }
+  return nodes;
+}
+
+function addSurplus(demand, supply, totals) {
+  for (const item of Object.keys(supply)) {
+    const extra = supply[item] - (demand[item] || 0);
+    if (extra > ROUND_SLACK) totals.surplus[item] = extra;
+  }
+}
+
+// Who uses each item and how much: steps, spray, machine fuel such as lenses, and targets.
+function listUsers(cfg, order, nodes, graphNodes, speedOf) {
+  const users = {};
+  function addUse(item, id, amount, kind) { (users[item] = users[item] || []).push({ id: id, amt: amount, kind: kind || 'item' }); }
+  for (const item of order) {
+    const node = nodes[item], recipe = node.rec;
+    for (const input in recipe.in) addUse(input, item, node.runs * recipe.in[input]);
+    if (node.prof) addUse(node.prof.item, item, sprayUse(node), 'spray');
+    const machineUse = node.mach && node.mach.cons;
+    if (machineUse) {
+      const machines = machinesNeeded(node, speedOf(node));
+      for (const used in machineUse) addUse(used, item, machines * machineUse[used], 'lens');
+    }
+  }
+  for (const t of activeTargets(cfg)) {
+    const id = '__target_' + t.item;
+    if (!graphNodes[id]) graphNodes[id] = { item: t.item, kind: 'target', rate: 0, id: id };
+    graphNodes[id].rate += t.rate;
+  }
+  for (const id of Object.keys(graphNodes)) {
+    if (graphNodes[id].kind === 'target') addUse(graphNodes[id].item, id, graphNodes[id].rate);
+  }
+  return users;
+}
+
+// Splits the byproduct supply of an item among the steps that make it, by their output.
+function byproductMakers(item, fromByproducts, order, nodes) {
+  if (fromByproducts <= MIN_FLOW) return [];
+  const makers = [];
+  let made = 0;
+  for (const id of order) {
+    const node = nodes[id];
+    if (id === item || !node.rec.out[item]) continue;
+    const rate = node.runs * node.rec.out[item] * outputBoost(node);
+    if (rate > MIN_FLOW) { makers.push({ id: id, rate: rate }); made += rate; }
+  }
+  for (const maker of makers) maker.rate = maker.rate / made * fromByproducts;
+  return makers;
+}
+
+// Byproducts cover an item's demand first, and the item's own step makes the rest.
+// Each user gets its share of both.
+function buildEdges(users, supply, order, nodes, graphNodes) {
+  const edges = [];
+  for (const item of Object.keys(users)) {
+    const list = users[item];
+    const total = list.reduce((sum, use) => sum + use.amt, 0);
+    if (total <= MIN_FLOW) continue;
+    const fromByproducts = Math.min(supply[item] || 0, total);
+    const fromMain = total - fromByproducts;
+    const makers = byproductMakers(item, fromByproducts, order, nodes);
+    for (const use of list) {
+      const share = use.amt / total;
+      if (fromMain > MIN_FLOW && graphNodes[item]) edges.push({ from: item, to: use.id, item: item, flow: fromMain * share, kind: use.kind, by: false });
+      for (const maker of makers) edges.push({ from: maker.id, to: use.id, item: item, flow: maker.rate * share, kind: use.kind, by: true });
+    }
+  }
+  return edges;
+}
+
+function countBelts(edges, capacity, totals) {
+  for (const edge of edges) {
+    edge.fluid = !!FLUIDS[edge.item];
+    edge.belts = edge.fluid ? 0 : Math.max(1, Math.ceil(edge.flow / capacity - ROUND_SLACK));
+    edge.util = edge.fluid ? 0 : edge.flow / (edge.belts * capacity);
+    if (!edge.fluid) {
+      totals.belts += edge.belts;
+      addTo(totals.beltsByItem, edge.item, edge.belts);
+    }
+  }
+}
+
+/* cfg: {targets:[{item,rate(/s)}], machines:{class:machine}, belt, stack, prolif:{level,mode},
+   mining:{speed,veins,oil,orbital}, overrides:{item:{recipe,machine,prolif,external}}}
+   Rates are per second. Each step makes one item, and node.runs is recipe runs per second. */
 export function solve(cfg) {
-  var MODS = DATA.mods, MACH = DATA.machines;
-  var ov = cfg.overrides || {};
-  var cap = beltCapacity(cfg);
+  const overrides = cfg.overrides || {};
+  const capacity = beltCapacity(cfg);
+  const speedOf = (node) => machineSpeed(node, cfg, capacity);
+  const { recipeOf, external } = chooseRecipes(cfg, overrides);
+  const order = Object.keys(recipeOf);
+  const nodes = makeSteps(order, recipeOf, cfg, overrides);
+  const { ok, passes, demand, supply } = balance(activeTargets(cfg), order, nodes, speedOf);
 
-  var recipeOf = {}, raw = {};
-  var work = [];
-  cfg.targets.forEach(function (t) { if (t.item && t.rate > 0) work.push(t.item); });
+  const totals = { power: 0, built: {}, exact: {}, belts: 0, beltsByItem: {}, raw: {}, surplus: {}, prolif: {} };
+  finishSteps(order, nodes, demand, speedOf, totals);
+  const outside = externalSteps(external, demand, supply, totals);
+  addSurplus(demand, supply, totals);
 
-  function profFor(item, rec) {
-    var o = ov[item] && ov[item].prolif;
-    var p = o ? o : cfg.prolif;
-    if (!p || !p.level) return null;
-    if (rec.mining || rec.id.indexOf('proliferator-') === 0 || rec.id.indexOf('critical-photon') === 0) return null;
-    if (Object.keys(rec.in).length === 0) return null;
-    var key = 'proliferator-' + p.level + (p.mode === 'speed' ? '-speed' : '-products');
-    var m = MODS[key];
-    if (!m) return null;
-    if (p.mode !== 'speed' && !rec.prolif) return null;
-    return { level: p.level, mode: p.mode === 'speed' ? 'speed' : 'products', item: m.proliferator, sprays: m.sprays,
-      prod: m.productivity || 0, speed: m.speed || 0, cons: m.consumption };
-  }
+  const graphNodes = Object.assign({}, nodes, outside);
+  const users = listUsers(cfg, order, nodes, graphNodes, speedOf);
+  const edges = buildEdges(users, supply, order, nodes, graphNodes);
+  countBelts(edges, capacity, totals);
 
-  var profItems = {};
-  function expand() {
-    while (work.length) {
-      var it = work.pop();
-      if (recipeOf[it] || raw[it]) continue;
-      var o = ov[it];
-      if (o && o.external) { raw[it] = 1; continue; }
-      var rid = (o && o.recipe && RECIPES[o.recipe]) ? o.recipe : defaultRecipeFor(it);
-      if (!rid) { raw[it] = 1; continue; }
-      recipeOf[it] = rid;
-      var r = RECIPES[rid];
-      Object.keys(r.in).forEach(function (i) { work.push(i); });
-      var pf = profFor(it, r);
-      if (pf && !profItems[pf.item]) { profItems[pf.item] = 1; work.push(pf.item); }
-      var mid = pickMachine(r, cfg, o && o.machine);
-      var mc = MACH[mid] && MACH[mid].cons;
-      if (mc) Object.keys(mc).forEach(function (i) { work.push(i); });
-    }
-  }
-  expand();
-
-  var items = Object.keys(recipeOf);
-  var nodes = {};
-  items.forEach(function (it) {
-    var r = RECIPES[recipeOf[it]];
-    var o = ov[it] || {};
-    var mid = pickMachine(r, cfg, o.machine);
-    nodes[it] = { item: it, rec: r, machine: mid, mach: MACH[mid], prof: profFor(it, r), runs: 0, kind: r.mining ? 'source' : 'craft' };
-  });
-
-  // effective speed of a machine for a node (items processed per second multiplier)
-  function nodeSpeed(n) {
-    var m = n.mach, r = n.rec, s = m.speed || 1;
-    if (n.machine === 'fractionator') s = cap;
-    else if (r.mining && (n.machine === 'mining-machine' || n.machine === 'advanced-mining-machine'))
-      s = s * (cfg.mining.veins || 1) * ((cfg.mining.speed || DEFAULT_MINING_SPEED) / 100);
-    else if (n.machine === 'orbital-collector') s = s * ((cfg.mining.orbital || DEFAULT_ORBITAL_NET) / 100);
-    else if (n.machine === 'oil-extractor') s = (cfg.mining.oil || 1) * ((cfg.mining.speed || DEFAULT_MINING_SPEED) / 100);
-    if (n.prof && n.prof.mode === 'speed') s *= (1 + n.prof.speed);
-    return s;
-  }
-
-  var D = {}, S = {}, ok = true, iter;
-  for (iter = 0; iter < MAX_PASSES; iter++) {
-    D = {}; S = {};
-    cfg.targets.forEach(function (t) { if (t.item && t.rate > 0) D[t.item] = (D[t.item] || 0) + t.rate; });
-    items.forEach(function (it) {
-      var n = nodes[it], r = n.rec, runs = n.runs;
-      for (var i in r.in) D[i] = (D[i] || 0) + runs * r.in[i];
-      if (n.prof) D[n.prof.item] = (D[n.prof.item] || 0) + runs * sumValues(r.in) / n.prof.sprays;
-      var cons = n.mach && n.mach.cons;
-      if (cons) {
-        var cnt = runs * r.time / nodeSpeed(n);
-        for (var c in cons) D[c] = (D[c] || 0) + cnt * cons[c];
-      }
-      var pm = n.prof && n.prof.mode === 'products' ? 1 + n.prof.prod : 1;
-      for (var o in r.out) if (o !== it) S[o] = (S[o] || 0) + runs * r.out[o] * pm;
-    });
-    var delta = 0, blow = false;
-    items.forEach(function (it) {
-      var n = nodes[it];
-      var need = Math.max(0, (D[it] || 0) - (S[it] || 0));
-      var pm = n.prof && n.prof.mode === 'products' ? 1 + n.prof.prod : 1;
-      var nr = need / (n.rec.out[it] * pm);
-      delta = Math.max(delta, Math.abs(nr - n.runs) / (1 + Math.abs(nr)));
-      n.runs = nr;
-      if (nr > RUNAWAY_RATE) blow = true;
-    });
-    if (blow) { ok = false; break; }
-    if (delta < CONVERGED) break;
-  }
-  if (iter >= MAX_PASSES) ok = false;
-
-  // finalize quantities
-  var totals = { power: 0, built: {}, exact: {}, belts: 0, beltsByItem: {}, raw: {}, surplus: {}, prolif: {} };
-  items.forEach(function (it) {
-    var n = nodes[it], r = n.rec;
-    var sp = nodeSpeed(n);
-    n.count = n.runs * r.time / sp;
-    n.built = n.count > ROUND_SLACK ? Math.ceil(n.count - ROUND_SLACK) : 0;
-    var pm = n.prof && n.prof.mode === 'products' ? 1 + n.prof.prod : 1;
-    n.outRate = {};
-    for (var o in r.out) n.outRate[o] = n.runs * r.out[o] * pm;
-    n.inRate = {};
-    for (var i in r.in) n.inRate[i] = n.runs * r.in[i];
-    var pw = (n.mach.usage || 0) * (n.prof ? 1 + n.prof.cons : 1);
-    if (n.machine === 'mining-machine') pw = 0;
-    n.power = n.built * pw;           // kW if all built machines run
-    n.powerAvg = n.count * pw;
-    totals.power += n.power;
-    totals.built[n.machine] = (totals.built[n.machine] || 0) + n.built;
-    totals.exact[n.machine] = (totals.exact[n.machine] || 0) + n.count;
-    if (n.kind === 'source') totals.raw[it] = D[it] || 0;
-    if (n.prof) totals.prolif[n.prof.item] = (D[n.prof.item] || 0);
-  });
-  // raw (externally supplied) items
-  var rawNodes = {};
-  Object.keys(raw).forEach(function (it) {
-    var net = Math.max(0, (D[it] || 0) - (S[it] || 0));
-    rawNodes[it] = { item: it, kind: 'raw', runs: 0, rate: net };
-    totals.raw[it] = net;
-  });
-  // surplus byproducts
-  Object.keys(S).forEach(function (it) {
-    var extra = S[it] - (D[it] || 0);
-    if (extra > ROUND_SLACK) totals.surplus[it] = extra;
-  });
-
-  // ---------- Build graph edges ----------
-  var gNodes = {}, edges = [];
-  items.forEach(function (it) { gNodes[it] = nodes[it]; });
-  Object.keys(rawNodes).forEach(function (it) { gNodes[it] = rawNodes[it]; });
-
-  // consumers per item
-  var cons = {};
-  function addCons(item, id, amt, kind) { (cons[item] = cons[item] || []).push({ id: id, amt: amt, kind: kind || 'item' }); }
-  items.forEach(function (it) {
-    var n = nodes[it], r = n.rec;
-    for (var i in r.in) addCons(i, it, n.runs * r.in[i]);
-    if (n.prof) addCons(n.prof.item, it, n.runs * sumValues(r.in) / n.prof.sprays, 'spray');
-    var mc = n.mach && n.mach.cons;
-    if (mc) { var cnt = n.runs * r.time / nodeSpeed(n); for (var c in mc) addCons(c, it, cnt * mc[c], 'lens'); }
-  });
-  cfg.targets.forEach(function (t, idx) {
-    if (!t.item || !(t.rate > 0)) return;
-    var sid = '__target_' + t.item;
-    if (!gNodes[sid]) gNodes[sid] = { item: t.item, kind: 'target', rate: 0, id: sid };
-    gNodes[sid].rate += t.rate;
-  });
-  Object.keys(gNodes).forEach(function (k) { if (gNodes[k].kind === 'target') addCons(gNodes[k].item, k, gNodes[k].rate); });
-
-  Object.keys(cons).forEach(function (item) {
-    var list = cons[item];
-    var total = list.reduce(function (a, c) { return a + c.amt; }, 0);
-    if (total <= MIN_FLOW) return;
-    var credit = Math.min(S[item] || 0, total);
-    var primary = total - credit;
-    var prov = [];
-    if (credit > MIN_FLOW) {
-      var tot = 0;
-      items.forEach(function (it) {
-        if (it !== item && nodes[it].rec.out[item]) {
-          var pm = nodes[it].prof && nodes[it].prof.mode === 'products' ? 1 + nodes[it].prof.prod : 1;
-          var s = nodes[it].runs * nodes[it].rec.out[item] * pm;
-          if (s > MIN_FLOW) { prov.push({ id: it, s: s }); tot += s; }
-        }
-      });
-      prov.forEach(function (p) { p.s = p.s / tot * credit; });
-    }
-    list.forEach(function (c) {
-      var share = c.amt / total;
-      if (primary > MIN_FLOW && gNodes[item]) edges.push({ from: item, to: c.id, item: item, flow: primary * share, kind: c.kind, by: false });
-      prov.forEach(function (p) { edges.push({ from: p.id, to: c.id, item: item, flow: p.s * share, kind: c.kind, by: true }); });
-    });
-  });
-
-  // belts per edge
-  edges.forEach(function (e) {
-    e.fluid = !!FLUIDS[e.item];
-    if (e.fluid) { e.belts = 0; }
-    else { e.belts = Math.max(1, Math.ceil(e.flow / cap - ROUND_SLACK)); }
-
-    e.util = e.fluid ? 0 : e.flow / (e.belts * cap);
-    if (!e.fluid) {
-      totals.belts += e.belts;
-      totals.beltsByItem[e.item] = (totals.beltsByItem[e.item] || 0) + e.belts;
-    }
-  });
-
-  return { ok: ok, iterations: iter, nodes: gNodes, edges: edges, totals: totals, D: D, S: S, cap: cap, order: items };
+  return { ok: ok, iterations: passes, nodes: graphNodes, edges: edges, totals: totals,
+    D: demand, S: supply, cap: capacity, order: order };
 }
 
 /* ---------- Formatting ---------- */

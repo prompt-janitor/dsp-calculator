@@ -46,15 +46,20 @@ mkdirSync(join(dist, 'licenses'), { recursive: true });
 cpSync(src('assets/fonts/OFL-ChakraPetch.txt'), join(dist, 'licenses', 'OFL-ChakraPetch.txt'));
 writeFileSync(join(dist, '.nojekyll'), '');
 
-// Service worker: the precache list holds every file the app needs offline.
-const assets = ['./', 'index.html', 'manifest.webmanifest', 'sprite.webp', ...scripts];
-for (const dir of ['icons', 'splash']) for (const f of readdirSync(join(dist, dir)).sort()) assets.push(dir + '/' + f);
-
 // The cache version is a hash of every file in dist/, so any change to any
 // shipped file gives a new cache.
 const hash = createHash('sha1');
 for (const f of listFiles(dist)) hash.update(f + '\0').update(readFileSync(join(dist, f)));
 const version = hash.digest('hex').slice(0, 10);
+
+// Add the version to every module URL. Pages lets browsers cache files for
+// 10 minutes, and without this a page could load modules from two builds.
+const withVersion = (text) => text.replace(/((?:from|import)\s*['"]|href=")(\.\/(?:js\/)?|js\/)([\w-]+\.js)(?=['"])/g, `$1$2$3?v=${version}`);
+for (const f of [...scripts, 'index.html']) writeFileSync(join(dist, f), withVersion(readFileSync(join(dist, f), 'utf8')));
+
+// Service worker: the precache list holds every file the app needs offline.
+const assets = ['./', 'index.html', 'manifest.webmanifest', 'sprite.webp', ...scripts.map((f) => f + '?v=' + version)];
+for (const dir of ['icons', 'splash']) for (const f of readdirSync(join(dist, dir)).sort()) assets.push(dir + '/' + f);
 const sw = readFileSync(join(root, 'scripts', 'sw.template.js'), 'utf8')
   .replace('__VERSION__', version)
   .replace('__ASSETS__', () => JSON.stringify(assets, null, 2));

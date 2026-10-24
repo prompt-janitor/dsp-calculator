@@ -3,7 +3,8 @@ const CACHE = 'dsp-calc-__VERSION__';
 const SHELL = __ASSETS__;
 
 self.addEventListener('install', (e) => {
-  e.waitUntil(caches.open(CACHE).then((c) => c.addAll(SHELL)));
+  // cache: 'reload' skips the HTTP cache, so the new cache gets the new files.
+  e.waitUntil(caches.open(CACHE).then((c) => c.addAll(SHELL.map((url) => new Request(url, { cache: 'reload' })))));
 });
 self.addEventListener('activate', (e) => {
   e.waitUntil(

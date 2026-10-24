@@ -21,7 +21,8 @@ const DEFAULT_MINING_SPEED = 100;
 const MAX_PASSES = 600;
 // The solve stops when no step's run rate changes by more than this, relative to its size.
 const CONVERGED = 1e-10;
-// A run rate above this means a loop in the recipes feeds itself without end.
+// A run rate this many times the total target rate means a loop in the
+// recipes feeds itself without end.
 const RUNAWAY_RATE = 1e9;
 // Slack for float error, so 2.0000000001 machines or belts does not round up to 3.
 const ROUND_SLACK = 1e-9;
@@ -177,18 +178,19 @@ function tallyFlows(targets, order, nodes, speedOf) {
 // until the rates stop changing. Byproduct loops need more than one pass.
 function balance(targets, order, nodes, speedOf) {
   let flows = { demand: {}, supply: {} }, ok = true, pass;
+  const runaway = RUNAWAY_RATE * Math.max(1, targets.reduce((sum, t) => sum + t.rate, 0));
   for (pass = 0; pass < MAX_PASSES; pass++) {
     flows = tallyFlows(targets, order, nodes, speedOf);
-    let change = 0, runaway = false;
+    let change = 0, tooBig = false;
     for (const item of order) {
       const node = nodes[item];
       const need = Math.max(0, (flows.demand[item] || 0) - (flows.supply[item] || 0));
       const runs = need / (node.recipe.out[item] * outputBoost(node));
       change = Math.max(change, Math.abs(runs - node.runs) / (1 + Math.abs(runs)));
       node.runs = runs;
-      if (runs > RUNAWAY_RATE) runaway = true;
+      if (runs > runaway) tooBig = true;
     }
-    if (runaway) { ok = false; break; }
+    if (tooBig) { ok = false; break; }
     if (change < CONVERGED) break;
   }
   if (pass >= MAX_PASSES) ok = false;

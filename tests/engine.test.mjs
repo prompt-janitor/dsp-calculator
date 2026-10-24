@@ -57,3 +57,14 @@ test('an item set as external gets no step', () => {
   assert.equal(p.nodes['iron-ore'].kind, 'raw');
   close(p.totals.raw['iron-ore'], 1, 'iron ore from outside');
 });
+
+test('a very large plan with no loop still solves', () => {
+  for (const item of ['interstellar-logistics-station', 'orbital-collector', 'quantum-chemical-plant', 'vertical-launching-silo']) {
+    for (const rate of [1e6, 1e12]) assert.equal(plan([{ item, rate }]).ok, true, `${item} at ${rate}/s`);
+  }
+});
+
+test('a recipe loop that does not settle is reported', () => {
+  const p = plan([{ item: 'accumulator', rate: 1 }], { overrides: { 'accumulator': { recipe: 'accumulator-discharge' } } });
+  assert.equal(p.ok, false);
+});

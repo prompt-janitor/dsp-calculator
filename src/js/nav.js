@@ -114,6 +114,11 @@ export function applyTheme() {
   const root = document.documentElement;
   if (theme === 'dark' || theme === 'light') root.dataset.theme = theme;
   else delete root.dataset.theme;
-  const meta = $('meta[name="theme-color"]:not([media])');
-  if (meta) meta.setAttribute('content', getComputedStyle(root).getPropertyValue('--bg').trim() || '#0a1117');
+  // index.html has one theme-color per system scheme. A theme picked in
+  // Settings sets both, and Auto puts the original colours back.
+  const bg = getComputedStyle(root).getPropertyValue('--bg').trim();
+  for (const meta of $$('meta[name="theme-color"]')) {
+    meta.dataset.auto ??= meta.getAttribute('content');
+    meta.setAttribute('content', root.dataset.theme && bg ? bg : meta.dataset.auto);
+  }
 }

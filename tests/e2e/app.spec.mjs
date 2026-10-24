@@ -191,3 +191,14 @@ test('layout matches the viewport', async ({ page }) => {
     expect(bar.y + bar.height).toBe(height);
   }
 });
+
+test('the theme picked in Settings sets the browser colour', async ({ page }) => {
+  await page.emulateMedia({ colorScheme: 'dark' });
+  await openApp(page);
+  await showView(page, 'settings');
+  const colours = () => page.$$eval('meta[name="theme-color"]', (tags) => tags.map((t) => t.content));
+  await page.locator('[data-theme-set="light"]').click();
+  expect(await colours()).toEqual(['#eef2f5', '#eef2f5']);
+  await page.locator('[data-theme-set="auto"]').click();
+  expect(await colours()).toEqual(['#0a1117', '#eef2f5']);
+});

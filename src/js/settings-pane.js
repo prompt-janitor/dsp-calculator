@@ -140,7 +140,7 @@ const ABOUT = `
   <p class="gnote flush">Recipes, machine speeds and proliferator values come from the FactorioLab data
   for Dyson Sphere Program (October 2026). It includes game update 0.10.34, with the Holo Beacon.
   Power leaves out miners and orbital collectors. Deuterium fractionation assumes a 1% chance per hydrogen
-  and one machine per full belt.</p>
+  and one machine per full belt. It uses 1 hydrogen per deuterium, because the rest loops back.</p>
   <div class="gtitle">About this app</div>
   <p class="gnote flush">This is an unofficial fan project. It is not affiliated with Youthcat Studio or Gamera Games.
   Item icons are game art from Dyson Sphere Program by Youthcat Studio, taken from FactorioLab.

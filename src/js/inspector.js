@@ -87,6 +87,13 @@ function changeStepHTML(node, item, override) {
     </div>`;
 }
 
+// The solver counts only the hydrogen used up. In game each fractionator also needs a full belt passing through it.
+function fractionatorNote(node) {
+  const used = `${rateStr(node.inRate.hydrogen || 0)}${unitLabel()}`;
+  return `<p class="hintp">Each fractionator needs a full belt of hydrogen moving through it.
+    Chain them on a loop belt and feed in ${used} of new hydrogen. The rest goes round again.</p>`;
+}
+
 function craftBodyHTML(node, item, override) {
   const busy = node.built ? Math.round(node.machineCount / node.built * 100) : 0;
   const inputs = Object.keys(node.inRate).map((i) => rateRow(i, node.inRate[i], 'button', ` data-jump="${esc(i)}"`)).join('');
@@ -99,6 +106,7 @@ function craftBodyHTML(node, item, override) {
       <div class="kpi"><b>${busy}%</b><span>busy</span></div>
     </div>
     <p class="hintp">${formatNumber(node.machineCount)} machines exactly${node.power ? ' · ' + formatPower(node.power) : ''}</p>
+    ${node.machine === 'fractionator' ? fractionatorNote(node) : ''}
     ${group('Consumes', inputs)}
     ${group('Also produces', extras)}
     ${changeStepHTML(node, item, override)}

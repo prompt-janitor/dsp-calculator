@@ -23,6 +23,7 @@ The first public release.
 - The installed app keeps controls out of the notch and the home indicator, and the theme sets the browser bar color.
 - The icon sheet is less than half its old size, so the app loads faster.
 - New launch screens for iPhone Air, iPhone Duo and iPad Pro 11 (M4 and M5).
+- Deuterium now needs 1 hydrogen each. It asked for 100 before, because the hydrogen that loops back through the fractionators was counted as used. The step details say how to feed them.
 - Switching between per minute and per second no longer changes the rates.
 - Plan codes are checked before they load.
 - Settings has an About section with credits and licenses that also open offline.

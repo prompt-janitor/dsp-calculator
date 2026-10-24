@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npm run build
+      # Copy lint goes here once the copy is clean:
+      # - run: npm run lint:copy -- --strict
+
+  e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium webkit
+      # Every project except desktop-firefox runs in Chromium or WebKit.
+      - run: >-
+          npm run test:e2e --
+          --project=iphone-15 --project=iphone-15-landscape
+          --project=ipad-pro-11 --project=ipad-pro-11-landscape --project=ipad-mini
+          --project=phone-320 --project=desktop-chrome --project=desktop-safari
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-traces
+          path: test-results/
+          retention-days: 7

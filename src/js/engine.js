@@ -33,55 +33,56 @@ const DEFAULT_PICK = {
   'refined-oil': 'plasma-refining'
 };
 
-export function initEngine(D) {
-  DATA = D;
+export function initEngine(data) {
+  DATA = data;
   // The source data lists deuterium fractionation as 0.01 : 0.01, which hides the 1% chance.
   // In game, each hydrogen has a 1% chance to become deuterium and a fractionator handles one belt of hydrogen.
   // Source: dsp-wiki.com/Fractionator
-  D.recipes.forEach(function (r) {
-    if (r.id === 'deuterium-fractionation') { r.in = { 'hydrogen': 1 }; r.out = { 'deuterium': 0.01 }; r.time = 1; }
-  });
-  D.excluded.forEach(function (id) { EXCL[id] = 1; });
+  for (const recipe of data.recipes) {
+    if (recipe.id === 'deuterium-fractionation') { recipe.in = { 'hydrogen': 1 }; recipe.out = { 'deuterium': 0.01 }; recipe.time = 1; }
+  }
+  for (const id of data.excluded) EXCL[id] = 1;
   // FactorioLab's defaults exclude fire ice veins. Allow them, so fire ice comes from its vein by default.
   delete EXCL['fire-ice-vein'];
 
-  D.recipes.forEach(function (r) {
-    RECIPES[r.id] = r;
-    Object.keys(r.out).forEach(function (o) { (CANDS[o] = CANDS[o] || []).push(r.id); });
-  });
-  D.items.forEach(function (i) { ITEMS[i.id] = i; });
+  for (const recipe of data.recipes) {
+    RECIPES[recipe.id] = recipe;
+    for (const out of Object.keys(recipe.out)) (CANDS[out] = CANDS[out] || []).push(recipe.id);
+  }
+  for (const item of data.items) ITEMS[item.id] = item;
 }
 
 export function defaultRecipeFor(item) {
-  var c = CANDS[item];
-  if (!c || !c.length) return null;
+  const candidates = CANDS[item];
+  if (!candidates || !candidates.length) return null;
   if (DEFAULT_PICK[item] && RECIPES[DEFAULT_PICK[item]]) return DEFAULT_PICK[item];
-  var ok = c.filter(function (id) { return !EXCL[id]; });
-  if (!ok.length) ok = c;
-  var single = ok.filter(function (id) { var r = RECIPES[id]; return r.mining && Object.keys(r.out).length === 1; });
-  if (single.length) return single[0];
-  var prim = ok.filter(function (id) { return Object.keys(RECIPES[id].out)[0] === item; });
-  return (prim[0] || ok[0]);
+  let allowed = candidates.filter((id) => !EXCL[id]);
+  if (!allowed.length) allowed = candidates;
+  const plainVein = allowed.filter((id) => RECIPES[id].mining && Object.keys(RECIPES[id].out).length === 1);
+  if (plainVein.length) return plainVein[0];
+  const mainOutput = allowed.filter((id) => Object.keys(RECIPES[id].out)[0] === item);
+  return mainOutput[0] || allowed[0];
 }
 
-function beltCap(cfg) { return (BELTS[cfg.belt] || DEFAULT_BELT_SPEED) * (cfg.stack || 1); }
+function beltCapacity(cfg) { return (BELTS[cfg.belt] || DEFAULT_BELT_SPEED) * (cfg.stack || 1); }
 
-function pickMachine(rec, cfg, ovMachine) {
-  if (ovMachine && rec.prod.indexOf(ovMachine) >= 0) return ovMachine;
-  for (var i = 0; i < rec.prod.length; i++) {
-    var p = rec.prod[i];
-    if (cfg.machines[MACH_CLASS[p]] === p) return p;
+// A machine set on the step wins, then the one chosen in Settings for its class.
+function pickMachine(recipe, cfg, chosen) {
+  if (chosen && recipe.prod.includes(chosen)) return chosen;
+  for (const machine of recipe.prod) {
+    if (cfg.machines[MACH_CLASS[machine]] === machine) return machine;
   }
-  return rec.prod[0];
+  return recipe.prod[0];
 }
 
-function sumVals(o) { var s = 0; for (var k in o) s += o[k]; return s; }
+function sumValues(obj) { let total = 0; for (const key in obj) total += obj[key]; return total; }
 
 /* cfg: {targets:[{item,rate(/s)}], machines:{}, belt, stack, prolif:{level,mode}, mining:{speed,veins,oil}, overrides:{item:{recipe,machine,prolif,external}}} */
 export function solve(cfg) {
   var MODS = DATA.mods, MACH = DATA.machines;
   var ov = cfg.overrides || {};
-  var cap = beltCap(cfg);
+  var cap = beltCapacity(cfg);
+
   var recipeOf = {}, raw = {};
   var work = [];
   cfg.targets.forEach(function (t) { if (t.item && t.rate > 0) work.push(t.item); });
@@ -149,7 +150,7 @@ export function solve(cfg) {
     items.forEach(function (it) {
       var n = nodes[it], r = n.rec, runs = n.runs;
       for (var i in r.in) D[i] = (D[i] || 0) + runs * r.in[i];
-      if (n.prof) D[n.prof.item] = (D[n.prof.item] || 0) + runs * sumVals(r.in) / n.prof.sprays;
+      if (n.prof) D[n.prof.item] = (D[n.prof.item] || 0) + runs * sumValues(r.in) / n.prof.sprays;
       var cons = n.mach && n.mach.cons;
       if (cons) {
         var cnt = runs * r.time / nodeSpeed(n);
@@ -219,7 +220,7 @@ export function solve(cfg) {
   items.forEach(function (it) {
     var n = nodes[it], r = n.rec;
     for (var i in r.in) addCons(i, it, n.runs * r.in[i]);
-    if (n.prof) addCons(n.prof.item, it, n.runs * sumVals(r.in) / n.prof.sprays, 'spray');
+    if (n.prof) addCons(n.prof.item, it, n.runs * sumValues(r.in) / n.prof.sprays, 'spray');
     var mc = n.mach && n.mach.cons;
     if (mc) { var cnt = n.runs * r.time / nodeSpeed(n); for (var c in mc) addCons(c, it, cnt * mc[c], 'lens'); }
   });
@@ -273,16 +274,16 @@ export function solve(cfg) {
 }
 
 /* ---------- Formatting ---------- */
-export function fmt(n, d) {
-  if (!isFinite(n)) return '–';
-  var a = Math.abs(n);
-  if (a === 0) return '0';
-  if (a >= 1000) return Math.round(n).toLocaleString('en-US');
-  if (a >= 100) return n.toFixed(d === undefined ? 0 : d);
-  if (a >= 10) return n.toFixed(d === undefined ? 1 : d);
-  if (a >= 1) return n.toFixed(d === undefined ? 2 : d);
-  if (a >= 0.01) return n.toFixed(3);
-  return n.toPrecision(2);
+export function fmt(value, digits) {
+  if (!isFinite(value)) return '–';
+  const size = Math.abs(value);
+  if (size === 0) return '0';
+  if (size >= 1000) return Math.round(value).toLocaleString('en-US');
+  if (size >= 100) return value.toFixed(digits === undefined ? 0 : digits);
+  if (size >= 10) return value.toFixed(digits === undefined ? 1 : digits);
+  if (size >= 1) return value.toFixed(digits === undefined ? 2 : digits);
+  if (size >= 0.01) return value.toFixed(3);
+  return value.toPrecision(2);
 }
 export function fmtPower(kw) {
   if (kw >= 1e6) return (kw / 1e6).toFixed(2) + ' GW';

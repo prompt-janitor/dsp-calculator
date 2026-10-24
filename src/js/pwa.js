@@ -37,8 +37,12 @@ export function registerServiceWorker() {
   // storage is blocked. The app still works then, only without offline use.
   try {
     navigator.serviceWorker.register('sw.js').then(watchForUpdate).catch(() => { });
+    // On the first visit the new worker takes control without an update,
+    // so that first change needs no reload.
+    let firstClaim = !navigator.serviceWorker.controller;
     let reloading = false;
     navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (firstClaim) { firstClaim = false; return; }
       if (reloading) return;
       reloading = true;
       location.reload();

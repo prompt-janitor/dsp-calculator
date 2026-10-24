@@ -112,7 +112,7 @@ function numRow(id, label, sub, val) {
     '<div class="stepper"><button type="button" data-nstep="' + id + '" data-dir="-1" aria-label="Decrease">−</button>' +
     '<input type="text" inputmode="decimal" id="' + id + '" value="' + val + '"><button type="button" data-nstep="' + id + '" data-dir="1" aria-label="Increase">+</button></div></div>';
 }
-var NUMS = { mspeed: ['speed', 10, 10, 1000], mveins: ['veins', 1, 1, 12], moil: ['oil', 0.1, 0.1, 20], morb: ['orbital', 5, 10, 100] };
+const NUMS = { mspeed: ['speed', 10, 10, 1000], mveins: ['veins', 1, 1, 12], moil: ['oil', 0.1, 0.1, 20], morb: ['orbital', 5, 10, 100] };
 function renderSettings() {
   var h = '';
   if (!isStandalone() && !inFrame()) {
@@ -305,7 +305,7 @@ function renderInspector() {
 }
 
 /* ---------- picker ---------- */
-var CATS = [['all', 'All'], ['science', 'Matrices'], ['components', 'Components'], ['buildings', 'Buildings'], ['df', 'Dark Fog']];
+const CATS = [['all', 'All'], ['science', 'Matrices'], ['components', 'Components'], ['buildings', 'Buildings'], ['df', 'Dark Fog']];
 function openPicker(cb) {
   ui.picker.onPick = cb; ui.picker.cat = 'all';
   var s = $('#pickSearch'); s.value = '';

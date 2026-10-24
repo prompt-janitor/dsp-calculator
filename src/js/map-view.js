@@ -123,7 +123,7 @@ export function renderMap() {
   }
   $('#mapEmpty').hidden = true;
   const layout = ui.layout = layoutGraph(ui.plan, { spray: state.opts.spray });
-  const nodes = layout.nodes.filter((ln) => ui.plan.nodes[ln.id]).map((ln) => nodeHTML(ln.id, ln)).join('');
+  const nodes = layout.nodes.filter((box) => ui.plan.nodes[box.id]).map((box) => nodeHTML(box.id, box)).join('');
   stage.innerHTML = edgesSVG(layout, ui.plan.cap) + nodes;
   stage.style.width = layout.width + 'px';
   stage.style.height = layout.height + 'px';

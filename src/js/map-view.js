@@ -161,6 +161,13 @@ const GAP = 14;
 function freeArea(vp) {
   const outer = vp.getBoundingClientRect();
   let top = GAP, right = GAP, bottom = GAP, left = GAP;
+  // The map bar sits 12 px in from each side, or inside the safe area when
+  // that is wider (the notch side of a phone in landscape).
+  const bar = shownRect($('.mapbar'));
+  if (bar) {
+    left = Math.max(left, bar.left - outer.left - 12 + GAP);
+    right = Math.max(right, outer.right - bar.right - 12 + GAP);
+  }
   for (const el of $$('.mapbar > *')) {
     const r = shownRect(el);
     if (r) top = Math.max(top, r.bottom - outer.top + 6);

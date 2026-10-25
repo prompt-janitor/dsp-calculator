@@ -7,6 +7,7 @@
 - Export saves all plans to one backup file, and Import adds the plans from such a file. A .json file with one plan code in it also imports. On iPhone and iPad, Export opens the share sheet, so you can save the file to Files.
 - Share has Copy link. The link opens the plan in the app, where you can save it or undo it.
 - A plan code now drops a made-up item name such as "constructor", like any other unknown name.
+- You can move the boxes on the flow map to see the links behind them. Drag a box with a mouse, or hold it with a finger and then drag. With a keyboard, Shift and an arrow key move the box that has focus. The links follow the box. Saved plans, backup files and plan links keep where you put the boxes. Map options has Reset box positions, which you can undo.
 
 ## 1.0.0 (2026-10-24)
 

@@ -11,7 +11,8 @@ import { renderBuildList, wireBuildList } from './build-list.js';
 import { renderInspector, closeInspector, wireInspector } from './inspector.js';
 import { wirePicker } from './picker.js';
 import { wireShare } from './share.js';
-import { loadSaved, renderSaveBar, openPlanLink, announceLink, wireSaved } from './saved-list.js';
+import { loadSaved, renderSaved, renderSaveBar, openPlanLink, announceLink, wireSaved } from './saved-list.js';
+import { renderFiles, renderFileStatus, wireFiles } from './files-pane.js';
 import { closeSheet, wireSheets } from './sheets.js';
 import { syncMapOptions, wireMapControls } from './map-controls.js';
 import { wireKeys } from './keys.js';
@@ -23,6 +24,7 @@ function solveAndRender() {
   syncMapOptions();
   renderPlanTotals();
   renderSaveBar();
+  renderFileStatus();
   renderMap();
   renderBuildList();
   if (ui.sel) renderInspector(); else closeSheet('inspector');
@@ -55,6 +57,7 @@ export function boot() {
   onRender('theme', applyTheme);
   onRender('nav', syncNav);
   onRender('plan', renderPlan);
+  onRender('saved', () => { renderSaved(); renderFiles(); });
   onRender('settings', renderSettings);
   onRender('solve', solveAndRender);
   catchInstallPrompt();
@@ -67,6 +70,7 @@ export function boot() {
   wirePicker();
   wireShare();
   wireSaved(closeAnySheet);
+  wireFiles();
   wireSheets(closeAnySheet);
   wireMapControls();
   wireKeys();

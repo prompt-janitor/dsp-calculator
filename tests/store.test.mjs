@@ -20,7 +20,7 @@ test('a valid plan code comes back the same', () => {
   plan.overrides = { 'graphene': { recipe: 'graphene-advanced' }, 'processor': { external: true },
     'iron-ingot': { machine: 'arc-smelter', prolif: { level: 1, mode: 'products' } } };
   plan.opts = { spray: false, labels: false, theme: 'light' };
-  plan.tab = 'settings'; plan.side = 'settings'; plan.main = 'build'; plan.bsec = 'steps';
+  plan.tab = 'settings'; plan.side = 'settings'; plan.psec = 'files'; plan.main = 'build'; plan.bsec = 'steps';
   assert.deepEqual(merge(JSON.parse(JSON.stringify(plan))), plan);
 });
 
@@ -30,7 +30,7 @@ test('markup in a plan code is dropped', () => {
     mining: { speed: hostile, veins: hostile }, machines: { smelter: hostile }, belt: hostile,
     prolif: { level: hostile, mode: hostile }, opts: { theme: hostile, spray: hostile },
     overrides: { [hostile]: { external: true }, 'iron-ingot': { recipe: hostile, machine: hostile, prolif: hostile } },
-    tab: hostile, side: hostile, main: hostile, bsec: hostile
+    tab: hostile, side: hostile, psec: hostile, main: hostile, bsec: hostile
   });
   assert.deepEqual(merged, defaultState());
 });
@@ -45,6 +45,17 @@ test('names that are not own keys do not count as known ids', () => {
   assert.equal(merged.machines.smelter, defaultState().machines.smelter);
   assert.equal(merged.belt, defaultState().belt);
   assert.deepEqual(merged.overrides, {});
+});
+
+test('the sidebar has four panes, and older states still load', () => {
+  for (const side of ['plan', 'saved', 'files', 'settings']) assert.equal(merge({ side }).side, side);
+  // States saved before the Saved and Load/Save panes had only these two.
+  assert.deepEqual([merge({ tab: 'plan', side: 'plan' }).side, merge({ tab: 'settings', side: 'settings' }).side], ['plan', 'settings']);
+  assert.equal(merge({ side: 'settings' }).psec, 'plan');
+  assert.equal(merge({ side: 'export' }).side, 'plan');
+  assert.equal(merge({ psec: 'settings' }).psec, 'plan');
+  assert.equal(merge({ psec: 'saved' }).psec, 'saved');
+  assert.equal(merge({ tab: 'saved' }).tab, 'plan');
 });
 
 test('mining numbers are kept inside the Settings limits', () => {

@@ -15,7 +15,7 @@ export function defaultState() {
     mining: { speed: 100, veins: 8, oil: 1, orbital: 55 },
     overrides: {},
     opts: { spray: true, labels: true, theme: 'auto' },
-    tab: 'plan', side: 'plan', main: 'map', bsec: 'buildings'
+    tab: 'plan', side: 'plan', psec: 'plan', main: 'map', bsec: 'buildings'
   };
 }
 
@@ -30,7 +30,9 @@ export const clampMining = (key, value) => Math.min(MINING_LIMITS[key].max, Math
 
 const PANES = {
   tab: ['plan', 'map', 'build', 'settings'],
-  side: ['plan', 'settings'],
+  side: ['plan', 'saved', 'files', 'settings'],
+  // The pane the Plan tab shows on phones, the last of these three opened.
+  psec: ['plan', 'saved', 'files'],
   main: ['map', 'build'],
   bsec: ['buildings', 'steps', 'resources']
 };
@@ -144,7 +146,7 @@ export function replaceState(next) {
 
 // Parts of the page that a change can draw again, in the order they run.
 // app.js gives each one a function with onRender().
-const PARTS = ['theme', 'nav', 'plan', 'settings', 'solve'];
+const PARTS = ['theme', 'nav', 'plan', 'saved', 'settings', 'solve'];
 const renderers = {};
 
 export function onRender(part, fn) {

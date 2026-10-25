@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { openApp, showView, tapMapNode, sheetOpen, smallTargets, isWide } from './helpers.mjs';
 
-const VIEWS = ['plan', 'map', 'build', 'settings'];
+const VIEWS = ['plan', 'saved', 'files', 'map', 'build', 'settings'];
 
 test('loads with no console errors', async ({ page }) => {
   const errors = await openApp(page);

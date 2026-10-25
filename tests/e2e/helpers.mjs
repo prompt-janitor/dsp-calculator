@@ -16,14 +16,20 @@ export async function openApp(page) {
   return errors;
 }
 
-// Shows one of the four views. Compact layouts use the tab bar, wide
-// layouts use the sidebar switch (plan, settings) and the main switch (map, build).
+// Shows one of the views: plan, saved, files, map, build or settings.
+// Compact layouts use the tab bar, and the switch at the top of the Plan tab
+// for plan, saved and files. Wide layouts use the sidebar tabs and the main
+// switch (map, build).
+const PLAN_PANES = ['plan', 'saved', 'files'];
 export async function showView(page, view) {
-  if (!(await isWide(page))) await page.locator(`.tabbar [data-tab="${view}"]`).click();
-  else if (view === 'plan' || view === 'settings') await page.locator(`.wide-head [data-side="${view}"]`).click();
-  else await page.locator(`.wide-head [data-main="${view}"]`).click();
-  const pane = { plan: '#pane-plan', map: '#pane-map', build: '#pane-build', settings: '#pane-settings' }[view];
-  await expect(page.locator(pane)).toBeVisible();
+  if (await isWide(page)) {
+    if (view === 'map' || view === 'build') await page.locator(`.wide-head [data-main="${view}"]`).click();
+    else await page.locator(`#sideTabs [data-side="${view}"]`).click();
+  } else if (PLAN_PANES.includes(view)) {
+    await page.locator('.tabbar [data-tab="plan"]').click();
+    await page.locator(`#planTabs [data-psec="${view}"]`).click();
+  } else await page.locator(`.tabbar [data-tab="${view}"]`).click();
+  await expect(page.locator('#pane-' + view)).toBeVisible();
 }
 
 // Sheets slide in over a few frames. Wait for that before closing one,

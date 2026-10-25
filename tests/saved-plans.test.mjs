@@ -5,7 +5,7 @@ import './lib/load.mjs';
 import { defaultState } from '../src/js/store.js';
 import {
   PLANS_KEY, planData, readPlanData, withPlan, samePlan, defaultName, cleanName, uniqueName, addPlan, overwritePlan, renamePlan,
-  duplicatePlan, deletePlan, restorePlan, markOpened, sortPlans, loadPlans, savePlans, exportName, exportText, importText,
+  duplicatePlan, deletePlan, restorePlan, markOpened, sortPlans, loadPlans, savePlans, exportName, exportText, importText, planFileName, planEntry,
   encodePlan, planLink, decodePlanHash, UNREAD_KEY, PLANS_MAX, LINK_MAX
 } from '../src/js/saved-plans.js';
 
@@ -229,6 +229,29 @@ test('the backup file has every plan and loads back', () => {
   assert.deepEqual(other.map((p) => p.name), ['Two', 'One']);
   assert.deepEqual(other[0].data, plans[0].data);
   assert.notEqual(other[0].id, plans[0].id);
+});
+
+test('one plan exports to its own file in the same format', () => {
+  const date = new Date(2026, 9, 25, 9, 30);
+  assert.equal(planFileName('60/min Information Matrix', date), 'dsp-calculator-plan-60-min-information-matrix.json');
+  assert.equal(planFileName('  Café   (blue) ', date), 'dsp-calculator-plan-cafe-blue.json');
+  assert.equal(planFileName('蓝糖', date), 'dsp-calculator-plan-2026-10-25.json');
+  assert.equal(planFileName(HOSTILE, date), 'dsp-calculator-plan-img-src-x-onerror-window-pwned-1.json');
+  assert.ok(planFileName('x'.repeat(200), date).length < 70);
+
+  const state = choices((s) => { s.targets = [{ item: 'space-warper', rate: 30 }]; s.stack = 2; s.tab = 'settings'; });
+  const entry = planEntry(state, '', 1000);
+  assert.equal(entry.name, '30/min Space Warper');
+  assert.equal(entry.data.tab, undefined);
+  assert.equal(planEntry(state, ' Warpers ', 1000).name, 'Warpers');
+
+  const plans = [];
+  addPlan(plans, choices(), 'Warpers', 500);
+  const result = importText(plans, exportText([planEntry(state, 'Warpers', 1000)], date));
+  assert.deepEqual(counts(result), { added: 1, skipped: 0, full: 0 });
+  const added = plans.find((p) => p.id === result.ids[0]);
+  assert.equal(added.name, 'Warpers (2)');
+  assert.deepEqual(added.data, planData(state));
 });
 
 test('an import adds plans and numbers a clashing name', () => {

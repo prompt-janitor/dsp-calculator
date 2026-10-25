@@ -6,7 +6,7 @@
 import { test, expect } from '@playwright/test';
 import { openApp, showView, isWide } from './helpers.mjs';
 
-const VIEWS = ['plan', 'map', 'build', 'settings'];
+const VIEWS = ['plan', 'saved', 'files', 'map', 'build', 'settings'];
 
 function insetsFor({ width, height }, wide) {
   if (wide) return { top: 24, right: 0, bottom: 20, left: 0 };

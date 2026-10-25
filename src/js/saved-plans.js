@@ -200,10 +200,23 @@ export function savePlans(storage, plans, open) {
   }
 }
 
-// The backup file.
-export function exportName(date = new Date()) {
-  const pad = (n) => String(n).padStart(2, '0');
-  return `dsp-calculator-plans-${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}.json`;
+// The backup file, and the file for one plan. Both use the same format, so
+// one import reads either.
+const pad = (n) => String(n).padStart(2, '0');
+const day = (date) => `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
+export const exportName = (date = new Date()) => `dsp-calculator-plans-${day(date)}.json`;
+
+// dsp-calculator-plan-<name>.json, with the name in lower case letters,
+// digits and dashes. A name with none of those gives the date.
+export function planFileName(name, date = new Date()) {
+  const safe = cleanName(name).normalize('NFKD').replace(/[̀-ͯ]/g, '').toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-').slice(0, 40).replace(/^-+|-+$/g, '');
+  return `dsp-calculator-plan-${safe || day(date)}.json`;
+}
+
+// A plan as the file keeps it, for the current plan when it is not saved.
+export function planEntry(choices, name, now = Date.now()) {
+  return { name: cleanName(name) || defaultName(choices), createdAt: now, updatedAt: now, openedAt: 0, data: planData(choices) };
 }
 
 export function exportText(plans, date = new Date()) {

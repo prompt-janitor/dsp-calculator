@@ -7,7 +7,8 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { serveDir } from '../../scripts/serve.mjs';
 
-const PORT = 4174;
+// Away from the port of the main test server, which E2E_PORT can move.
+const PORT = process.env.E2E_PORT ? Number(process.env.E2E_PORT) + 10000 : 4174;
 const URL = `http://localhost:${PORT}/dsp-calculator/`;
 let work, server, live;
 

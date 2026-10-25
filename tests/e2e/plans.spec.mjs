@@ -469,6 +469,62 @@ test('renaming a plan deleted in another tab says so', async ({ page }) => {
   await expect(rows(page)).toHaveCount(0);
 });
 
+// Moved map boxes are part of a plan, so Save, Load and a plan file keep them.
+test('moved boxes go with a saved plan, Load and a plan file', async ({ page }) => {
+  await stubShare(page);
+  await openPlanPane(page);
+  const id = await page.locator('#stage .node:not(.target)').first().getAttribute('data-id');
+  const moves = { [id]: [120, -40] };
+  const stateMoves = () => page.evaluate(() => JSON.parse(localStorage.getItem('dsp-calculator-v1')).moved);
+  await page.evaluate((moved) => {
+    const saved = JSON.parse(localStorage.getItem('dsp-calculator-v1'));
+    localStorage.setItem('dsp-calculator-v1', JSON.stringify({ ...saved, moved }));
+  }, moves);
+  await page.reload();
+  await expect(page.locator('#stage .node').first()).toBeAttached();
+  await showView(page, 'plan');
+  await saveCurrent(page);
+  expect((await page.evaluate((key) => JSON.parse(localStorage.getItem(key)).plans, KEY))[0].data.moved).toEqual(moves);
+
+  await showView(page, 'files');
+  const file = await exported(page, '#exportOne');
+  expect(JSON.parse(file.text).plans[0].data.moved).toEqual(moves);
+  await hideToast(page);
+
+  const resetBoxes = async () => {
+    await showView(page, 'map');
+    await page.locator('#btnLayers').click();
+    await expect(page.locator('#resetBoxes')).toBeEnabled();
+    await page.locator('#resetBoxes').click();
+    await expect(page.locator('#resetBoxes')).toBeDisabled();
+    await page.locator('#btnLayers').click();
+    await hideToast(page);
+    expect(await stateMoves()).toEqual({});
+  };
+
+  await resetBoxes();
+  await showView(page, 'plan');
+  await expect(bar(page)).toContainText('Unsaved changes');
+  await showView(page, 'files');
+  await page.locator('#planFile').setInputFiles(jsonFile(file.name, file.text));
+  await expect(page.locator('#toast')).toContainText('Added “60/min Information Matrix (2)”.');
+  await page.locator('#toastAct').click();
+  await expect(page.locator('#toast')).toContainText('Opened “60/min Information Matrix (2)”.');
+  expect(await stateMoves()).toEqual(moves);
+  await hideToast(page);
+
+  await resetBoxes();
+  await showView(page, 'files');
+  await page.locator('#loadPick').selectOption({ label: '60/min Information Matrix' });
+  await page.locator('#loadGo').click();
+  await expect(page.locator('#toast')).toContainText('Opened “60/min Information Matrix”.');
+  expect(await stateMoves()).toEqual(moves);
+  await hideToast(page);
+  await showView(page, 'map');
+  await page.locator('#btnLayers').click();
+  await expect(page.locator('#resetBoxes')).toBeEnabled();
+});
+
 test('Load opens the plan picked in the list, with Undo', async ({ page }) => {
   await openPlanPane(page);
   await showView(page, 'files');

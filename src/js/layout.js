@@ -24,7 +24,15 @@ const ORDER_SWEEPS = 6;
 const RELAX_ROUNDS = 4;
 
 // options.spray: also lay out the proliferator spray links.
+// options.moved: { [node id]: [dx, dy] }, the boxes the user moved, in px
+// from where the layout puts them.
 export function layoutGraph(plan, options) {
+  return moveLayout(prepareLayout(plan, options), options.moved);
+}
+
+// The slow part: layers, order and positions. The map keeps the result while
+// a box is dragged and runs only moveLayout() on each frame.
+export function prepareLayout(plan, options) {
   const showSpray = options.spray;
   const ids = Object.keys(plan.nodes);
   const inPlan = (e) => plan.nodes[e.from] && plan.nodes[e.to];
@@ -36,12 +44,57 @@ export function layoutGraph(plan, options) {
   const { verts, routes } = addPlaceholders(plan, ids, edges, layer);
   const layers = orderLayers(verts);
   const { width, height } = placeVertices(verts, layers);
+  return { ids, verts, routes, sprayEdges, width, height };
+}
+
+// Puts the moved boxes where the user left them, then spreads the edge ends
+// and draws the paths. left and top: the map's top left corner, in layout
+// coordinates before the moves. A box moved above or left of the rest shifts
+// the whole map, and the view uses them to keep the other boxes in place.
+export function moveLayout(base, moved) {
+  const { ids, sprayEdges } = base;
+  let { verts, routes, width, height } = base;
+  let left = 0, top = 0;
+  if (hasMoves(ids, moved)) ({ verts, routes, width, height, left, top } = applyMoves(base, moved));
   const portY = assignPorts(verts, routes);
 
   const paths = routes.map((route, i) => edgePath(verts, route, portY['o' + i], portY['i' + i]));
   for (const e of sprayEdges) paths.push(sprayPath(verts[e.from], verts[e.to], e));
   const nodes = ids.map((id) => ({ id, x: verts[id].x, y: verts[id].y, height: verts[id].height }));
-  return { nodes, paths, width, height };
+  return { nodes, paths, width, height, left, top };
+}
+
+const offsetOf = (moved, id) => (moved && Object.hasOwn(moved, id) ? moved[id] : null);
+
+function hasMoves(ids, moved) {
+  return ids.some((id) => { const off = offsetOf(moved, id); return !!off && (off[0] !== 0 || off[1] !== 0); });
+}
+
+// Works on copies, so the prepared layout stays as it was for the next frame.
+function applyMoves({ ids, verts, routes }, moved) {
+  const placed = {};
+  for (const id of Object.keys(verts)) {
+    const v = verts[id], off = v.placeholder ? null : offsetOf(moved, id);
+    placed[id] = off ? { ...v, x: v.x + off[0], y: v.y + off[1] } : { ...v };
+  }
+  // A long edge skips the placeholders that a moved end has passed, so it
+  // does not run back to them.
+  const kept = routes.map(({ edge, chain }) => {
+    const a = placed[chain[0]], b = placed[chain[chain.length - 1]];
+    const inside = (id) => placed[id].x + NODE_WIDTH / 2 > a.x + NODE_WIDTH && placed[id].x + NODE_WIDTH / 2 < b.x;
+    return { edge, chain: chain.filter((id, k) => k === 0 || k === chain.length - 1 || inside(id)) };
+  });
+
+  const used = new Set(ids);
+  for (const { chain } of kept) for (const id of chain) used.add(id);
+  let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+  for (const id of used) {
+    const v = placed[id];
+    minX = Math.min(minX, v.x); maxX = Math.max(maxX, v.x + NODE_WIDTH);
+    minY = Math.min(minY, v.y); maxY = Math.max(maxY, v.y + v.height);
+  }
+  for (const id of Object.keys(placed)) { placed[id].x -= minX; placed[id].y -= minY; }
+  return { verts: placed, routes: kept, width: maxX - minX, height: maxY - minY, left: minX, top: minY };
 }
 
 function linkLists(ids, edges) {

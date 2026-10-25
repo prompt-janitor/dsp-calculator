@@ -11,6 +11,7 @@ import { renderBuildList, wireBuildList } from './build-list.js';
 import { renderInspector, closeInspector, wireInspector } from './inspector.js';
 import { wirePicker } from './picker.js';
 import { wireShare } from './share.js';
+import { loadSaved, renderSaveBar, openPlanLink, announceLink, wireSaved } from './saved-list.js';
 import { closeSheet, wireSheets } from './sheets.js';
 import { syncMapOptions, wireMapControls } from './map-controls.js';
 import { wireKeys } from './keys.js';
@@ -21,6 +22,7 @@ function solveAndRender() {
   if (ui.sel && !ui.plan.nodes[ui.sel]) ui.sel = null;
   syncMapOptions();
   renderPlanTotals();
+  renderSaveBar();
   renderMap();
   renderBuildList();
   if (ui.sel) renderInspector(); else closeSheet('inspector');
@@ -48,6 +50,8 @@ function watchResize() {
 export function boot() {
   initEngine(recipes);
   loadState();
+  loadSaved();
+  const linked = openPlanLink();
   onRender('theme', applyTheme);
   onRender('nav', syncNav);
   onRender('plan', renderPlan);
@@ -62,11 +66,13 @@ export function boot() {
   wireInspector();
   wirePicker();
   wireShare();
+  wireSaved();
   wireSheets(closeAnySheet);
   wireMapControls();
   wireKeys();
   watchResize();
   renderAll();
+  if (linked) announceLink();
   requestAnimationFrame(() => fitView());
   registerServiceWorker();
 }

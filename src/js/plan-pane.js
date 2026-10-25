@@ -4,6 +4,7 @@ import { $, esc, svg, itemIcon, machineIcon, itemName, machineName, rateStr, uni
 import { state, ui, update } from './store.js';
 import { openPicker } from './picker.js';
 import { toast } from './toast.js';
+import { renderSaved } from './saved-list.js';
 
 // How much one tap on + or - changes a rate. Bigger rates get bigger steps.
 function stepFor(rate, dir) {
@@ -59,9 +60,12 @@ export function renderPlan() {
     <div class="gtitle">Targets<span class="push"></span>${unitSwitch()}</div>
     <div class="group">${state.targets.length ? state.targets.map(targetHTML).join('') : NO_TARGETS}</div>
     <div class="pad-row"><button class="btn primary block" type="button" id="addTarget">${svg('i-plus', 20)}Add item</button></div>
+    <div class="group savebar" id="saveBar"></div>
     <div class="gtitle">Quick start</div>
     <div class="chips">${PRESETS.map(presetChip).join('')}</div>
+    <div id="saved"></div>
     <div class="glance" id="glance"></div>`;
+  renderSaved();
 }
 
 const stat = (value, label, cls = '') => `<div class="stat${cls}"><b>${value}</b><span>${label}</span></div>`;

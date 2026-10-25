@@ -4,6 +4,7 @@ import { $, $$, itemName, machineName, rateStr, unitLabel, shortRate, inFrame } 
 import { state, ui, defaultState, mergeState, replaceState, renderAll } from './store.js';
 import { openSheet, closeSheet } from './sheets.js';
 import { toast } from './toast.js';
+import { planLink } from './saved-plans.js';
 
 const HINTS = {
   summary: 'Paste this into a note, Discord or a message.',
@@ -47,14 +48,18 @@ function openShare(mode) {
 
 function say(message) { $('#expMsg').textContent = message; }
 
-function copyText(text) {
+// done: the message after a copy. When copy is blocked, the text goes into
+// the box so it can be copied by hand.
+function copyText(text, done = 'Copied.') {
+  const box = $('#expText');
   const fail = () => {
+    if (box.value !== text) { box.value = text; box.readOnly = true; $('#expLoad').hidden = true; }
     say('Copy was blocked. Press and hold the text, then choose Select All and Copy.');
-    $('#expText').focus();
-    $('#expText').select();
+    box.focus();
+    box.select();
   };
   // navigator.clipboard is missing on plain http and in some webviews.
-  try { navigator.clipboard.writeText(text).then(() => say('Copied.'), fail); } catch (e) { fail(); }
+  try { navigator.clipboard.writeText(text).then(() => say(done), fail); } catch (e) { fail(); }
 }
 
 function shareText() {
@@ -82,6 +87,7 @@ export function wireShare() {
   });
   for (const button of $$('[data-exp]')) button.addEventListener('click', () => openShare(button.dataset.exp));
   $('#expCopy').addEventListener('click', () => copyText($('#expText').value));
+  $('#expLink').addEventListener('click', () => copyText(planLink(location.href, state), 'Link copied. Anyone who opens it gets this plan.'));
   $('#expShare').addEventListener('click', shareText);
   $('#expLoad').addEventListener('click', loadCode);
 }

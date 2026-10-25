@@ -8,7 +8,7 @@ import { planLink } from './saved-plans.js';
 
 const HINTS = {
   summary: 'Paste this into a note, Discord or a message.',
-  code: 'Copy this code to back up the plan. To load one, paste a code here and tap Load.'
+  code: 'Copy this code to send the plan to someone. To load one, paste a code here and tap Load.'
 };
 
 const byCount = (counts) => Object.keys(counts).sort((a, b) => counts[b] - counts[a]);
@@ -54,7 +54,7 @@ function copyText(text, done = 'Copied.') {
   const box = $('#expText');
   const fail = () => {
     if (box.value !== text) { box.value = text; box.readOnly = true; $('#expLoad').hidden = true; }
-    say('Copy was blocked. Press and hold the text, then choose Select All and Copy.');
+    say('Copy was blocked. Select the text in the box and copy it.');
     box.focus();
     box.select();
   };

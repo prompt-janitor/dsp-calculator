@@ -95,7 +95,11 @@ button { cursor: pointer; -webkit-user-select: none; user-select: none; }
 /* compact: one pane visible */
 .app[data-tab="plan"] .main, .app[data-tab="settings"] .main { display: none; }
 .app[data-tab="map"] .side, .app[data-tab="build"] .side { display: none; }
-.app[data-tab="plan"] #pane-settings, .app[data-tab="settings"] #pane-plan { display: none; }
+.app[data-tab="plan"] #pane-settings { display: none; }
+.app[data-tab="settings"] :is(.plan-head, .plan-segs, #pane-plan, #pane-saved, #pane-files) { display: none; }
+/* The Plan tab shows one of three panes, picked with the switch under its header. */
+.app:not([data-psec="plan"]) #pane-plan, .app:not([data-psec="saved"]) #pane-saved, .app:not([data-psec="files"]) #pane-files { display: none; }
+.side-tabs { display: none; }
 .app[data-tab="map"] #pane-build, .app[data-tab="build"] #pane-map { display: none; }
 
 /* large-title header (compact) */
@@ -105,6 +109,10 @@ button { cursor: pointer; -webkit-user-select: none; user-select: none; }
 .phone-head h1 { margin: 0; font: 600 28px/1.1 var(--f-display); letter-spacing: .02em; flex: 1; min-width: 0; }
 .phone-head .sub { display: block; font: 13px/1.3 var(--f-body); color: var(--muted); letter-spacing: 0; margin-top: 2px; }
 .pane.scrolled .phone-head { border-bottom-color: var(--sep); }
+/* The Plan tab's header and switch sit above its three panes. */
+.plan-segs { border-bottom: 1px solid transparent; }
+.app[data-psec="plan"] .side:has(#pane-plan.scrolled) .plan-segs, .app[data-psec="saved"] .side:has(#pane-saved.scrolled) .plan-segs,
+.app[data-psec="files"] .side:has(#pane-files.scrolled) .plan-segs { border-bottom-color: var(--sep); }
 
 /* tab bar */
 .tabbar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; display: grid; grid-template-columns: repeat(4, 1fr);
@@ -188,12 +196,14 @@ a.row { color: inherit; text-decoration: none; }
 .chip .stack + span { margin-left: 6px; }
 
 /* saved plans */
-.savebar { margin-top: 12px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; padding: 10px 14px; min-height: 64px; }
-.savebar .main-t { flex: 1 1 140px; min-width: 0; }
+/* One line, so saving is one tap without pushing the presets down. */
+.savebar { margin-top: 12px; display: flex; align-items: center; gap: 12px; padding: 8px 14px; min-height: 56px; }
+.savebar .main-t { flex: 1 1 0; min-width: 0; }
+.savebar .btn { white-space: nowrap; }
 .savebar .t { display: block; font-weight: 600; line-height: 1.25; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.savebar .s { display: block; font-size: 13px; color: var(--muted); line-height: 1.3; }
-.savebar .s.changed { color: var(--warm); }
-.savebar .s.changed::before { content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: currentColor; margin: 0 6px 1px 0; }
+.savebar .s { display: block; font-size: 13px; color: var(--muted); line-height: 1.3; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.savebar .s.changed, .fstat .s.changed { color: var(--warm); }
+.savebar .s.changed::before, .fstat .s.changed::before { content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: currentColor; margin: 0 6px 1px 0; }
 .acts { display: flex; flex-wrap: wrap; gap: 8px; }
 .prow { position: relative; display: flex; flex-wrap: wrap; align-items: center; }
 .prow + .prow::before, .prow + .pall::before { content: ""; position: absolute; top: 0; left: 62px; right: 0; border-top: 1px solid var(--sep); }
@@ -217,8 +227,22 @@ a.row { color: inherit; text-decoration: none; }
 .pfind input { flex: 1; min-width: 0; border: 0; background: none; height: 40px; font-size: 16px; outline: none; }
 .pfind:focus-within { outline: 2px solid var(--accent); outline-offset: 2px; }
 .pad-row.two { display: flex; gap: 10px; }
-.pad-row.two .btn { flex: 1; }
+.pad-row.two .btn { flex: 1; min-width: 0; }
 .gnote.warn { color: var(--warm); margin-top: 0; margin-bottom: 10px; }
+.gnote.warn.gap-top { margin-top: 12px; }
+
+/* Load/Save pane */
+.fname { display: flex; align-items: center; gap: 12px; padding: 10px 14px 0; }
+.fname > span { flex: none; font-size: 14px; color: var(--muted); }
+.fname .pname { flex: 1; }
+.fstat { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; padding: 10px 14px; }
+.fstat .s { flex: 1 1 110px; min-width: 0; font-size: 13px; color: var(--muted); }
+.fload { display: flex; gap: 10px; align-items: center; padding: 10px 14px; }
+.fload select { flex: 1; min-width: 0; height: 40px; border-radius: 10px; border: 1px solid var(--line); background-color: var(--bg); padding: 0 30px 0 10px; font-size: 16px;
+  appearance: none; -webkit-appearance: none; text-overflow: ellipsis; white-space: nowrap; overflow: hidden;
+  background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%), linear-gradient(-45deg, transparent 50%, var(--muted) 50%);
+  background-size: 5px 5px; background-position: right 15px center, right 10px center; background-repeat: no-repeat; }
+.fload select:disabled { opacity: .45; }
 
 /* tier picker */
 .tier { padding: 10px 14px 12px; position: relative; }
@@ -390,7 +414,7 @@ textarea { width: 100%; min-height: 240px; border-radius: 12px; border: 1px soli
   .stepper input { height: 44px; }
   .gtitle .act { min-height: 48px; padding: 0 6px; margin: -14px -6px; }
   .picker .search input { height: 44px; }
-  .pname, .pfind input { height: 44px; }
+  .pname, .pfind input, .fload select { height: 44px; }
 }
 
 /* ================= Phone in landscape: tab bar on the left ================= */
@@ -445,8 +469,16 @@ textarea { width: 100%; min-height: 240px; border-radius: 12px; border: 1px soli
   .app .side, .app .main { display: flex !important; }
   .side { flex: none; width: calc(var(--side-w) + var(--sal)); border-right: 1px solid var(--sep); background: var(--bg); padding-left: var(--sal); }
   .main { padding-right: var(--sar); min-width: 0; }
-  .app[data-side="plan"] #pane-settings, .app[data-side="settings"] #pane-plan { display: none !important; }
-  .app[data-side="plan"] #pane-plan, .app[data-side="settings"] #pane-settings { display: flex !important; }
+  .side .pane { display: none !important; }
+  .app[data-side="plan"] #pane-plan, .app[data-side="saved"] #pane-saved, .app[data-side="files"] #pane-files,
+  .app[data-side="settings"] #pane-settings { display: flex !important; }
+  /* Four equal tabs under the brand. Labels sit under an icon, as on the
+     phone tab bar, so they fit the 272 px sidebar. */
+  .side-tabs { display: block; padding: 8px 12px; border-bottom: 1px solid var(--sep); }
+  .side-tabs .seg button { min-width: 0; min-height: 46px; padding: 4px 2px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 2px; font: 600 11px/1.15 var(--f-body); white-space: normal; text-align: center; }
+  .side-tabs .seg .svgi { width: 20px; height: 20px; }
+  .side-tabs .seg button[aria-selected="true"] { color: var(--accent); }
   .app[data-main="map"] #pane-build, .app[data-main="build"] #pane-map { display: none !important; }
   .app[data-main="map"] #pane-map, .app[data-main="build"] #pane-build { display: flex !important; }
   .wide-head { display: flex; align-items: center; gap: 12px; padding: calc(var(--sat) + 10px) 16px 10px; border-bottom: 1px solid var(--sep); min-height: 64px; }

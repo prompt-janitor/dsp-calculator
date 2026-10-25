@@ -146,7 +146,7 @@ export function replaceState(next) {
 
 // Parts of the page that a change can draw again, in the order they run.
 // app.js gives each one a function with onRender().
-const PARTS = ['theme', 'nav', 'plan', 'settings', 'solve'];
+const PARTS = ['theme', 'nav', 'plan', 'saved', 'settings', 'solve'];
 const renderers = {};
 
 export function onRender(part, fn) {

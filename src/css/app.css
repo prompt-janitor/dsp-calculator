@@ -256,6 +256,8 @@ a.row { color: inherit; text-decoration: none; }
 .viewport { position: absolute; inset: 0; overflow: hidden; touch-action: none; cursor: grab; background-color: var(--bg);
   background-image: radial-gradient(var(--grid) 1px, transparent 1px); background-size: 24px 24px; -webkit-user-select: none; user-select: none; }
 .viewport.drag { cursor: grabbing; }
+/* A long press picks up a box, so iOS must not show its callout. */
+.viewport, .node { -webkit-touch-callout: none; }
 .stage { position: absolute; left: 0; top: 0; transform-origin: 0 0; will-change: transform; }
 .stage.anim { transition: transform .32s cubic-bezier(.2, .8, .2, 1); }
 .stage svg { position: absolute; left: 0; top: 0; overflow: visible; pointer-events: none; }
@@ -272,6 +274,8 @@ a.row { color: inherit; text-decoration: none; }
 .node { position: absolute; width: 228px; height: 86px; background: var(--panel); border: 1px solid var(--line); border-left: 4px solid var(--nc, var(--c-other));
   border-radius: 10px; padding: 7px 9px 6px 8px; display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 0 9px; box-shadow: 0 2px 10px rgba(0, 0, 0, .2); }
 .node.sel { outline: 2px solid var(--accent); outline-offset: 2px; }
+.node.lifted { z-index: 1; transform: scale(1.03); box-shadow: 0 12px 30px rgba(0, 0, 0, .38); }
+.stage.has-sel .node.lifted { opacity: 1; }
 .stage.has-sel .node:not(.rel) { opacity: .35; }
 .node .pic { grid-row: 1 / span 2; width: 40px; height: 40px; border-radius: 7px; background: var(--bg); display: grid; place-items: center; margin-top: 2px; }
 .node .t1 { font-weight: 600; font-size: 13.5px; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-right: 4px; }
@@ -302,6 +306,9 @@ a.row { color: inherit; text-decoration: none; }
 .mapbar .btn.round, .zoombar .btn.round, .edgefade .btn.round { background: var(--bg-blur); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); border: 1px solid var(--sep); box-shadow: var(--shadow); }
 .zoombar { position: absolute; z-index: 4; right: max(12px, var(--sar)); bottom: calc(var(--tab-h) + var(--sab) + 14px); display: flex; flex-direction: column; gap: 8px; }
 .layers { position: absolute; z-index: 5; right: max(12px, var(--sar)); top: calc(var(--sat) + 62px); width: 250px; padding: 6px 0; border-radius: 14px; }
+.layers-act { padding: 8px 14px; border-top: 1px solid var(--sep); }
+.layers-act .btn { width: 100%; }
+.layers-act .hint { display: block; margin-bottom: 8px; font-size: 12.5px; color: var(--muted); }
 .legend { display: flex; flex-wrap: wrap; gap: 6px 12px; padding: 10px 14px 6px; border-top: 1px solid var(--sep); font-size: 12.5px; color: var(--muted); }
 .legend i { display: inline-block; width: 9px; height: 9px; border-radius: 2px; margin-right: 5px; }
 /* Shown on small screens while part of the map is off the left edge. On

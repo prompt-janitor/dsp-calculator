@@ -18,11 +18,11 @@ const PANE = `
       <input type="text" class="pname" id="planName" maxlength="80" enterkeyhint="done" autocomplete="off" autocapitalize="sentences"></label>
     <div class="fstat"><span class="s" id="fileStatus"></span><span class="acts" id="fileSaveActs"></span></div>
   </div>
-  <p class="gnote">Saved in this browser.</p>
+  <p class="gnote">Save keeps the plan in this browser.</p>
 
   <div class="gtitle">Load</div>
   <div class="group fload">
-    <select id="loadPick" aria-label="Saved plan to load"></select>
+    <select id="loadPick" aria-label="Saved plan to load" aria-describedby="loadNote"></select>
     <button class="btn primary" type="button" id="loadGo">Load</button>
   </div>
   <p class="gnote" id="loadNote"></p>
@@ -39,9 +39,13 @@ const PANE = `
   <p class="gnote">Adds the plans in a .json file from this app, with one plan or all of them.</p>`;
 
 let actsHTML = '';
+// True from a press on Save as new until its click, so the name typed for
+// the open plan names the new plan instead of renaming the open one.
+let keepTyped = false;
 
-// Runs after every solve, because a change to the plan changes its status.
-// The buttons are drawn again only when they change, so focus stays on them.
+// Runs after every solve and every box move, because a change to the plan
+// changes its status. The buttons are drawn again only when Save as new
+// comes or goes, so a button keeps focus, and a press on it keeps its click.
 export function renderFileStatus() {
   const { kind, text } = saveStatus();
   const status = $('#fileStatus');
@@ -49,9 +53,10 @@ export function renderFileStatus() {
   status.classList.toggle('changed', kind === 'changed');
   const acts = kind === 'new'
     ? '<button class="btn primary" type="button" id="fileSave">Save</button>'
-    : `<button class="btn${kind === 'changed' ? ' primary' : ''}" type="button" id="fileSave">Save</button>
+    : `<button class="btn" type="button" id="fileSave">Save</button>
       <button class="btn" type="button" id="fileSaveNew">Save as new</button>`;
   if (acts !== actsHTML) { actsHTML = acts; $('#fileSaveActs').innerHTML = acts; }
+  $('#fileSave').classList.toggle('primary', kind !== 'saved');
   const name = $('#planName');
   if (!openPlan()) name.placeholder = defaultName(state);
 }
@@ -70,7 +75,9 @@ export function renderFiles() {
   const plans = savedPlans();
   const pick = $('#loadPick');
   const chosen = pick.value;
-  pick.innerHTML = plans.map((p) => `<option value="${esc(p.id)}">${esc(p.name)}${p.id === (open && open.id) ? ' (open now)' : ''}</option>`).join('');
+  pick.innerHTML = plans.length
+    ? plans.map((p) => `<option value="${esc(p.id)}">${esc(p.name)}${p.id === (open && open.id) ? ' (open now)' : ''}</option>`).join('')
+    : '<option value="">No saved plans</option>';
   if (plans.some((p) => p.id === chosen)) pick.value = chosen;
   pick.disabled = !plans.length;
   $('#loadGo').disabled = !plans.length;
@@ -89,19 +96,40 @@ function commitName() {
   name.value = openPlan().name;
 }
 
+// A name typed for the open plan and not kept yet, or null.
+function typedName() {
+  const open = openPlan();
+  if (!open) return null;
+  const typed = $('#planName').value.trim();
+  return typed && typed !== open.name ? typed : null;
+}
+
 export function wireFiles() {
   const body = $('#filesBody');
   body.innerHTML = PANE;
   const name = $('#planName');
   name.addEventListener('input', () => { if (!openPlan()) setDraftName(name.value); });
-  name.addEventListener('change', commitName);
+  // Leaving the field keeps the name, except for Save as new, which uses it
+  // for the new plan. Safari does not focus a pressed button, so a press
+  // there is caught by keepTyped instead of relatedTarget.
+  name.addEventListener('blur', (e) => {
+    if (keepTyped || (e.relatedTarget && e.relatedTarget.id === 'fileSaveNew')) return;
+    commitName();
+  });
   // Enter keeps the name. Only the Save buttons save the plan.
   name.addEventListener('keydown', (e) => { if (e.key === 'Enter') name.blur(); });
+  document.addEventListener('pointerdown', (e) => {
+    const onSaveNew = !!e.target.closest && !!e.target.closest('#fileSaveNew');
+    // A press on Save as new that ends without a click renames the plan after all.
+    if (keepTyped && !onSaveNew && document.activeElement !== name) commitName();
+    keepTyped = onSaveNew;
+  }, true);
   body.addEventListener('click', (e) => {
     const button = e.target.closest('button');
     if (!button) return;
+    keepTyped = false;
     if (button.id === 'fileSave') { commitName(); if (saveStatus().kind === 'new') saveNew(); else saveOver(); }
-    else if (button.id === 'fileSaveNew') saveNew();
+    else if (button.id === 'fileSaveNew') saveNew(false, typedName());
     else if (button.id === 'loadGo') openSaved($('#loadPick').value, '#loadGo');
     else if (button.id === 'exportAll') exportAll();
     else if (button.id === 'exportOne') { commitName(); exportPlan(); }

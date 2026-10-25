@@ -1,6 +1,6 @@
 // Saved plans, Load/Save, the plan files and plan links, on every device project.
 import { test, expect } from '@playwright/test';
-import { openApp, showView, sheetOpen, smallTargets } from './helpers.mjs';
+import { openApp, showView, sheetOpen, smallTargets, isWide } from './helpers.mjs';
 
 const KEY = 'dsp-calculator-plans-v1';
 const rows = (page) => page.locator('#savedList .prow');
@@ -479,6 +479,8 @@ test('moved boxes go with a saved plan, Load and a plan file', async ({ page }) 
   await page.evaluate((moved) => {
     const saved = JSON.parse(localStorage.getItem('dsp-calculator-v1'));
     localStorage.setItem('dsp-calculator-v1', JSON.stringify({ ...saved, moved }));
+    // The map hint would show late and cover the toasts this test reads.
+    localStorage.setItem('dsp-map-hint', '1');
   }, moves);
   await page.reload();
   await expect(page.locator('#stage .node').first()).toBeAttached();
@@ -525,10 +527,72 @@ test('moved boxes go with a saved plan, Load and a plan file', async ({ page }) 
   await expect(page.locator('#resetBoxes')).toBeEnabled();
 });
 
+test('a quick start and a removed target drop the moves of boxes that leave the map', async ({ page }) => {
+  await openPlanPane(page);
+  const stateMoves = () => page.evaluate(() => JSON.parse(localStorage.getItem('dsp-calculator-v1')).moved);
+  await page.evaluate(() => {
+    const saved = JSON.parse(localStorage.getItem('dsp-calculator-v1'));
+    const targets = [{ item: 'information-matrix', rate: 60 }, { item: 'deuterium', rate: 60 }];
+    localStorage.setItem('dsp-calculator-v1', JSON.stringify({ ...saved, targets, moved: { 'iron-ingot': [0, -120], '__target_deuterium': [0, -96] } }));
+  });
+  await page.reload();
+  await expect(page.locator('#stage .node').first()).toBeAttached();
+  await showView(page, 'plan');
+  await page.locator('#planBody [data-del="1"]').click();
+  await expect(page.locator('#planBody .target')).toHaveCount(1);
+  expect(await stateMoves()).toEqual({ 'iron-ingot': [0, -120] });
+  await page.locator('[data-preset="warp"]').click();
+  expect(await stateMoves()).toEqual({});
+});
+
+test('Save as new uses the name typed for the open plan, also after a box move', async ({ page }) => {
+  // The map hint would show late and cover the toasts this test reads.
+  await page.addInitScript(() => localStorage.setItem('dsp-map-hint', '1'));
+  await openPlanPane(page);
+  await showView(page, 'files');
+  const name = page.locator('#planName');
+  const options = page.locator('#loadPick option');
+  await name.fill('Alpha');
+  await page.locator('#fileSave').click();
+  await hideToast(page);
+  await name.fill('Beta');
+  await page.locator('#fileSaveNew').click();
+  await expect(page.locator('#toast')).toContainText('Saved as “Beta”.');
+  await expect(options).toHaveText(['Beta (open now)', 'Alpha']);
+  await expect(name).toHaveValue('Beta');
+  await hideToast(page);
+
+  // A box move shows on Load/Save too, and Save as new still saves.
+  await showView(page, 'map');
+  await page.locator('#stage .node.target').first().focus();
+  await page.keyboard.press('Shift+ArrowDown');
+  await showView(page, 'files');
+  await expect(page.locator('#fileStatus')).toHaveText('Unsaved changes');
+  await expect(page.locator('#fileSave')).toHaveClass(/primary/);
+  await name.fill('Gamma');
+  await page.locator('#fileSaveNew').click();
+  await expect(page.locator('#toast')).toContainText('Saved as “Gamma”.');
+  await expect(options).toHaveText(['Gamma (open now)', 'Beta', 'Alpha']);
+  await expect(page.locator('#fileStatus')).toHaveText('Saved');
+  await expect(page.locator('#fileSave')).not.toHaveClass(/primary/);
+});
+
+test('the Plan tab points at the pane it shows', async ({ page }) => {
+  await openPlanPane(page);
+  test.skip(await isWide(page), 'the tab bar is only on phones');
+  await expect(page.locator('#tab-plan')).toHaveAttribute('aria-controls', 'pane-plan');
+  await showView(page, 'saved');
+  await showView(page, 'map');
+  await page.locator('.tabbar [data-tab="plan"]').click();
+  await expect(page.locator('#pane-saved')).toBeVisible();
+  await expect(page.locator('#tab-plan')).toHaveAttribute('aria-controls', 'pane-saved');
+});
+
 test('Load opens the plan picked in the list, with Undo', async ({ page }) => {
   await openPlanPane(page);
   await showView(page, 'files');
   await expect(page.locator('#loadPick')).toBeDisabled();
+  await expect(page.locator('#loadPick option')).toHaveText(['No saved plans']);
   await expect(page.locator('#loadGo')).toBeDisabled();
   await expect(page.locator('#loadNote')).toContainText('No saved plans yet.');
   await showView(page, 'plan');

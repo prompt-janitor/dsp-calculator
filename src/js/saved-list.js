@@ -251,10 +251,11 @@ function focusSpot() {
 }
 
 // Saves the current plan as a new one and marks it as open. The name typed
-// on Load/Save is used when there is one.
-export function saveNew(fromToast = false) {
+// on Load/Save is used when there is one. name: the name for the new plan,
+// from the field on Load/Save when another plan is open.
+export function saveNew(fromToast = false, name = null) {
   const spot = focusSpot();
-  const plan = addPlan(saved.plans, state, saved.open ? '' : saved.draft);
+  const plan = addPlan(saved.plans, state, name !== null ? name : saved.open ? '' : saved.draft);
   saved.open = plan.id;
   saved.find = '';
   saved.draft = '';

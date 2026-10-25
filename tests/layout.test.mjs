@@ -111,6 +111,19 @@ test('a long edge skips the placeholders its moved end has passed', () => {
   assert.equal((path.d.match(/C/g) || []).length, 1);
 });
 
+test('a box moved right of the box it feeds links from its left side to the right side of the other', () => {
+  const link = auto.paths.find((p) => !p.spray && (p.d.match(/C/g) || []).length === 1);
+  const from = boxOf(auto, link.edge.from), to = boxOf(auto, link.edge.to);
+  const moved = layoutGraph(movePlan, { spray: true, moved: { [link.edge.from]: [to.x - from.x + NODE_WIDTH + 200, 0] } });
+  const a = boxOf(moved, link.edge.from), b = boxOf(moved, link.edge.to);
+  assert.ok(b.x + NODE_WIDTH < a.x, 'the producer is right of the consumer');
+  const nums = numbers(moved.paths.find((p) => p.edge === link.edge).d);
+  assert.equal(nums[0], a.x, 'starts on the left side');
+  assert.equal(nums[nums.length - 2], b.x + NODE_WIDTH, 'ends on the right side');
+  assert.ok(nums[2] < nums[0], 'bends left out of the producer');
+  assert.ok(nums[4] > nums[nums.length - 2], 'bends right into the consumer');
+});
+
 test('moveLayout leaves the prepared layout as it was', () => {
   const base = prepareLayout(movePlan, { spray: true });
   const first = moveLayout(base, {});

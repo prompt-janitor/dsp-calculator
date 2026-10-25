@@ -297,19 +297,23 @@ function assignPorts(verts, routes) {
 const xy = (p) => p[0].toFixed(1) + ',' + p[1].toFixed(1);
 
 // A chain of cubic curves through the placeholder centers. The label point
-// is the middle of the last segment.
+// is the middle of the last segment. A box moved to the right of the box it
+// feeds has no placeholders left (see applyMoves). Its link leaves from its
+// left side, goes into the right side of the other box and bends the other
+// way, so it does not run under both boxes.
 function edgePath(verts, { edge, chain }, outY, inY) {
   const a = verts[chain[0]], b = verts[chain[chain.length - 1]];
-  const pts = [[a.x + NODE_WIDTH, outY]];
+  const back = chain.length === 2 && b.x + NODE_WIDTH < a.x;
+  const pts = [[back ? a.x : a.x + NODE_WIDTH, outY]];
   for (let k = 1; k < chain.length - 1; k++) {
     const d = verts[chain[k]];
     pts.push([d.x + NODE_WIDTH / 2, d.y + d.height / 2]);
   }
-  pts.push([b.x, inY]);
+  pts.push([back ? b.x + NODE_WIDTH : b.x, inY]);
   let d = 'M' + xy(pts[0]);
   for (let j = 1; j < pts.length; j++) {
     const p = pts[j - 1], q = pts[j];
-    const pull = Math.max((q[0] - p[0]) / 2, MIN_CURVE);
+    const pull = back ? -Math.max((p[0] - q[0]) / 2, MIN_CURVE) : Math.max((q[0] - p[0]) / 2, MIN_CURVE);
     d += 'C' + xy([p[0] + pull, p[1]]) + ' ' + xy([q[0] - pull, q[1]]) + ' ' + xy(q);
   }
   const p0 = pts[pts.length - 2], p1 = pts[pts.length - 1];

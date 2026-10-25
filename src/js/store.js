@@ -138,7 +138,8 @@ export let state = defaultState();
 export const ui = {
   plan: null,                  // last solve() result
   sel: null,                   // id of the selected map node
-  layout: null,                // last layoutGraph() result
+  layoutBase: null,            // last prepareLayout() result, kept for box moves
+  layout: null,                // last moveLayout() result
   view: { x: 20, y: 20, k: 1 }, // map pan and zoom
   needFit: true,               // the map was hidden when it last tried to fit
   mapSig: '',                  // node list of the map that was last fitted

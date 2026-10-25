@@ -144,6 +144,7 @@ export const ui = {
   layout: null,                // last moveLayout() result
   view: { x: 20, y: 20, k: 1 }, // map pan and zoom
   needFit: true,               // the map was hidden when it last tried to fit
+  prune: false,                // the next solve drops moves of boxes not on the map
   mapSig: '',                  // node list of the map that was last fitted
   picker: { onPick: null, cat: 'all' },
   installPrompt: null,         // saved beforeinstallprompt event
@@ -183,11 +184,13 @@ export function onRender(part, fn) {
   renderers[part] = fn;
 }
 
-// Draws the given parts again. Two more names are allowed: 'refit' makes the
-// map fit the new graph, and 'solveSoon' runs 'solve' after a short pause so
-// typing in a number does not solve on every key.
+// Draws the given parts again. Three more names are allowed: 'refit' makes
+// the map fit the new graph, 'prune' makes the next solve drop the moves of
+// boxes that left the map, and 'solveSoon' runs 'solve' after a short pause
+// so typing in a number does not solve on every key.
 export function render(...parts) {
   if (parts.includes('refit')) ui.mapSig = '';
+  if (parts.includes('prune')) ui.prune = true;
   if (parts.includes('solveSoon')) {
     clearTimeout(ui.solveTimer);
     ui.solveTimer = setTimeout(() => render('solve'), 160);

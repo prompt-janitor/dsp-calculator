@@ -163,7 +163,7 @@ export function wireInspector() {
   const sheet = $('#inspector');
   sheet.addEventListener('change', (e) => {
     const item = ui.sel;
-    if (item) update((draft) => changeStep(draft, item, e.target), 'refit', 'solve');
+    if (item) update((draft) => changeStep(draft, item, e.target), 'refit', 'prune', 'solve');
   });
   sheet.addEventListener('click', (e) => {
     const button = e.target.closest('button');
@@ -171,7 +171,7 @@ export function wireInspector() {
     if (button.id === 'inspClose') closeInspector();
     else if (button.id === 'i_reset') {
       const item = ui.sel;
-      update((draft) => { delete draft.overrides[item]; }, 'refit', 'solve');
+      update((draft) => { delete draft.overrides[item]; }, 'refit', 'prune', 'solve');
     } else if (button.dataset.jump && ui.plan.nodes[button.dataset.jump]) {
       selectNode(button.dataset.jump);
       centerNode(button.dataset.jump);

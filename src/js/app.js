@@ -21,6 +21,7 @@ import { catchInstallPrompt, registerServiceWorker } from './pwa.js';
 function solveAndRender() {
   ui.plan = solve(buildCfg(state));
   if (ui.sel && !ui.plan.nodes[ui.sel]) ui.sel = null;
+  if (ui.prune) dropHiddenMoves();
   syncMapOptions();
   renderPlanTotals();
   renderSaveBar();
@@ -28,6 +29,16 @@ function solveAndRender() {
   renderMap();
   renderBuildList();
   if (ui.sel) renderInspector(); else closeSheet('inspector');
+}
+
+// After a change that takes boxes off the map, their moves go too, so they
+// do not come back in the wrong place in another plan. A rate typed as 0
+// also takes boxes off for a moment, so it does not prune.
+function dropHiddenMoves() {
+  ui.prune = false;
+  const kept = {};
+  for (const id of Object.keys(state.moved)) if (ui.plan.nodes[id]) kept[id] = state.moved[id];
+  if (Object.keys(kept).length !== Object.keys(state.moved).length) update((draft) => { draft.moved = kept; });
 }
 
 function closeAnySheet(id) {

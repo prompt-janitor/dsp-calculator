@@ -125,6 +125,8 @@ function loadPreset(id) {
   ui.sel = null;
   update((draft) => {
     draft.targets = preset.items.map(([item, perMin]) => ({ item, rate: draft.unit === 'min' ? perMin : rateInUnit(perMin, 's') }));
+    // A quick start is a new plan, so boxes moved in the last one go back.
+    draft.moved = {};
   }, 'plan', 'refit', 'solve');
   toast(`Loaded ${preset.name.toLowerCase()}.`);
 }
@@ -140,8 +142,8 @@ function onClick(e) {
   if (!button) return;
   const { unit, del, pick, tstep, dir, preset } = button.dataset;
   if (unit) switchUnit(unit);
-  else if (del) update((draft) => { draft.targets.splice(+del, 1); }, 'plan', 'solve');
-  else if (pick) openPicker((item) => update((draft) => { draft.targets[+pick].item = item; }, 'plan', 'solve'));
+  else if (del) update((draft) => { draft.targets.splice(+del, 1); }, 'plan', 'prune', 'solve');
+  else if (pick) openPicker((item) => update((draft) => { draft.targets[+pick].item = item; }, 'plan', 'prune', 'solve'));
   else if (tstep) stepRate(+tstep, +dir);
   else if (preset) loadPreset(preset);
   else if (button.id === 'addTarget') addTarget();

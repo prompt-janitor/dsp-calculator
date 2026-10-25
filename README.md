@@ -26,7 +26,9 @@ After that it opens like an app and works offline.
 2. Open the map to see every production step and how the items flow between them. Tap a step to see its numbers, or to change its recipe, building or proliferator.
 3. Open the build list for the buildings to place, the steps, the raw input and the belt lines.
 4. In Settings, set your machine tiers, belt tier, proliferator and mining research.
-5. To share a plan, use Share. You get a text summary or a plan code that someone else can load.
+5. To keep a plan, tap **Save** under the targets. Saved plans are listed on the Plan tab, newest first. Tap one to open it. When you change an open plan, it shows "Unsaved changes" with **Save** and **Save as new**. Tap the ••• button on a plan to rename, duplicate or delete it.
+6. Saved plans stay in this browser on this device. To keep a backup or move them to another device, tap **Export** for one file with all of them, and **Import** to add the plans from such a file.
+7. To share a plan, use Share. **Copy link** gives a link that opens the plan, and you also get a text summary or a plan code that someone else can load.
 
 ## Disclaimer
 

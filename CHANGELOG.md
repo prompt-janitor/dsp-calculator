@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.1.0 (2026-10-25)
+
+- Save plans on the Plan tab. A saved plan keeps the targets, the changes to single steps and all settings. Open, rename, duplicate or delete a plan, and undo a delete.
+- An open plan you have changed shows "Unsaved changes", with Save and Save as new.
+- Export saves all plans to one file, and Import adds the plans from such a file or from a plan code. On iPhone and iPad, Export opens the share sheet, so you can save the file to Files.
+- Share has Copy link. The link opens the plan in the app, and you can save it from there.
+- A plan code with an item id such as "constructor" no longer passes the checks.
+
 ## 1.0.0 (2026-10-24)
 
 The first public release.

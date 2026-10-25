@@ -160,5 +160,5 @@ export function wirePlan() {
   const body = $('#planBody');
   body.addEventListener('click', onClick);
   body.addEventListener('input', onInput);
-  body.addEventListener('keydown', (e) => { if (e.key === 'Enter' && e.target.tagName === 'INPUT') e.target.blur(); });
+  body.addEventListener('keydown', (e) => { if (e.key === 'Enter' && e.target.dataset.rate) e.target.blur(); });
 }

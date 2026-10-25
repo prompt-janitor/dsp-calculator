@@ -201,6 +201,8 @@ a.row { color: inherit; text-decoration: none; }
 .prow .popen { flex: 1; min-width: 0; padding-right: 4px; }
 .prow.open .popen::after { content: ""; position: absolute; left: 0; top: 10px; bottom: 10px; width: 3px; border-radius: 0 3px 3px 0; background: var(--accent); }
 .prow.open .popen .t { color: var(--accent); }
+/* Wraps so the time is not cut off in a narrow sidebar. */
+.prow .popen .s { white-space: normal; }
 .row .t.acc { color: var(--accent); }
 .row .s.wrap { white-space: normal; }
 .pmore { flex: none; width: 44px; height: 44px; margin-right: 6px; border: 0; border-radius: 22px; background: none; color: var(--muted); display: grid; place-items: center; }
@@ -359,12 +361,16 @@ a.row { color: inherit; text-decoration: none; }
 .grp { font: 600 12px var(--f-display); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin: 14px 4px 6px; }
 textarea { width: 100%; min-height: 240px; border-radius: 12px; border: 1px solid var(--line); background: var(--bg); padding: 12px; font: 16px/1.45 var(--f-mono); resize: vertical; }
 .sh-actions { display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
-.sh-actions .btn { flex: 1; min-height: 48px; }
+.sh-actions .btn { flex: 1; min-height: 48px; white-space: nowrap; }
 
 .toast { position: fixed; z-index: 60; left: 50%; bottom: calc(var(--tab-h) + var(--sab) + 18px); transform: translateX(-50%); display: flex; gap: 12px; align-items: center;
   padding: 10px 10px 10px 16px; border-radius: 14px; background: var(--fg); color: var(--bg); box-shadow: var(--shadow); font-size: 14px; width: max-content; max-width: calc(100% - 32px); }
-.toast .btn { min-height: 34px; background: var(--accent); color: var(--accent-ink); border: 0; }
-.toast-x { display: grid; place-items: center; width: 34px; height: 34px; margin-left: -6px; border: 0; border-radius: 17px; background: none; color: inherit; }
+.toast-t { flex: 1 1 auto; min-width: 0; }
+.toast-acts { flex: none; display: flex; gap: 12px; align-items: center; }
+.toast.two { flex-wrap: wrap; row-gap: 8px; }
+.toast.two .toast-acts { margin-left: auto; }
+.toast .btn { flex: none; white-space: nowrap; min-height: 34px; background: var(--accent); color: var(--accent-ink); border: 0; }
+.toast-x { flex: none; display: grid; place-items: center; width: 34px; height: 34px; margin-left: -6px; border: 0; border-radius: 17px; background: none; color: inherit; }
 
 /* build sections */
 .bsec { display: none; }

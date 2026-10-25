@@ -124,6 +124,17 @@ test('a box moved right of the box it feeds links from its left side to the righ
   assert.ok(nums[4] > nums[nums.length - 2], 'bends right into the consumer');
 });
 
+test('a box moved partly right of the box it feeds also links from its left side', () => {
+  const link = auto.paths.find((p) => !p.spray && (p.d.match(/C/g) || []).length === 1);
+  const from = boxOf(auto, link.edge.from), to = boxOf(auto, link.edge.to);
+  const moved = layoutGraph(movePlan, { spray: true, moved: { [link.edge.from]: [to.x - from.x + NODE_WIDTH / 2, 300] } });
+  const a = boxOf(moved, link.edge.from), b = boxOf(moved, link.edge.to);
+  assert.ok(b.x < a.x && a.x < b.x + NODE_WIDTH, 'the boxes overlap side to side');
+  const nums = numbers(moved.paths.find((p) => p.edge === link.edge).d);
+  assert.equal(nums[0], a.x, 'starts on the left side');
+  assert.equal(nums[nums.length - 2], b.x + NODE_WIDTH, 'ends on the right side');
+});
+
 test('moveLayout leaves the prepared layout as it was', () => {
   const base = prepareLayout(movePlan, { spray: true });
   const first = moveLayout(base, {});

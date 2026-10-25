@@ -4,12 +4,12 @@
 
 - Save plans. A saved plan keeps the targets, the recipe, building and proliferator you chose for each step, the items supplied from elsewhere and all settings. Open, rename, duplicate or delete a plan. You can undo opening a plan and undo a delete.
 - The sidebar has four tabs: Plan, Saved, Load/Save and Settings. On phones, the Plan tab has Plan, Saved and Load/Save at the top, and goes back to the one you used last.
-- Saved lists your plans. Load/Save has the plan's name, Save, Save as new and a list to load a plan from. The Plan tab keeps one line that says whether the plan is saved, with a Save button.
+- Saved lists your plans. Load/Save has the plan's name, Save, Save as new and a list to load a plan from. The Plan tab keeps one line that says whether the plan is saved, with Save, or Save as new when nothing has changed.
 - An open plan you have changed shows "Unsaved changes".
 - Export makes a .json file with all plans or with only the open plan, saved or not. A plan's ••• menu can export it too. Import adds the plans from either file, and from a .json file with an old plan code. After importing one plan, the message has Open. On iPhone and iPad, Export opens the share sheet, so you can save the file to Files.
 - Share has Copy link. The link opens the plan in the app, where you can save it or undo it.
 - A plan code now drops a made-up item name such as "constructor", like any other unknown name.
-- You can move the boxes on the flow map to see the links behind them. Drag a box with a mouse, or hold it with a finger and then drag. With a keyboard, Shift and an arrow key move the box that has focus. The links follow the box. Saved plans, plan files and plan links keep where you put the boxes. Map options has Reset box positions, which you can undo.
+- You can move the boxes on the flow map to see the links behind them. Drag a box with a mouse, or hold it with a finger and then drag. With a keyboard, Shift and an arrow key move the box that has focus. The links follow the box. Saved plans, plan files and plan links keep where you put the boxes. A quick start plan starts with the boxes where the map puts them. Map options has Reset box positions, which you can undo.
 
 ## 1.0.0 (2026-10-24)
 

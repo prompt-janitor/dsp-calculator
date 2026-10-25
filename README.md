@@ -23,7 +23,7 @@ After that it opens like an app and works offline.
 ## Using it
 
 1. On the Plan tab, tap **Add item** and pick what you want to make. Set the rate per minute or per second. You can also start from a quick start plan.
-2. Open the map to see every production step and how the items flow between them. Tap a step to see its numbers, or to change its recipe, building or proliferator.
+2. Open the map to see every production step and how the items flow between them. Tap a step to see its numbers, or to change its recipe, building or proliferator. To see the links behind a box, move it: drag it with a mouse, or hold it with a finger and then drag.
 3. Open the build list for the buildings to place, the steps, the raw input and the belt lines.
 4. In Settings, set your machine tiers, belt tier, proliferator and mining research.
 5. To keep a plan, tap **Save** under the targets. When you change an open plan, it shows "Unsaved changes", and **Save** keeps the change. On phones, the Plan tab has three parts at the top: Plan, Saved and Load/Save. On an iPad or a computer they are tabs in the sidebar, next to Settings.

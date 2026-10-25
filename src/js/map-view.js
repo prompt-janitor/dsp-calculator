@@ -4,7 +4,7 @@ import {
   $, $$, esc, machineIcon, itemIcon, itemName, itemColor, machineShortName, rateStr, unitLabel, isFull, CLASS_COLOR, ROMAN,
 } from './core.js';
 import { state, ui } from './store.js';
-import { layoutGraph, NODE_WIDTH } from './layout.js';
+import { prepareLayout, moveLayout, NODE_WIDTH } from './layout.js';
 
 export { NODE_WIDTH };
 
@@ -110,26 +110,79 @@ function edgesSVG(layout, beltCapacity) {
 }
 
 // Render
+// The drawn nodes, paths and labels, in the order of ui.layout, so a box
+// move can change them in place.
+let drawn = { nodes: [], paths: [], labels: [] };
+
+function sizeStage(stage, layout) {
+  stage.style.width = layout.width + 'px';
+  stage.style.height = layout.height + 'px';
+  const svg = stage.firstElementChild;
+  svg.setAttribute('width', layout.width);
+  svg.setAttribute('height', layout.height + 10);
+}
+
+// A moved box can shift the whole map (see moveLayout). Pans by the same
+// amount, so the boxes stay where they are on screen.
+function keepPlace(before, after) {
+  if (!before) return;
+  ui.view.x += (after.left - before.left) * ui.view.k;
+  ui.view.y += (after.top - before.top) * ui.view.k;
+}
+
 export function renderMap() {
   const stage = $('#stage');
   const hasTargets = state.targets.some((t) => t.rate > 0);
   if (!hasTargets || !Object.keys(ui.plan.nodes).length) {
     stage.innerHTML = '';
+    drawn = { nodes: [], paths: [], labels: [] };
     $('#mapEmpty').hidden = false;
     $('#edgeFade').hidden = true;
     return;
   }
   $('#mapEmpty').hidden = true;
-  const layout = ui.layout = layoutGraph(ui.plan, { spray: state.opts.spray });
-  const nodes = layout.nodes.filter((box) => ui.plan.nodes[box.id]).map((box) => nodeHTML(box.id, box)).join('');
+  const before = ui.layout;
+  const base = ui.layoutBase = prepareLayout(ui.plan, { spray: state.opts.spray });
+  const layout = ui.layout = moveLayout(base, state.moved);
+  const nodes = layout.nodes.map((box) => nodeHTML(box.id, box)).join('');
   stage.innerHTML = edgesSVG(layout, ui.plan.beltCapacity) + nodes;
-  stage.style.width = layout.width + 'px';
-  stage.style.height = layout.height + 'px';
+  drawn = { nodes: $$('.node', stage), paths: $$('path.edge', stage), labels: $$('text.elabel', stage) };
+  sizeStage(stage, layout);
   stage.classList.toggle('nolabels', !state.opts.labels);
-  // Fit again only when the graph itself changed, so a rate change keeps the view.
-  const sig = Object.keys(ui.plan.nodes).sort().join(',') + '|' + layout.width;
-  if (sig !== ui.mapSig) { ui.mapSig = sig; fitView(); } else applyView();
+  // Fit again only when the graph itself changed, so a rate change keeps the
+  // view. Moved boxes do not count.
+  const sig = Object.keys(ui.plan.nodes).sort().join(',') + '|' + base.width;
+  if (sig !== ui.mapSig) { ui.mapSig = sig; fitView(); } else { keepPlace(before, layout); applyView(); }
   applySelection();
+}
+
+// Puts the boxes at the offsets in moved and redraws only the boxes, paths
+// and labels that changed. A drag runs this on every frame, so it does not
+// lay out the graph again.
+export function moveBoxes(moved) {
+  const before = ui.layout;
+  if (!ui.layoutBase || !before || !drawn.nodes.length) return;
+  const layout = ui.layout = moveLayout(ui.layoutBase, moved);
+  layout.nodes.forEach((box, i) => {
+    const old = before.nodes[i];
+    if (box.x === old.x && box.y === old.y) return;
+    drawn.nodes[i].style.left = box.x + 'px';
+    drawn.nodes[i].style.top = box.y + 'px';
+  });
+  let label = 0;
+  layout.paths.forEach((path, i) => {
+    const old = before.paths[i];
+    if (path.d !== old.d) drawn.paths[i].setAttribute('d', path.d);
+    if (path.spray) return;
+    const el = drawn.labels[label++];
+    if (path.labelX === old.labelX && path.labelY === old.labelY) return;
+    el.setAttribute('x', path.labelX.toFixed(1));
+    el.setAttribute('y', (path.labelY + 3.5).toFixed(1));
+  });
+  const stage = $('#stage');
+  if (layout.width !== before.width || layout.height !== before.height) sizeStage(stage, layout);
+  keepPlace(before, layout);
+  applyView();
 }
 
 // View

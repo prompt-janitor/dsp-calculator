@@ -15,9 +15,9 @@ export const LINK_MAX = 60000;
 export const PLANS_MAX = 2000;
 const LINK_PREFIX = '#plan=';
 
-// The parts of the state a saved plan keeps. Tabs, panes, theme and map
-// options are not part of a plan.
-const PLAN_KEYS = ['targets', 'unit', 'machines', 'belt', 'stack', 'prolif', 'mining', 'overrides'];
+// The parts of the state a saved plan keeps, with the moved map boxes. Tabs,
+// panes, theme and map options are not part of a plan.
+const PLAN_KEYS = ['targets', 'unit', 'machines', 'belt', 'stack', 'prolif', 'mining', 'overrides', 'moved'];
 
 const isObject = (value) => !!value && typeof value === 'object' && !Array.isArray(value);
 const clone = (value) => JSON.parse(JSON.stringify(value));
@@ -263,7 +263,12 @@ function fromBase64Url(code) {
   return new TextDecoder('utf-8', { fatal: true }).decode(Uint8Array.from(binary, (c) => c.charCodeAt(0)));
 }
 
-export const encodePlan = (choices) => toBase64Url(JSON.stringify(planData(choices)));
+// A plan with no moved boxes leaves out the empty list, so the link stays short.
+export function encodePlan(choices) {
+  const data = planData(choices);
+  if (!Object.keys(data.moved).length) delete data.moved;
+  return toBase64Url(JSON.stringify(data));
+}
 
 // href: the page address. Any old hash is replaced. null when the plan is
 // too big for a link that decodePlanHash takes.

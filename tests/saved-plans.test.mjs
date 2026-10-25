@@ -40,7 +40,7 @@ test('a plan keeps targets, overrides and settings but not tabs or theme', () =>
     s.tab = 'settings'; s.opts.theme = 'light';
   });
   const data = planData(state);
-  assert.deepEqual(Object.keys(data).sort(), ['belt', 'machines', 'mining', 'overrides', 'prolif', 'stack', 'targets', 'unit']);
+  assert.deepEqual(Object.keys(data).sort(), ['belt', 'machines', 'mining', 'moved', 'overrides', 'prolif', 'stack', 'targets', 'unit']);
   assert.equal(data.mining.veins, 4);
   assert.deepEqual(data.overrides, { 'iron-ingot': { external: true } });
   // A copy, so later changes to the state do not change the saved plan.
@@ -57,6 +57,21 @@ test('opening a plan keeps the tab and theme', () => {
   assert.deepEqual(next.targets, [{ item: 'processor', rate: 6 }]);
   assert.deepEqual(next.overrides, {});
   assert.ok(samePlan(next, data));
+});
+
+test('a plan keeps its moved boxes', () => {
+  const state = choices((s) => { s.moved = { 'iron-ingot': [24, -48], '__target_information-matrix': [0, 96] }; });
+  const data = planData(state);
+  assert.deepEqual(data.moved, state.moved);
+  assert.deepEqual(readPlanData(JSON.parse(JSON.stringify(data))), data);
+  // An old plan has no moved boxes, and opening it puts every box back.
+  const old = { ...planData(choices()) };
+  delete old.moved;
+  const opened = withPlan(state, readPlanData(old));
+  assert.deepEqual(opened.moved, {});
+  assert.ok(!samePlan(state, opened));
+  assert.ok(!samePlan(choices(), state));
+  assert.deepEqual(readPlanData({ targets: [], moved: { gear: [1, 'x'], __proto__: [1, 1], coal: [2, 3] } }).moved, { coal: [2, 3] });
 });
 
 test('a changed setting makes the plan differ', () => {
@@ -215,7 +230,7 @@ test('a long list and a big plan load back in full', () => {
 test('the backup file has every plan and loads back', () => {
   const plans = [];
   addPlan(plans, choices(), 'One', 1000);
-  addPlan(plans, choices((s) => { s.overrides = { gear: { external: true } }; }), 'Two', 2000);
+  addPlan(plans, choices((s) => { s.overrides = { gear: { external: true } }; s.moved = { gear: [-24, 72] }; }), 'Two', 2000);
   const date = new Date(2026, 9, 25, 9, 30);
   assert.equal(exportName(date), 'dsp-calculator-plans-2026-10-25.json');
   const text = exportText(plans, date);
@@ -228,6 +243,7 @@ test('the backup file has every plan and loads back', () => {
   assert.deepEqual(counts(importText(other, text)), { added: 2, skipped: 0, full: 0 });
   assert.deepEqual(other.map((p) => p.name), ['Two', 'One']);
   assert.deepEqual(other[0].data, plans[0].data);
+  assert.deepEqual(other[0].data.moved, { gear: [-24, 72] });
   assert.notEqual(other[0].id, plans[0].id);
 });
 
@@ -275,6 +291,7 @@ test('an import checks every plan like a plan code', () => {
           targets: [{ item: 'gear', rate: 5 }, { item: '__proto__', rate: 1 }, { item: HOSTILE, rate: 1 }],
           machines: { smelter: HOSTILE }, belt: 'toString', stack: 99, prolif: { level: 9, mode: 'x' },
           mining: { speed: 1e9, veins: -1, oil: 'x' }, overrides: { gear: { recipe: HOSTILE, external: true }, [HOSTILE]: { external: true } },
+          moved: { gear: [12, 'x'], [HOSTILE]: [1, 1], __target_gear: [-36, 1e9] },
           tab: 'settings', opts: { theme: 'light' }
         }
       }
@@ -288,7 +305,8 @@ test('an import checks every plan like a plan code', () => {
   const base = defaultState();
   assert.deepEqual(plan.data, {
     targets: [{ item: 'gear', rate: 5 }], unit: 'min', machines: base.machines, belt: base.belt, stack: 1, prolif: base.prolif,
-    mining: { speed: 1000, veins: 1, oil: 1, orbital: 55 }, overrides: { gear: { external: true } }
+    mining: { speed: 1000, veins: 1, oil: 1, orbital: 55 }, overrides: { gear: { external: true } },
+    moved: { __target_gear: [-36, 20000] }
   });
   assert.equal(plan.data.tab, undefined);
 });
@@ -341,6 +359,16 @@ test('a plan link comes back the same', () => {
   assert.match(link, /^https:\/\/example\.com\/dsp-calculator\/#plan=[\w-]+$/);
   assert.deepEqual(decodePlanHash(new URL(link).hash), planData(state));
   assert.ok(!/[+/=]/.test(encodePlan(state)));
+  // No moved boxes, so the link leaves out the empty list.
+  assert.ok(!Buffer.from(encodePlan(state), 'base64url').toString().includes('moved'));
+});
+
+test('a plan link keeps the moved boxes', () => {
+  const state = choices((s) => { s.moved = { 'iron-ingot': [24, -48], '__target_information-matrix': [-300, 0] }; });
+  const data = decodePlanHash(new URL(planLink('https://example.com/', state)).hash);
+  assert.deepEqual(data.moved, state.moved);
+  assert.deepEqual(data, planData(state));
+  assert.deepEqual(decodePlanHash('#plan=' + b64({ targets: [], moved: { gear: [1e9, 5], [HOSTILE]: [1, 1] } })).moved, { gear: [20000, 5] });
 });
 
 test('a bad plan link is refused or cleaned', () => {

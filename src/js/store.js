@@ -14,6 +14,7 @@ export function defaultState() {
     prolif: { level: 0, mode: 'products' },
     mining: { speed: 100, veins: 8, oil: 1, orbital: 55 },
     overrides: {},
+    moved: {},
     opts: { spray: true, labels: true, theme: 'auto' },
     tab: 'plan', side: 'plan', psec: 'plan', main: 'map', bsec: 'buildings'
   };
@@ -27,6 +28,14 @@ export const MINING_LIMITS = {
   orbital: { min: 10, max: 100 }
 };
 export const clampMining = (key, value) => Math.min(MINING_LIMITS[key].max, Math.max(MINING_LIMITS[key].min, value));
+
+// Moved map boxes are offsets in px from the automatic layout, up to
+// MOVE_LIMIT each way. A map has one box per item and one per target, so a
+// list longer than MOVED_MAX did not come from this app.
+export const MOVE_LIMIT = 20000;
+const MOVED_MAX = 1000;
+// engine.js names a target node '__target_' + item.
+const TARGET_PREFIX = '__target_';
 
 const PANES = {
   tab: ['plan', 'map', 'build', 'settings'],
@@ -68,6 +77,25 @@ function readOverrides(saved) {
   return overrides;
 }
 
+const isNodeId = (id) => known(ITEMS, id) ||
+  (typeof id === 'string' && id.startsWith(TARGET_PREFIX) && known(ITEMS, id.slice(TARGET_PREFIX.length)));
+const readOffset = (value) => Math.round(Math.min(MOVE_LIMIT, Math.max(-MOVE_LIMIT, value))) || 0;
+
+// Keeps the moved boxes that name a step or a target, rounded to whole px.
+function readMoved(saved) {
+  const moved = {};
+  let count = 0;
+  for (const id of Object.keys(saved)) {
+    const offset = saved[id];
+    if (!isNodeId(id) || !Array.isArray(offset) || offset.length !== 2 || !offset.every(isNumber)) continue;
+    const [dx, dy] = offset.map(readOffset);
+    if (!dx && !dy) continue;
+    moved[id] = [dx, dy];
+    if (++count >= MOVED_MAX) break;
+  }
+  return moved;
+}
+
 // Copies the valid parts of a saved or pasted state onto a fresh default one.
 // A plan code can come from anyone, so every value is checked.
 export function mergeState(base, saved) {
@@ -93,6 +121,7 @@ export function mergeState(base, saved) {
     }
   }
   if (isObject(saved.overrides)) base.overrides = readOverrides(saved.overrides);
+  if (isObject(saved.moved)) base.moved = readMoved(saved.moved);
   if (isObject(saved.opts)) {
     for (const key of ['spray', 'labels']) if (typeof saved.opts[key] === 'boolean') base.opts[key] = saved.opts[key];
     if (THEMES.includes(saved.opts.theme)) base.opts.theme = saved.opts.theme;
@@ -111,7 +140,8 @@ export let state = defaultState();
 export const ui = {
   plan: null,                  // last solve() result
   sel: null,                   // id of the selected map node
-  layout: null,                // last layoutGraph() result
+  layoutBase: null,            // last prepareLayout() result, kept for box moves
+  layout: null,                // last moveLayout() result
   view: { x: 20, y: 20, k: 1 }, // map pan and zoom
   needFit: true,               // the map was hidden when it last tried to fit
   mapSig: '',                  // node list of the map that was last fitted

@@ -2,10 +2,10 @@
 // the backup file and opening a plan link.
 import { $, $$, esc, svg, itemIcon, isWide, isIOS, inFrame } from './core.js';
 import { state, replaceState, renderAll } from './store.js';
-import { toast } from './toast.js';
+import { toast, hideToast } from './toast.js';
 import {
   loadPlans, savePlans, sortPlans, samePlan, withPlan, addPlan, overwritePlan, renamePlan, duplicatePlan, deletePlan, restorePlan,
-  markOpened, exportName, exportText, importText, isPlanHash, decodePlanHash, PLANS_KEY
+  markOpened, exportName, exportText, importText, isPlanHash, decodePlanHash, PLANS_KEY, PLANS_MAX
 } from './saved-plans.js';
 
 // The list shows this many plans until the user asks for all of them.
@@ -18,12 +18,19 @@ const saved = {
   plans: [],
   open: null,       // id of the plan the current state came from
   stored: true,     // false once storage failed
+  locked: false,    // the stored list is from a newer version, so it is not written over
   actions: null,    // id of the row with its actions open
   renaming: null,   // id of the row being renamed
   showAll: false,
   find: ''
 };
 let barHTML = '';
+// The storage warning waits for the next toast, so one does not hide the other.
+let warn = false;
+// The "Saved as" toast, hidden once the plan changes so it does not cover the Save buttons.
+let savedToast = '';
+// The state from before a plan link was opened, for Undo.
+let beforeLink = null;
 
 function storage() {
   // Reading window.localStorage throws when the browser blocks storage.
@@ -34,15 +41,29 @@ export function loadSaved() {
   const loaded = loadPlans(storage());
   saved.plans = loaded.plans;
   saved.open = loaded.open;
-  saved.stored = loaded.ok;
+  saved.locked = loaded.locked;
+  saved.stored = loaded.ok && !loaded.locked;
 }
 
 // Writes the list. The list stays in memory when that fails.
 function persist() {
-  const ok = savePlans(storage(), saved.plans, saved.open);
-  if (!ok && saved.stored) toast('Plans could not be stored on this device. Use Export to keep them in a file.');
+  const ok = !saved.locked && savePlans(storage(), saved.plans, saved.open);
+  if (!ok && saved.stored) warn = true;
   saved.stored = ok;
   return ok;
+}
+
+const KEEP_FAIL = 'This browser could not keep your plans. Use Export to keep them in a file.';
+const LOCKED_FAIL = 'A newer version of this app saved plans here, so changes in this tab are not kept. Reload the page to update.';
+const failText = () => saved.locked ? LOCKED_FAIL : KEEP_FAIL;
+
+// A toast after a change to the list, with the storage warning added when the
+// last write failed. Returns the text shown.
+function tell(text, ...rest) {
+  const full = warn ? `${text ? text + ' ' : ''}${failText()}` : text;
+  warn = false;
+  if (full) toast(full, ...rest);
+  return full;
 }
 
 const findPlan = (id) => saved.plans.find((p) => p.id === id) || null;
@@ -77,7 +98,7 @@ function barContent() {
   const name = esc(plan.name);
   if (samePlan(state, plan.data)) {
     return `
-      <span class="main-t"><span class="t">${name}</span><span class="s">Saved</span></span>
+      <span class="main-t"><span class="t">${name}</span><span class="s">${saved.stored ? 'Saved' : 'Saved until you close the page'}</span></span>
       <span class="acts"><button class="btn" type="button" id="planSaveNew" data-save="new">Save as new</button></span>`;
   }
   return `
@@ -93,6 +114,7 @@ export function renderSaveBar(force = false) {
   if (!box) return;
   const html = barContent();
   if (!force && html === barHTML && box.childElementCount) return;
+  if (!force && savedToast) { hideToast(savedToast); savedToast = ''; }
   barHTML = html;
   box.innerHTML = html;
 }
@@ -123,7 +145,7 @@ function rowHTML(plan) {
     <div class="prow${isOpen ? ' open' : ''}">
       <button class="row popen" type="button" data-popen="${esc(plan.id)}"${isOpen ? ' aria-current="true"' : ''}>
         <span class="ibox">${pic}</span>
-        <span class="main-t"><span class="t">${name}</span><span class="s">${isOpen ? 'Open · ' : ''}${targets} · ${esc(whenText(plan))}</span></span>
+        <span class="main-t"><span class="t">${name}</span><span class="s">${isOpen ? 'Open now · ' : ''}${targets} · ${esc(whenText(plan))}</span></span>
       </button>
       <button class="pmore" type="button" data-pmore="${esc(plan.id)}" aria-expanded="${expanded}"${expanded ? ` aria-controls="pacts-${esc(plan.id)}"` : ''}
         aria-label="Actions for ${name}">${svg('i-more', 22)}</button>
@@ -156,7 +178,8 @@ function renderList() {
   if (box) box.innerHTML = listHTML();
 }
 
-const STORAGE_NOTE = '<p class="gnote warn">Plans could not be stored in this browser, so they last only until you close the page. Use Export to keep them in a file.</p>';
+const STORAGE_NOTE = '<p class="gnote warn">This browser could not keep your plans, so they last only until you close the page. Use Export to keep them in a file.</p>';
+const LOCKED_NOTE = `<p class="gnote warn">${LOCKED_FAIL}</p>`;
 
 // Called by the Plan pane each time it is drawn.
 export function renderSaved() {
@@ -168,7 +191,7 @@ export function renderSaved() {
       autocomplete="off" enterkeyhint="search" value="${esc(saved.find)}"></div>` : '';
   box.innerHTML = `
     <div class="gtitle">Saved plans${count ? `<span class="push num">${count}</span>` : ''}</div>
-    ${saved.stored ? '' : STORAGE_NOTE}
+    ${saved.locked ? LOCKED_NOTE : saved.stored ? '' : STORAGE_NOTE}
     ${find}
     <div class="group" id="savedList"></div>
     <div class="pad-row two">
@@ -189,23 +212,37 @@ function focusOn(selector) {
 
 const rowSelector = (id) => `[data-popen="${CSS.escape(id)}"]`;
 
+const inBar = () => !!$('#saveBar') && $('#saveBar').contains(document.activeElement);
+
+// The save bar is drawn again after a save, which drops the focused button.
+// Focus goes to the button that took its place. After a save from a toast,
+// which goes away too, it goes to the plan's row.
+function focusAfterSave(fromBar, fromToast, id) {
+  if (fromBar) focusOn('#planSaveNew');
+  else if (fromToast) focusOn(rowSelector(id));
+}
+
 // Saves the current plan as a new one and marks it as open.
-export function saveNew() {
+export function saveNew(fromToast = false) {
+  const fromBar = inBar();
   const plan = addPlan(saved.plans, state, '');
   saved.open = plan.id;
   saved.find = '';
   persist();
   renderSaved();
-  toast(`Saved as ${quoted(plan.name)}.`, 'Rename', () => startRename(plan.id), { brief: true });
+  focusAfterSave(fromBar, fromToast, plan.id);
+  savedToast = tell(`Saved as ${quoted(plan.name)}.`, 'Rename', () => startRename(plan.id), { brief: true });
   return plan;
 }
 
 function saveOver() {
+  const fromBar = inBar();
   const plan = overwritePlan(saved.plans, saved.open, state);
   if (!plan) return saveNew();
   persist();
   renderSaved();
-  toast(`Saved ${quoted(plan.name)}.`);
+  focusAfterSave(fromBar, false, plan.id);
+  savedToast = tell(`Saved ${quoted(plan.name)}.`);
 }
 
 // Swaps in a whole state and draws everything again, with the map fitted to it.
@@ -227,9 +264,10 @@ function openSaved(id) {
   showState(withPlan(state, plan.data), id);
   persist();
   focusOn(rowSelector(id));
-  toast(`Opened ${quoted(plan.name)}.`, 'Undo', () => {
+  tell(`Opened ${quoted(plan.name)}.`, 'Undo', () => {
     showState(before, findPlan(beforeOpen) ? beforeOpen : null);
     persist();
+    tell('');
   }, { brief: true });
 }
 
@@ -257,7 +295,9 @@ function finishRename(id, name) {
   saved.renaming = null;
   if (plan) persist();
   renderSaved();
-  focusOn(rowSelector(id));
+  if (plan) { focusOn(rowSelector(id)); tell(''); return; }
+  focusOn('#planImport');
+  toast('That plan was deleted in another tab, so it was not renamed.');
 }
 
 function cancelRename(id) {
@@ -274,7 +314,7 @@ function duplicate(id) {
   persist();
   renderSaved();
   focusOn(rowSelector(copy.id));
-  toast(`Made a copy: ${quoted(copy.name)}.`);
+  tell(`Duplicated as ${quoted(copy.name)}.`);
 }
 
 // Focus goes to the next row, or the one before when the last row went.
@@ -290,12 +330,13 @@ function remove(id) {
   persist();
   renderSaved();
   focusOn(next ? rowSelector(next) : '#planImport');
-  toast(`Deleted ${quoted(removed.plan.name)}.`, 'Undo', () => {
+  tell(`Deleted ${quoted(removed.plan.name)}.`, 'Undo', () => {
     restorePlan(saved.plans, removed);
     if (wasOpen) saved.open = id;
     persist();
     renderSaved();
     focusOn(rowSelector(id));
+    tell('');
   }, { brief: true });
 }
 
@@ -327,13 +368,17 @@ function exportPlans() {
   });
 }
 
-function importSummary({ added, skipped }) {
-  const bad = skipped ? ` ${plural(skipped, 'plan')} could not be read and ${skipped === 1 ? 'was' : 'were'} skipped.` : '';
-  if (!added) return 'No plans were added.' + bad;
-  return `Added ${plural(added, 'plan')}.` + bad;
-}
-
 const BAD_FILE = 'That file could not be read. Pick a backup file exported from this app.';
+
+function importSummary({ added, skipped, full }) {
+  if (!added && !skipped && !full) return 'No plans were added because the file has no plans in it.';
+  const was = (n) => (n === 1 ? 'was' : 'were');
+  let text = added ? `Added ${plural(added, 'plan')}.` : 'No plans were added.';
+  if (skipped) text += ` ${plural(skipped, 'plan')} could not be read and ${was(skipped)} skipped.`;
+  if (full) text += ` ${plural(full, 'plan')} ${was(full)} left out because the list is full (${PLANS_MAX} plans). Delete some plans, then import again.`;
+  else if (!added) text += ' Pick a backup file exported from this app.';
+  return text;
+}
 
 function importFile(file) {
   if (!file) return;
@@ -343,7 +388,10 @@ function importFile(file) {
     if (!result) { toast(BAD_FILE); return; }
     if (result.added) { saved.find = ''; persist(); }
     renderSaved();
-    toast(importSummary(result));
+    // The new plans can land anywhere in the list, so focus shows the first one on it.
+    const first = shownPlans().list.find((p) => result.ids.includes(p.id));
+    if (first) focusOn(rowSelector(first.id));
+    tell(importSummary(result));
   }, () => toast(BAD_FILE));
 }
 
@@ -360,14 +408,23 @@ export function openPlanLink() {
   const next = withPlan(state, data);
   next.side = 'plan';
   if (!isWide()) next.tab = 'plan';
+  beforeLink = samePlan(state, next) ? null : { state: JSON.parse(JSON.stringify(state)), open: saved.open };
   replaceState(next);
   saved.open = null;
   persist();
   return true;
 }
 
+// Brief, so the toast does not come back after the plan is saved from the bar.
 export function announceLink() {
-  toast('Opened a shared plan.', 'Save', saveNew);
+  const before = beforeLink;
+  beforeLink = null;
+  const undo = before && ['Undo', () => {
+    showState(before.state, findPlan(before.open) ? before.open : null);
+    persist();
+    tell('');
+  }];
+  tell('Opened a shared plan.', 'Save', () => saveNew(true), { brief: true, second: undo });
 }
 
 function onClick(e) {
@@ -396,7 +453,8 @@ function onKey(e) {
   }
 }
 
-export function wireSaved() {
+// closeAnySheet: closes a sheet by id, so a plan link can close open sheets.
+export function wireSaved(closeAnySheet) {
   const body = $('#planBody');
   body.addEventListener('click', onClick);
   body.addEventListener('keydown', onKey);
@@ -420,11 +478,22 @@ export function wireSaved() {
   window.addEventListener('storage', (e) => {
     if (e.key !== PLANS_KEY) return;
     const open = saved.open;
+    // Plans this tab could not write exist only here, so they are kept.
+    const mine = saved.stored ? null : saved.plans;
     loadSaved();
+    if (mine) {
+      const byId = new Map(saved.plans.map((p) => [p.id, p]));
+      for (const plan of mine) byId.set(plan.id, plan);
+      saved.plans = sortPlans([...byId.values()]);
+      saved.stored = false;
+      persist();
+    }
     saved.open = findPlan(open) ? open : null;
     if (!$$('[data-rename-form]').length) renderSaved();
   });
   window.addEventListener('hashchange', () => {
+    if (!isPlanHash(location.hash)) return;
+    for (const sheet of $$('.sheet[data-open]')) closeAnySheet(sheet.id);
     if (openPlanLink()) { renderAll(); announceLink(); }
   });
 }

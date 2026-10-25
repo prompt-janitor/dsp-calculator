@@ -66,7 +66,7 @@ export function boot() {
   wireInspector();
   wirePicker();
   wireShare();
-  wireSaved();
+  wireSaved(closeAnySheet);
   wireSheets(closeAnySheet);
   wireMapControls();
   wireKeys();

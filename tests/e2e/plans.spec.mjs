@@ -169,11 +169,13 @@ test('import adds plans, numbers a name clash and skips bad ones', async ({ page
     plans: [
       { name: '60/min Information Matrix', data: { targets: [{ item: 'information-matrix', rate: 60 }] } },
       { name: '<img src=x onerror="window.pwned=1">', data: { targets: [{ item: 'gear', rate: 12 }], belt: 'nope' } },
-      { name: 'Broken', data: 'x' }
+      { name: 'Broken', data: 'x' },
+      { name: 'All unknown', data: { targets: [{ item: 'nope', rate: 1 }] } }
     ]
   };
   await page.locator('#planFile').setInputFiles({ name: 'plans.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify(file)) });
-  await expect(page.locator('#toast')).toContainText('Added 2 plans. 1 plan could not be read and was skipped.');
+  await expect(page.locator('#toast')).toContainText('Added 2 plans. 2 plans could not be read and were skipped.');
+  await expect(row(page, 'All unknown')).toHaveCount(0);
   await expect(rows(page)).toHaveCount(3);
   await expect(row(page, '60/min Information Matrix (2)')).toHaveCount(1);
   await expect(row(page, '<img src=x')).toHaveCount(1);
@@ -266,7 +268,10 @@ test('rows and actions work with the keyboard', async ({ page, hasTouch, browser
   await openPlanPane(page);
   await saveCurrent(page);
   await page.locator('[data-preset="warp"]').click();
-  await page.locator('#planSaveNew').click();
+  await page.locator('#planSaveNew').focus();
+  await page.keyboard.press('Enter');
+  // The bar is drawn again, and focus goes to the button in its place.
+  await expect(page.locator('#planSaveNew')).toBeFocused();
   await hideToast(page);
   await page.locator('[data-pmore]').first().focus();
   await page.keyboard.press('Enter');
@@ -301,4 +306,91 @@ test('a plan link opens offline', async ({ browser, browserName }) => {
   await expect(page.locator('#planBody .target')).toContainText('Space Warper');
   await expect(page.locator('#savedList .prow')).toHaveCount(1);
   await context.close();
+});
+
+const linkTo = (data) => './#plan=' + Buffer.from(JSON.stringify(data)).toString('base64url');
+
+test('a plan link can be undone, and its toast does not come back after a save', async ({ page }) => {
+  await openPlanPane(page);
+  await page.locator('#rate0').fill('999');
+  await page.locator('#rate0').press('Tab');
+  await page.goto(linkTo({ targets: [{ item: 'iron-ingot', rate: 5 }] }));
+  await expect(page.locator('#toast')).toContainText('Opened a shared plan.');
+  await expect(page.locator('#toastAct2')).toHaveText('Undo');
+  await page.locator('#toastAct2').click();
+  await showView(page, 'plan');
+  await expect(page.locator('#rate0')).toHaveValue('999');
+
+  await page.goto(linkTo({ targets: [{ item: 'iron-ingot', rate: 5 }] }));
+  await expect(page.locator('#toast')).toContainText('Opened a shared plan.');
+  await showView(page, 'plan');
+  await page.locator('#saveBar [data-save="new"]').click();
+  await expect(page.locator('#toast')).toContainText('Saved as “5/min Iron Ingot”.');
+  await page.locator('#toastClose').click();
+  await expect(page.locator('#toast')).toBeHidden();
+  await expect(rows(page)).toHaveCount(1);
+});
+
+test('a plan link in an open tab closes open sheets', async ({ page }) => {
+  await openPlanPane(page);
+  await page.locator('[data-act="share"]:visible').first().click();
+  await sheetOpen(page, 'export');
+  await page.evaluate((hash) => { location.hash = hash; }, linkTo({ targets: [{ item: 'gear', rate: 5 }] }).slice(2));
+  await expect(page.locator('#toast')).toContainText('Opened a shared plan.');
+  await expect(page.locator('#export')).toBeHidden();
+  await showView(page, 'plan');
+  await expect(page.locator('#planBody .target')).toContainText('Gear');
+});
+
+test('the Saved toast goes away once the plan changes', async ({ page }) => {
+  await openPlanPane(page);
+  await page.locator('#saveBar [data-save="new"]').click();
+  await expect(page.locator('#toast')).toContainText('Saved as');
+  await page.locator('[data-tstep="0"][data-dir="1"]').click();
+  await expect(bar(page)).toContainText('Unsaved changes');
+  await expect(page.locator('#toast')).toBeHidden();
+});
+
+test('full storage is said in the same toast, and another tab does not wipe the list', async ({ context }) => {
+  await context.addInitScript(() => {
+    if (window.name !== 'full') return;
+    const setItem = Storage.prototype.setItem;
+    Storage.prototype.setItem = function (key, value) {
+      if (key === 'dsp-calculator-plans-v1') throw new DOMException('full', 'QuotaExceededError');
+      return setItem.call(this, key, value);
+    };
+  });
+  const page = await context.newPage();
+  await openApp(page);
+  await page.evaluate(() => { window.name = 'full'; });
+  await page.reload();
+  await showView(page, 'plan');
+  await page.locator('#saveBar [data-save="new"]').click();
+  await expect(page.locator('#toast')).toContainText('Saved as “60/min Information Matrix”. This browser could not keep your plans.');
+  await expect(bar(page)).toContainText('Saved until you close the page');
+  await expect(page.locator('#saved .gnote.warn')).toHaveCount(1);
+
+  const other = await context.newPage();
+  await openApp(other);
+  await showView(other, 'plan');
+  await other.locator('[data-preset="warp"]').click();
+  await other.locator('#saveBar [data-save="new"]').click();
+  await expect(rows(page)).toHaveCount(2);
+  await expect(row(page, '60/min Information Matrix')).toHaveCount(1);
+  await expect(page.locator('#saved .gnote.warn')).toHaveCount(1);
+});
+
+test('renaming a plan deleted in another tab says so', async ({ page }) => {
+  await openPlanPane(page);
+  await saveCurrent(page);
+  await page.locator('[data-pmore]').first().click();
+  await page.locator('[data-prename]').click();
+  await page.locator('.pname').fill('Too late');
+  await page.evaluate((key) => {
+    localStorage.setItem(key, JSON.stringify({ version: 1, open: null, plans: [] }));
+    window.dispatchEvent(new StorageEvent('storage', { key }));
+  }, KEY);
+  await page.locator('.pname').press('Enter');
+  await expect(page.locator('#toast')).toContainText('That plan was deleted in another tab, so it was not renamed.');
+  await expect(rows(page)).toHaveCount(0);
 });

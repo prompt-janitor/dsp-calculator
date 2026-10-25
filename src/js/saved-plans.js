@@ -6,11 +6,13 @@ import { defaultState, mergeState } from './store.js';
 export const PLANS_KEY = 'dsp-calculator-plans-v1';
 const VERSION = 1;
 const NAME_MAX = 80;
-const TARGETS_MAX = 50;
+// Far more than anyone adds by hand. A plan this big did not come from this app.
+const TARGETS_MAX = 1000;
 // A backup or a link this big did not come from this app.
 const FILE_MAX = 5 * 1024 * 1024;
-const LINK_MAX = 20000;
-const PLANS_MAX = 2000;
+export const LINK_MAX = 60000;
+// The most plans the list takes from imports.
+export const PLANS_MAX = 2000;
 const LINK_PREFIX = '#plan=';
 
 // The parts of the state a saved plan keeps. Tabs, panes, theme and map
@@ -27,10 +29,13 @@ export function planData(choices) {
 }
 
 // Checks a plan from storage, a file or a link the same way as a plan code.
-// Returns null when it does not look like a plan at all.
-export function readPlanData(raw) {
+// Returns null when it does not look like a plan at all. strict: also null
+// when it had targets and none of them were valid, for files and links. A
+// stored plan is kept even then, so it is not deleted without a word.
+export function readPlanData(raw, strict = false) {
   if (!isObject(raw) || !Array.isArray(raw.targets)) return null;
   const data = planData(mergeState(defaultState(), raw));
+  if (strict && raw.targets.length && !data.targets.length) return null;
   data.targets = data.targets.slice(0, TARGETS_MAX);
   return data;
 }
@@ -103,13 +108,13 @@ export function overwritePlan(plans, id, choices, now = Date.now()) {
   return plan;
 }
 
-// An empty name keeps the old one.
-export function renamePlan(plans, id, name, now = Date.now()) {
+// An empty name keeps the old one. The times stay as they are, so the row
+// keeps its place in the list.
+export function renamePlan(plans, id, name) {
   const plan = plans.find((p) => p.id === id);
   const clean = cleanName(name);
   if (!plan || !clean) return plan || null;
   plan.name = clean;
-  plan.updatedAt = now;
   return plan;
 }
 
@@ -143,7 +148,7 @@ export function restorePlan(plans, removed) {
 // ids, a file gets new ones so it cannot clash with plans already here.
 function readPlan(raw, keepId, now) {
   if (!isObject(raw)) return null;
-  const data = readPlanData(raw.data);
+  const data = readPlanData(raw.data, !keepId);
   if (!data) return null;
   const id = keepId && typeof raw.id === 'string' && /^[\w-]{1,40}$/.test(raw.id) ? raw.id : newId();
   const createdAt = isTime(raw.createdAt) ? raw.createdAt : now;
@@ -154,16 +159,27 @@ function readPlan(raw, keepId, now) {
 
 // Storage. Both functions take the storage object, so the tests can pass a
 // fake one. ok is false when storage is blocked, full or missing.
+// locked is true when the list was written by a newer version of the app,
+// for example in another tab after an update. Then this tab must not write
+// over it.
+export const UNREAD_KEY = PLANS_KEY + '-unread';
 export function loadPlans(storage, now = Date.now()) {
+  const empty = { plans: [], open: null, ok: true, locked: false };
   let raw;
   // localStorage throws in some private modes and when storage is blocked.
-  try { raw = storage.getItem(PLANS_KEY); } catch (e) { return { plans: [], open: null, ok: false }; }
+  try { raw = storage.getItem(PLANS_KEY); } catch (e) { return { ...empty, ok: false }; }
+  if (!raw) return empty;
   let saved = null;
-  try { saved = raw ? JSON.parse(raw) : null; } catch (e) { saved = null; }
-  if (!isObject(saved) || saved.version !== VERSION || !Array.isArray(saved.plans)) return { plans: [], open: null, ok: true };
+  try { saved = JSON.parse(raw); } catch (e) { saved = null; }
+  if (isObject(saved) && Number.isFinite(saved.version) && saved.version > VERSION) return { ...empty, locked: true };
+  if (!isObject(saved) || saved.version !== VERSION || !Array.isArray(saved.plans)) {
+    // Keep a copy of what could not be read, because the next save writes over it.
+    try { storage.setItem(UNREAD_KEY, raw); } catch (e) { }
+    return empty;
+  }
   const plans = [];
   const ids = new Set();
-  for (const entry of saved.plans.slice(0, PLANS_MAX)) {
+  for (const entry of saved.plans) {
     const plan = readPlan(entry, true, now);
     if (!plan) continue;
     if (ids.has(plan.id)) plan.id = newId();
@@ -171,7 +187,7 @@ export function loadPlans(storage, now = Date.now()) {
     plans.push(plan);
   }
   const open = typeof saved.open === 'string' && ids.has(saved.open) ? saved.open : null;
-  return { plans: sortPlans(plans), open, ok: true };
+  return { plans: sortPlans(plans), open, ok: true, locked: false };
 }
 
 export function savePlans(storage, plans, open) {
@@ -197,6 +213,8 @@ export function exportText(plans, date = new Date()) {
 
 // Adds the plans in a backup file to the list. A single plan code (the Share
 // sheet format) counts as one plan. Returns null when the file cannot be read.
+// skipped: plans that could not be read. full: plans past PLANS_MAX.
+// ids: the plans that were added.
 export function importText(plans, text, now = Date.now()) {
   if (typeof text !== 'string' || text.length > FILE_MAX) return null;
   let file;
@@ -205,18 +223,18 @@ export function importText(plans, text, now = Date.now()) {
   if (isObject(file) && Array.isArray(file.plans)) entries = file.plans;
   else if (isObject(file) && Array.isArray(file.targets)) entries = [{ data: file }];
   else return null;
-  let added = 0, skipped = 0;
+  let skipped = 0, full = 0;
   const kept = [];
   for (const entry of entries) {
-    const plan = added < PLANS_MAX ? readPlan(entry, false, now) : null;
+    const plan = readPlan(entry, false, now);
     if (!plan) { skipped++; continue; }
+    if (plans.length + kept.length >= PLANS_MAX) { full++; continue; }
     plan.name = uniqueName([...plans, ...kept], plan.name);
     kept.push(plan);
-    added++;
   }
   plans.push(...kept);
   sortPlans(plans);
-  return { added, skipped };
+  return { added: kept.length, skipped, full, ids: kept.map((p) => p.id) };
 }
 
 // Plan links: #plan=<base64url of the plan as JSON>.
@@ -234,8 +252,12 @@ function fromBase64Url(code) {
 
 export const encodePlan = (choices) => toBase64Url(JSON.stringify(planData(choices)));
 
-// href: the page address. Any old hash is replaced.
-export const planLink = (href, choices) => href.split('#')[0] + LINK_PREFIX + encodePlan(choices);
+// href: the page address. Any old hash is replaced. null when the plan is
+// too big for a link that decodePlanHash takes.
+export function planLink(href, choices) {
+  const code = encodePlan(choices);
+  return code.length > LINK_MAX ? null : href.split('#')[0] + LINK_PREFIX + code;
+}
 
 export const isPlanHash = (hash) => typeof hash === 'string' && hash.startsWith(LINK_PREFIX);
 
@@ -244,5 +266,5 @@ export function decodePlanHash(hash) {
   if (!isPlanHash(hash)) return null;
   const code = hash.slice(LINK_PREFIX.length);
   if (!code || code.length > LINK_MAX || !/^[\w-]+$/.test(code)) return null;
-  try { return readPlanData(JSON.parse(fromBase64Url(code))); } catch (e) { return null; }
+  try { return readPlanData(JSON.parse(fromBase64Url(code)), true); } catch (e) { return null; }
 }

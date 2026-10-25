@@ -87,7 +87,11 @@ export function wireShare() {
   });
   for (const button of $$('[data-exp]')) button.addEventListener('click', () => openShare(button.dataset.exp));
   $('#expCopy').addEventListener('click', () => copyText($('#expText').value));
-  $('#expLink').addEventListener('click', () => copyText(planLink(location.href, state), 'Link copied. Anyone who opens it gets this plan.'));
+  $('#expLink').addEventListener('click', () => {
+    const link = planLink(location.href, state);
+    if (link) copyText(link, 'Link copied. Anyone who opens it gets this plan.');
+    else say('This plan is too big for a link. Use Plan code and Copy instead.');
+  });
   $('#expShare').addEventListener('click', shareText);
   $('#expLoad').addEventListener('click', loadCode);
 }

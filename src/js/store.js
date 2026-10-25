@@ -40,6 +40,8 @@ const THEMES = ['auto', 'dark', 'light'];
 const isObject = (value) => !!value && typeof value === 'object' && !Array.isArray(value);
 const isNumber = (value) => typeof value === 'number' && isFinite(value);
 const isLevel = (value) => Number.isInteger(value) && value >= 0 && value <= 3;
+// An own key only, so names such as "constructor" or "__proto__" do not count as known ids.
+const known = (table, id) => typeof id === 'string' && Object.hasOwn(table, id);
 
 // A proliferator choice, or null when it is not valid.
 function readProlif(saved) {
@@ -52,10 +54,10 @@ function readOverrides(saved) {
   const overrides = {};
   for (const item of Object.keys(saved)) {
     const entry = saved[item];
-    if (!ITEMS[item] || !isObject(entry)) continue;
+    if (!known(ITEMS, item) || !isObject(entry)) continue;
     const kept = {};
-    if (typeof entry.recipe === 'string' && RECIPES[entry.recipe] && RECIPES[entry.recipe].out[item]) kept.recipe = entry.recipe;
-    if (typeof entry.machine === 'string' && DATA.machines[entry.machine]) kept.machine = entry.machine;
+    if (known(RECIPES, entry.recipe) && known(RECIPES[entry.recipe].out, item)) kept.recipe = entry.recipe;
+    if (known(DATA.machines, entry.machine)) kept.machine = entry.machine;
     const prolif = readProlif(entry.prolif);
     if (prolif) kept.prolif = prolif;
     if (entry.external === true) kept.external = true;
@@ -70,17 +72,17 @@ export function mergeState(base, saved) {
   if (!isObject(saved)) return base;
   if (Array.isArray(saved.targets)) {
     base.targets = saved.targets
-      .filter((t) => isObject(t) && ITEMS[t.item] && isFinite(+t.rate) && +t.rate >= 0)
+      .filter((t) => isObject(t) && known(ITEMS, t.item) && isFinite(+t.rate) && +t.rate >= 0)
       .map((t) => ({ item: t.item, rate: +t.rate }));
   }
   if (saved.unit === 's' || saved.unit === 'min') base.unit = saved.unit;
   if (isObject(saved.machines)) {
     for (const cls of Object.keys(base.machines)) {
       const id = saved.machines[cls];
-      if (typeof id === 'string' && MACHINE_CLASS[id] === cls && DATA.machines[id]) base.machines[cls] = id;
+      if (known(MACHINE_CLASS, id) && MACHINE_CLASS[id] === cls && known(DATA.machines, id)) base.machines[cls] = id;
     }
   }
-  if (typeof saved.belt === 'string' && BELTS[saved.belt]) base.belt = saved.belt;
+  if (known(BELTS, saved.belt)) base.belt = saved.belt;
   if (Number.isInteger(saved.stack) && saved.stack >= 1 && saved.stack <= 4) base.stack = saved.stack;
   base.prolif = readProlif(saved.prolif) || base.prolif;
   if (isObject(saved.mining)) {

@@ -35,6 +35,18 @@ test('markup in a plan code is dropped', () => {
   assert.deepEqual(merged, defaultState());
 });
 
+test('names that are not own keys do not count as known ids', () => {
+  const merged = merge({
+    targets: [{ item: '__proto__', rate: 1 }, { item: 'constructor', rate: 1 }, { item: 'gear', rate: 1 }],
+    machines: { smelter: 'constructor' }, belt: 'toString',
+    overrides: { constructor: { external: true }, gear: { recipe: 'hasOwnProperty', machine: '__proto__' } }
+  });
+  assert.deepEqual(merged.targets, [{ item: 'gear', rate: 1 }]);
+  assert.equal(merged.machines.smelter, defaultState().machines.smelter);
+  assert.equal(merged.belt, defaultState().belt);
+  assert.deepEqual(merged.overrides, {});
+});
+
 test('mining numbers are kept inside the Settings limits', () => {
   const merged = merge({ mining: { speed: 1e6, veins: -4, oil: 0, orbital: 0 } });
   assert.deepEqual(merged.mining, {

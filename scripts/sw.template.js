@@ -1,5 +1,7 @@
 /* DSP Calculator service worker: offline app shell, cache-first. */
-const CACHE = 'dsp-calc-__VERSION__';
+// Each copy of the app, such as the preview in develop/, keeps its own caches.
+const PREFIX = '__PREFIX__';
+const CACHE = PREFIX + '__VERSION__';
 const SHELL = __ASSETS__;
 
 self.addEventListener('install', (e) => {
@@ -8,7 +10,7 @@ self.addEventListener('install', (e) => {
 });
 self.addEventListener('activate', (e) => {
   e.waitUntil(
-    caches.keys().then((keys) => Promise.all(keys.filter((k) => k.startsWith('dsp-calc-') && k !== CACHE).map((k) => caches.delete(k))))
+    caches.keys().then((keys) => Promise.all(keys.filter((k) => k !== CACHE && k.startsWith(PREFIX) && /^[0-9a-f]{10}$/.test(k.slice(PREFIX.length))).map((k) => caches.delete(k))))
       .then(() => self.clients.claim())
   );
 });

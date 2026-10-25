@@ -64,6 +64,7 @@ for (const f of [...scripts, 'index.html']) writeFileSync(join(dist, f), withVer
 const assets = ['./', 'index.html', 'manifest.webmanifest', 'sprite.webp', ...scripts.map((f) => f + '?v=' + version)];
 for (const dir of ['icons', 'splash', 'licenses']) for (const f of readdirSync(join(dist, dir)).sort()) assets.push(dir + '/' + f);
 const sw = readFileSync(join(root, 'scripts', 'sw.template.js'), 'utf8')
+  .replace('__PREFIX__', process.env.CACHE_PREFIX || 'dsp-calc-')
   .replace('__VERSION__', version)
   .replace('__ASSETS__', () => JSON.stringify(assets, null, 2));
 writeFileSync(join(dist, 'sw.js'), sw);

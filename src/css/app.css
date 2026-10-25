@@ -528,7 +528,6 @@ textarea { width: 100%; min-height: 240px; border-radius: 12px; border: 1px soli
 
 /* Narrow split view (iPad in portrait): step details as a sheet under the map. */
 @media (min-width: 600px) and (max-width: 1023px) and (min-height: 500px) {
-  .brand b { display: none; }
   .side .stat b { font-size: 18px; }
   /* Four tiers do not fit in one row here, so they go in two. */
   .side .tiers { gap: 6px; }

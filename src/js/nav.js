@@ -105,6 +105,8 @@ export function syncNav() {
       tab.tabIndex = selected ? 0 : -1;
     }
   }
+  // On phones the Plan tab shows the pane picked at the top of it.
+  $('#tab-plan').setAttribute('aria-controls', 'pane-' + state.psec);
 }
 
 // Arrow keys move between tabs and open the one they land on.

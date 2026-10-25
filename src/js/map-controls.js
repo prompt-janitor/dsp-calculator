@@ -6,6 +6,7 @@ import { selectNode, centerNode, closeInspector } from './inspector.js';
 import { hideMapHint } from './nav.js';
 import { toast } from './toast.js';
 import { renderSaveBar } from './saved-list.js';
+import { renderFileStatus } from './files-pane.js';
 
 const TAP_MOVE = 8;          // px a pointer can move and still count as a tap
 const DOUBLE_TAP_MS = 300;
@@ -38,7 +39,7 @@ export function syncMapOptions() {
   $('#optLabels').checked = !!state.opts.labels;
   const nodes = ui.plan ? ui.plan.nodes : {};
   $('#resetBoxes').disabled = !Object.keys(state.moved).some((id) => nodes[id]);
-  $('#moveHint').textContent = hasMouse() ? 'Drag a box to move it.' : 'Hold a box, then drag it to move it.';
+  $('#moveHint').textContent = hasMouse() ? 'Drag a box, or press Shift and an arrow key, to move it.' : 'Hold a box, then drag it to move it.';
 }
 
 // Box moves
@@ -54,15 +55,23 @@ function setMoved(moved) {
   update((draft) => { draft.moved = moved; });
   moveBoxes(moved);
   renderSaveBar();
+  renderFileStatus();
   syncMapOptions();
 }
 
+// Undo puts back the boxes that are still on the map and keeps the moves
+// made since the reset.
 function resetBoxes() {
   const before = state.moved;
   const hadFocus = document.activeElement === $('#resetBoxes');
   setMoved({});
   if (hadFocus) $('#btnLayers').focus();
-  toast('Box positions reset.', 'Undo', () => setMoved(before), { brief: true });
+  toast('Box positions reset.', 'Undo', () => {
+    const nodes = ui.plan ? ui.plan.nodes : {};
+    const back = {};
+    for (const id of Object.keys(before)) if (nodes[id]) back[id] = before[id];
+    setMoved({ ...back, ...state.moved });
+  }, { brief: true });
 }
 
 function showLayers(show) {
@@ -150,6 +159,13 @@ function wireGestures() {
   viewport.addEventListener('wheel', (e) => {
     e.preventDefault();
     hideMapHint();
+    // A zoom or pan during a drag changes what a pointer move means, so the
+    // drag starts again from where the box and the pointer are now.
+    if (box && box.lifted && pointers[box.pointer]) {
+      if (box.at) box.from = box.at;
+      box.x = pointers[box.pointer].x;
+      box.y = pointers[box.pointer].y;
+    }
     const rect = viewport.getBoundingClientRect();
     // Firefox can count a mouse wheel in lines or pages instead of pixels.
     const unit = e.deltaMode === 1 ? LINE_PX : e.deltaMode === 2 ? viewport.clientHeight : 1;

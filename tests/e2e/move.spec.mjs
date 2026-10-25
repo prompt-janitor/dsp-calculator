@@ -99,7 +99,7 @@ test.describe('with a mouse', () => {
     const before = await placeOf(page, start.id);
     await page.locator('#btnLayers').click();
     await expect(page.locator('#resetBoxes')).toBeDisabled();
-    await expect(page.locator('#moveHint')).toHaveText('Drag a box to move it.');
+    await expect(page.locator('#moveHint')).toHaveText('Drag a box, or press Shift and an arrow key, to move it.');
     await page.locator('#btnLayers').click();
     await page.mouse.move(start.x, start.y);
     await page.mouse.down();
@@ -117,6 +117,68 @@ test.describe('with a mouse', () => {
     await page.locator('#toastAct').click();
     expect(await placeOf(page, start.id)).toEqual(after);
     await expect(page.locator('#resetBoxes')).toBeEnabled();
+  });
+
+  test('Undo after a reset keeps a box moved since the reset', async ({ page }) => {
+    // The map hint would show late and take the place of the reset toast.
+    await page.addInitScript(() => localStorage.setItem('dsp-map-hint', '1'));
+    await openMap(page);
+    const ids = await page.locator('#stage .node').evaluateAll((els) => els.map((el) => el.dataset.id));
+    const nudge = async (id, key) => {
+      await page.locator(`#stage .node[data-id="${id}"]`).focus();
+      await page.keyboard.press(key);
+    };
+    await nudge(ids[0], 'Shift+ArrowDown');
+    await page.locator('#btnLayers').click();
+    await page.locator('#resetBoxes').click();
+    await nudge(ids[1], 'Shift+ArrowUp');
+    await page.locator('#toastAct').click();
+    expect(await savedMoves(page)).toEqual({ [ids[0]]: [0, 24], [ids[1]]: [0, -24] });
+  });
+
+  test('a box being moved stays clear while another step is selected', async ({ page }) => {
+    await openMap(page);
+    await page.locator('#stage .node.target').first().click();
+    await expect(page.locator('#stage.has-sel')).toHaveCount(1);
+    // The step details open and can move the map.
+    await page.waitForTimeout(400);
+    const start = await page.evaluate(() => {
+      for (const el of document.querySelectorAll('#stage .node:not(.rel):not(.sel)')) {
+        const r = el.getBoundingClientRect();
+        const x = r.left + r.width / 2, y = r.top + r.height / 2;
+        const hit = document.elementFromPoint(x, y);
+        if (hit && el.contains(hit)) return { x, y, id: el.dataset.id };
+      }
+      return null;
+    });
+    expect(start, 'a box outside the selection').not.toBeNull();
+    const box = page.locator(`#stage .node[data-id="${start.id}"]`);
+    expect(await box.evaluate((el) => getComputedStyle(el).opacity)).toBe('0.35');
+    await page.mouse.move(start.x, start.y);
+    await page.mouse.down();
+    await page.mouse.move(start.x + 30, start.y + 20, { steps: 4 });
+    await expect(box).toHaveClass(/lifted/);
+    expect(await box.evaluate((el) => getComputedStyle(el).opacity)).toBe('1');
+    await page.mouse.up();
+  });
+
+  test('a wheel zoom during a drag keeps the box under the pointer', async ({ page }) => {
+    await openMap(page);
+    const start = await nodePoint(page);
+    const box = page.locator(`#stage .node[data-id="${start.id}"]`);
+    await page.mouse.move(start.x, start.y);
+    await page.mouse.down();
+    await page.mouse.move(start.x + 100, start.y, { steps: 5 });
+    const k = await zoom(page);
+    const gap = start.x + 100 - (await box.boundingBox()).x;
+    await page.mouse.wheel(0, -400);
+    await expect.poll(() => zoom(page)).not.toBe(k);
+    const scale = (await zoom(page)) / k;
+    await page.mouse.move(start.x + 101, start.y);
+    await page.waitForTimeout(50);
+    const now = start.x + 101 - (await box.boundingBox()).x;
+    expect(Math.abs(now - (gap * scale + 1))).toBeLessThan(6);
+    await page.mouse.up();
   });
 
   test('Shift and an arrow key move the focused box and keep focus', async ({ page }) => {

@@ -299,8 +299,8 @@ a.row { color: inherit; text-decoration: none; }
   border-radius: 10px; padding: 7px 9px 6px 8px; display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 0 9px; box-shadow: 0 2px 10px rgba(0, 0, 0, .2); }
 .node.sel { outline: 2px solid var(--accent); outline-offset: 2px; }
 .node.lifted { z-index: 1; transform: scale(1.03); box-shadow: 0 12px 30px rgba(0, 0, 0, .38); }
-.stage.has-sel .node.lifted { opacity: 1; }
-.stage.has-sel .node:not(.rel) { opacity: .35; }
+/* A box being moved stays clear, even when it is not part of the selection. */
+.stage.has-sel .node:not(.rel):not(.lifted) { opacity: .35; }
 .node .pic { grid-row: 1 / span 2; width: 40px; height: 40px; border-radius: 7px; background: var(--bg); display: grid; place-items: center; margin-top: 2px; }
 .node .t1 { font-weight: 600; font-size: 13.5px; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-right: 4px; }
 .node .t1.hb { padding-right: 58px; }

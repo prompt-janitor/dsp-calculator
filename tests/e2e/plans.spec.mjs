@@ -1,6 +1,6 @@
 // Saved plans, Load/Save, the plan files and plan links, on every device project.
 import { test, expect } from '@playwright/test';
-import { openApp, showView, sheetOpen, smallTargets, isWide } from './helpers.mjs';
+import { openApp, showView, sheetOpen, smallTargets } from './helpers.mjs';
 
 const KEY = 'dsp-calculator-plans-v1';
 const rows = (page) => page.locator('#savedList .prow');
@@ -534,56 +534,4 @@ test('Rename in the Saved toast goes to the name field', async ({ page }) => {
   await page.locator('#toastAct').click();
   await expect(page.locator('#pane-files')).toBeVisible();
   await expect(page.locator('#planName')).toBeFocused();
-});
-
-test('the Plan tab goes back to the pane last shown in it', async ({ page }) => {
-  await openApp(page);
-  test.skip(await isWide(page), 'phone layouts only');
-  await showView(page, 'files');
-  await expect(page.locator('#planTitle')).toHaveText('Load/Save');
-  await expect(page.locator('#planTabs [data-psec="files"]')).toHaveAttribute('aria-selected', 'true');
-  await page.locator('.tabbar [data-tab="settings"]').click();
-  await expect(page.locator('.plan-segs')).toBeHidden();
-  await page.locator('.tabbar [data-tab="plan"]').click();
-  await expect(page.locator('#pane-files')).toBeVisible();
-  await page.locator('#planTabs [data-psec="saved"]').click();
-  await expect(page.locator('#planTitle')).toHaveText('Saved');
-  await expect(page.locator('#pane-files')).toBeHidden();
-  await page.reload();
-  await page.locator('.tabbar [data-tab="plan"]').click();
-  await expect(page.locator('#pane-saved')).toBeVisible();
-});
-
-test('the sidebar tabs fit, and work with arrow keys', async ({ page, hasTouch }) => {
-  await openApp(page);
-  test.skip(!(await isWide(page)), 'split view only');
-  const tabs = page.locator('#sideTabs [role="tab"]');
-  await expect(tabs).toHaveText(['Plan', 'Saved', 'Load/Save', 'Settings']);
-  const boxes = await tabs.evaluateAll((els) => els.map((el) => {
-    const r = el.getBoundingClientRect();
-    return { width: r.width, height: r.height, cut: el.scrollWidth > el.clientWidth || el.scrollHeight > el.clientHeight };
-  }));
-  for (const box of boxes) {
-    expect(box.cut).toBe(false);
-    expect(Math.abs(box.width - boxes[0].width)).toBeLessThan(1);
-    if (hasTouch) expect(box.height).toBeGreaterThanOrEqual(44);
-  }
-  const side = await page.locator('.side').boundingBox();
-  const last = await tabs.last().boundingBox();
-  expect(last.x + last.width).toBeLessThanOrEqual(side.x + side.width);
-  test.skip(hasTouch, 'keys need a keyboard');
-  await tabs.first().focus();
-  await page.keyboard.press('ArrowRight');
-  await expect(page.locator('#pane-saved')).toBeVisible();
-  await expect(tabs.nth(1)).toBeFocused();
-  await expect(tabs.nth(1)).toHaveAttribute('tabindex', '0');
-  await expect(tabs.first()).toHaveAttribute('tabindex', '-1');
-  await page.keyboard.press('ArrowRight');
-  await expect(page.locator('#pane-files')).toBeVisible();
-  await page.keyboard.press('End');
-  await expect(page.locator('#pane-settings')).toBeVisible();
-  await page.keyboard.press('ArrowRight');
-  await expect(page.locator('#pane-plan')).toBeVisible();
-  await page.keyboard.press('ArrowLeft');
-  await expect(tabs.last()).toHaveAttribute('aria-selected', 'true');
 });

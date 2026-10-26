@@ -2,6 +2,7 @@
 
 ## 1.1.0 (2026-10-25)
 
+- Step details have a Layout section: a top-down grid drawing of one row of the step's buildings, with the belts, sorters, spray coaters and Tesla Towers, and how many rows to build. Open layout shows the whole row with pan and zoom, a key, notes and the items each building moves. Pick the sorter tier there, and the sorter counts follow. It is a suggestion, so check it in the game.
 - Save plans. A saved plan keeps the targets, the recipe, building and proliferator you chose for each step, the items supplied from elsewhere and all settings. Open, rename, duplicate or delete a plan. You can undo opening a plan and undo a delete.
 - The sidebar has four tabs: Plan, Saved, Load/Save and Settings. On phones, the Plan tab has Plan, Saved and Load/Save at the top, and goes back to the one you used last.
 - Saved lists your plans. Load/Save has the plan's name, Save, Save as new and a list to load a plan from. The Plan tab keeps one line that says whether the plan is saved, with Save, or Save as new when nothing has changed.

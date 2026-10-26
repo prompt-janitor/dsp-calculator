@@ -4,6 +4,7 @@ import { $, esc, svg, itemIcon, itemName, machineName, rateStr, unitLabel, optio
 import { state, ui, update } from './store.js';
 import { NODE_WIDTH, applyView, applySelection, visibleArea } from './map-view.js';
 import { openSheet, closeSheet, focusKey, refocus } from './sheets.js';
+import { layoutSectionHTML, openLayout } from './layout-view.js';
 
 export function closeInspector(instant) {
   if (ui.sel) { ui.sel = null; applySelection(); }
@@ -109,6 +110,7 @@ function craftBodyHTML(node, item, override) {
     ${node.machine === 'fractionator' ? fractionatorNote(node) : ''}
     ${group('Consumes', inputs)}
     ${group('Also produces', extras)}
+    ${layoutSectionHTML(node)}
     ${changeStepHTML(node, item, override)}
     ${noExtra ? '<p class="hintp">This recipe does not accept extra products.</p>' : ''}`;
 }
@@ -163,15 +165,17 @@ export function wireInspector() {
   const sheet = $('#inspector');
   sheet.addEventListener('change', (e) => {
     const item = ui.sel;
-    if (item) update((draft) => changeStep(draft, item, e.target), 'refit', 'solve');
+    if (item) update((draft) => changeStep(draft, item, e.target), 'refit', 'prune', 'solve');
   });
   sheet.addEventListener('click', (e) => {
+    if (e.target.closest('[data-layout]')) { openLayout(ui.sel); return; }
     const button = e.target.closest('button');
     if (!button) return;
     if (button.id === 'inspClose') closeInspector();
+    else if (button.id === 'i_layout') openLayout(ui.sel);
     else if (button.id === 'i_reset') {
       const item = ui.sel;
-      update((draft) => { delete draft.overrides[item]; }, 'refit', 'solve');
+      update((draft) => { delete draft.overrides[item]; }, 'refit', 'prune', 'solve');
     } else if (button.dataset.jump && ui.plan.nodes[button.dataset.jump]) {
       selectNode(button.dataset.jump);
       centerNode(button.dataset.jump);

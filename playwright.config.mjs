@@ -1,7 +1,8 @@
 // Device tests. Run with `npm run test:e2e`, which builds dist/ first.
 import { defineConfig, devices } from '@playwright/test';
 
-const PORT = 4173;
+// E2E_PORT lets two copies of the repo run the tests at the same time.
+const PORT = Number(process.env.E2E_PORT) || 4173;
 
 const touch = (device, extra = {}) => ({ ...devices[device], isMobile: true, hasTouch: true, ...extra });
 

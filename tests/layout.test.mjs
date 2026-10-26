@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import './lib/load.mjs';
 import { solve } from '../src/js/engine.js';
-import { layoutGraph, NODE_WIDTH, NODE_HEIGHT, TARGET_HEIGHT, COLUMN_GAP } from '../src/js/layout.js';
+import { layoutGraph, prepareLayout, moveLayout, NODE_WIDTH, NODE_HEIGHT, TARGET_HEIGHT, COLUMN_GAP } from '../src/js/layout.js';
 import { layoutPlans } from './lib/plans.mjs';
 
 test('layout.js imports nothing, so it runs without a page', () => {
@@ -39,3 +39,106 @@ for (const [name, { spray, cfg }] of Object.entries(layoutPlans())) {
     assert.equal(layout.paths.some((p) => p.spray), spray && plan.edges.some((e) => e.kind === 'spray'));
   });
 }
+
+// Moved boxes. This plan has long edges, so placeholders are in play.
+const movePlan = solve(layoutPlans()['universe-matrix-prolif-spray'].cfg);
+const auto = layoutGraph(movePlan, { spray: true });
+const boxOf = (layout, id) => layout.nodes.find((n) => n.id === id);
+const pathsAt = (layout, id) => layout.paths.filter((p) => p.edge.from === id || p.edge.to === id);
+const numbers = (d) => d.match(/-?\d+(\.\d+)?/g).map(Number);
+// A step in a middle column with edges in and out.
+const middle = auto.nodes.find((n) => n.x > 0 && n.x < auto.width - NODE_WIDTH &&
+  movePlan.edges.some((e) => e.from === n.id) && movePlan.edges.some((e) => e.to === n.id)).id;
+
+test('no moves give the same layout as before', () => {
+  for (const moved of [undefined, {}, { [middle]: [0, 0] }, { 'not-a-node': [500, 500] }, { _d0: [300, 300] }]) {
+    assert.deepStrictEqual(layoutGraph(movePlan, { spray: true, moved }), auto);
+  }
+  assert.equal(auto.left, 0);
+  assert.equal(auto.top, 0);
+});
+
+test('a moved box keeps its offset and its paths follow it', () => {
+  const moved = layoutGraph(movePlan, { spray: true, moved: { [middle]: [30, 40] } });
+  const before = boxOf(auto, middle), after = boxOf(moved, middle);
+  assert.equal(after.x, before.x + 30);
+  assert.equal(after.y, before.y + 40);
+  for (const n of auto.nodes) if (n.id !== middle) assert.deepEqual(boxOf(moved, n.id), n, `${n.id} stays`);
+  assert.equal(moved.paths.length, auto.paths.length);
+  const autoPaths = pathsAt(auto, middle), movedPaths = pathsAt(moved, middle);
+  autoPaths.forEach((p, i) => assert.notEqual(movedPaths[i].d, p.d, 'the path changed'));
+  for (const p of movedPaths.filter((q) => !q.spray)) {
+    const nums = numbers(p.d);
+    if (p.edge.from === middle) assert.equal(nums[0], after.x + NODE_WIDTH, 'starts on the right side');
+    if (p.edge.to === middle) assert.equal(nums[nums.length - 2], after.x, 'ends on the left side');
+  }
+});
+
+test('a box moved past the top left shifts the map so nothing is negative', () => {
+  const first = auto.nodes.find((n) => n.x === 0);
+  const moved = layoutGraph(movePlan, { spray: true, moved: { [first.id]: [-500, -300 - first.y] } });
+  assert.equal(moved.left, -500);
+  assert.equal(moved.top, -300);
+  for (const n of moved.nodes) {
+    assert.ok(n.x >= 0 && n.y >= 0, `${n.id} is not negative`);
+    assert.ok(n.x + NODE_WIDTH <= moved.width && n.y + n.height <= moved.height + 1e-9, `${n.id} is inside the map`);
+  }
+  // The other boxes keep their places relative to each other.
+  for (const n of auto.nodes) {
+    if (n.id === first.id) continue;
+    const m = boxOf(moved, n.id);
+    assert.equal(m.x + moved.left, n.x);
+    assert.ok(Math.abs(m.y + moved.top - n.y) < 1e-9);
+  }
+  assert.equal(moved.width, auto.width + 500);
+  for (const p of moved.paths) for (const v of numbers(p.d)) assert.ok(Number.isFinite(v));
+});
+
+test('a box moved far right grows the map and keeps x at 0', () => {
+  const target = auto.nodes.find((n) => movePlan.nodes[n.id].kind === 'target');
+  const moved = layoutGraph(movePlan, { spray: true, moved: { [target.id]: [400, 0] } });
+  assert.equal(moved.left, 0);
+  assert.equal(moved.width, auto.width + 400);
+});
+
+test('a long edge skips the placeholders its moved end has passed', () => {
+  const long = auto.paths.find((p) => !p.spray && (p.d.match(/C/g) || []).length > 2);
+  assert.ok(long, 'the plan has a long edge');
+  const from = boxOf(auto, long.edge.from), to = boxOf(auto, long.edge.to);
+  const shift = to.x - from.x - NODE_WIDTH - 40;
+  const moved = layoutGraph(movePlan, { spray: true, moved: { [long.edge.from]: [shift, 0] } });
+  const path = moved.paths.find((p) => p.edge === long.edge);
+  assert.equal((path.d.match(/C/g) || []).length, 1);
+});
+
+test('a box moved right of the box it feeds links from its left side to the right side of the other', () => {
+  const link = auto.paths.find((p) => !p.spray && (p.d.match(/C/g) || []).length === 1);
+  const from = boxOf(auto, link.edge.from), to = boxOf(auto, link.edge.to);
+  const moved = layoutGraph(movePlan, { spray: true, moved: { [link.edge.from]: [to.x - from.x + NODE_WIDTH + 200, 0] } });
+  const a = boxOf(moved, link.edge.from), b = boxOf(moved, link.edge.to);
+  assert.ok(b.x + NODE_WIDTH < a.x, 'the producer is right of the consumer');
+  const nums = numbers(moved.paths.find((p) => p.edge === link.edge).d);
+  assert.equal(nums[0], a.x, 'starts on the left side');
+  assert.equal(nums[nums.length - 2], b.x + NODE_WIDTH, 'ends on the right side');
+  assert.ok(nums[2] < nums[0], 'bends left out of the producer');
+  assert.ok(nums[4] > nums[nums.length - 2], 'bends right into the consumer');
+});
+
+test('a box moved partly right of the box it feeds also links from its left side', () => {
+  const link = auto.paths.find((p) => !p.spray && (p.d.match(/C/g) || []).length === 1);
+  const from = boxOf(auto, link.edge.from), to = boxOf(auto, link.edge.to);
+  const moved = layoutGraph(movePlan, { spray: true, moved: { [link.edge.from]: [to.x - from.x + NODE_WIDTH / 2, 300] } });
+  const a = boxOf(moved, link.edge.from), b = boxOf(moved, link.edge.to);
+  assert.ok(b.x < a.x && a.x < b.x + NODE_WIDTH, 'the boxes overlap side to side');
+  const nums = numbers(moved.paths.find((p) => p.edge === link.edge).d);
+  assert.equal(nums[0], a.x, 'starts on the left side');
+  assert.equal(nums[nums.length - 2], b.x + NODE_WIDTH, 'ends on the right side');
+});
+
+test('moveLayout leaves the prepared layout as it was', () => {
+  const base = prepareLayout(movePlan, { spray: true });
+  const first = moveLayout(base, {});
+  moveLayout(base, { [middle]: [-900, 700] });
+  assert.deepStrictEqual(moveLayout(base, {}), first);
+  assert.deepStrictEqual(first, auto);
+});

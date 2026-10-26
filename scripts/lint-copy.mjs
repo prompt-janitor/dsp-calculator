@@ -7,7 +7,7 @@ import { join, relative, extname, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
-const SKIP_DIRS = new Set(['node_modules', 'dist', '.git', 'assets', 'reference', 'test-results', 'playwright-report']);
+const SKIP_DIRS = new Set(['node_modules', '.claude', 'dist', '.git', 'assets', 'reference', 'test-results', 'playwright-report']);
 const SKIP_FILES = new Set(['docs/STYLE.md', 'scripts/lint-copy.mjs', 'src/data/recipes.json']);
 const EXTS = new Set(['.md', '.html', '.js', '.mjs', '.cjs', '.css', '.yml', '.webmanifest']);
 

@@ -1,10 +1,12 @@
-# Builds the app and publishes dist/ to GitHub Pages.
-# Repository settings: Pages > Source = GitHub Actions.
+# Builds the app and publishes it to GitHub Pages.
+# main is the site. develop, if it exists, is a preview in develop/.
+# Repository settings: Pages > Source = GitHub Actions, and the github-pages
+# environment allows main and develop.
 name: Pages
 
 on:
   push:
-    branches: [main]
+    branches: [main, develop]
   workflow_dispatch:
 
 permissions:
@@ -20,19 +22,55 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main
+          path: main
+      - name: Check for develop
+        id: develop
+        run: |
+          if git -C main ls-remote --exit-code --heads origin develop > /dev/null; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          fi
+      - uses: actions/checkout@v4
+        if: steps.develop.outputs.exists == 'true'
+        with:
+          ref: develop
+          path: develop
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: npm
-      - run: npm ci
-      - run: npm test
-      - run: npm run lint:copy -- --strict
-      - run: npm run licenses
-      - run: npm run build
+      - name: Build main
+        working-directory: main
+        run: |
+          npm ci
+          npm test
+          npm run lint:copy -- --strict
+          npm run licenses
+          npm run build
+      - name: Build develop
+        if: steps.develop.outputs.exists == 'true'
+        working-directory: develop
+        env:
+          CACHE_PREFIX: dsp-calc-develop-
+        run: |
+          npm ci
+          npm test
+          npm run lint:copy -- --strict
+          npm run licenses
+          npm run build
+      # The 1.0.0 service worker answers any address that ends in / with its own
+      # page, so the preview also gets a preview.html address.
+      - name: Put the site together
+        run: |
+          cp -R main/dist site
+          if [ -d develop/dist ]; then
+            cp -R develop/dist site/develop
+            cp site/develop/index.html site/develop/preview.html
+          fi
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: dist
+          path: site
 
   deploy:
     needs: build

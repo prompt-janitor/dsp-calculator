@@ -28,19 +28,34 @@ export function hideMapHint() {
   hideToast(hintText());
 }
 
+// The panes the Plan tab shows on phones. The sidebar shows them as tabs.
+const PLAN_PANES = ['plan', 'saved', 'files'];
+
 // The compact tab bar also sets the sidebar and main pane of the wide layout.
+// The Plan tab goes back to whichever of its panes was open last.
 function setTab(tab) {
   if (tab !== 'map') closeInspector(true);
   update((draft) => {
     draft.tab = tab;
-    if (tab === 'plan' || tab === 'settings') draft.side = tab;
+    if (tab === 'plan') draft.side = draft.psec;
+    if (tab === 'settings') draft.side = tab;
     if (tab === 'map' || tab === 'build') draft.main = tab;
   }, 'nav');
   if (tab === 'map') showMap(); else hideMapHint();
 }
 
 function setSide(side) {
-  update((draft) => { draft.side = side; if (!isWide()) draft.tab = side; }, 'nav');
+  update((draft) => {
+    draft.side = side;
+    if (PLAN_PANES.includes(side)) draft.psec = side;
+    if (!isWide()) draft.tab = side === 'settings' ? side : 'plan';
+  }, 'nav');
+}
+
+// The switch at the top of the Plan tab on phones.
+function setPlanPane(pane) {
+  setSide(pane);
+  $(`#pane-${pane} .pane-body`).scrollTop = 0;
 }
 
 function setMain(main) {
@@ -53,21 +68,35 @@ function setBuildSection(section) {
   $('#buildBody').scrollTop = 0;
 }
 
-// Shows the map or the build list in whichever layout is on screen.
+// Shows a pane in whichever layout is on screen: the map, the build list or
+// one of the sidebar panes.
 export function goTo(view) {
-  if (isWide()) setMain(view); else setTab(view);
+  if (view === 'map' || view === 'build') {
+    if (isWide()) setMain(view); else setTab(view);
+  } else setSide(view);
 }
 
 // Each tab list, the state key it shows and how to switch it.
 const TAB_LISTS = [
   { list: '#tabBar', key: 'tab', select: setTab },
   { list: '#sideTabs', key: 'side', select: setSide },
+  { list: '#planTabs', key: 'psec', select: setPlanPane },
   { list: '#mainTabs', key: 'main', select: setMain },
   { list: '#buildTabs', key: 'bsec', select: setBuildSection }
 ];
 
+// The phone header of the Plan tab names the pane it shows.
+const PLAN_HEADS = {
+  plan: ['Plan', 'What do you want to make?'],
+  saved: ['Saved', 'Plans saved in this browser'],
+  files: ['Load/Save', 'In this browser or as a file']
+};
+
 export function syncNav() {
   const app = $('#app');
+  const [title, sub] = PLAN_HEADS[state.psec];
+  $('#planTitle').textContent = title;
+  $('#planSub').textContent = sub;
   for (const { list, key } of TAB_LISTS) {
     app.dataset[key] = state[key];
     for (const tab of $$('[role="tab"]', $(list))) {
@@ -76,6 +105,8 @@ export function syncNav() {
       tab.tabIndex = selected ? 0 : -1;
     }
   }
+  // On phones the Plan tab shows the pane picked at the top of it.
+  $('#tab-plan').setAttribute('aria-controls', 'pane-' + state.psec);
 }
 
 // Arrow keys move between tabs and open the one they land on.
@@ -104,7 +135,7 @@ export function wireNav() {
     const link = e.target.closest('[data-goto]');
     if (link) goTo(link.dataset.goto);
   });
-  for (const pane of ['plan', 'build', 'settings']) {
+  for (const pane of [...PLAN_PANES, 'build', 'settings']) {
     const body = $(`#pane-${pane} .pane-body`);
     body.addEventListener('scroll', () => $('#pane-' + pane).classList.toggle('scrolled', body.scrollTop > 4), { passive: true });
   }

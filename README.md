@@ -23,10 +23,14 @@ After that it opens like an app and works offline.
 ## Using it
 
 1. On the Plan tab, tap **Add item** and pick what you want to make. Set the rate per minute or per second. You can also start from a quick start plan.
-2. Open the map to see every production step and how the items flow between them. Tap a step to see its numbers, or to change its recipe, building or proliferator.
+2. Open the map to see every production step and how the items flow between them. Tap a step to see its numbers, or to change its recipe, building or proliferator. Under Layout, the step shows a grid drawing of one row of its buildings with belts, sorters and Tesla Towers, and how many rows to build. Tap **Open layout** to zoom in and pick your sorter tier. To see the links behind a box, move it: drag it with a mouse, or hold it with a finger and then drag.
 3. Open the build list for the buildings to place, the steps, the raw input and the belt lines.
 4. In Settings, set your machine tiers, belt tier, proliferator and mining research.
-5. To share a plan, use Share. You get a text summary or a plan code that someone else can load.
+5. To keep a plan, tap **Save** under the targets. When you change an open plan, it shows "Unsaved changes", and **Save** keeps the change. On phones, the Plan tab has three parts at the top: Plan, Saved and Load/Save. On an iPad or a computer they are tabs in the sidebar, next to Settings.
+   - **Saved** lists your plans, newest first. Tap one to open it, and tap **Undo** if you opened the wrong one. Tap the ••• button on a plan to rename, duplicate, export or delete it.
+   - **Load/Save** has the plan's name, **Save** and **Save as new**, and a list to load a saved plan from. Saved plans stay in this browser on this device.
+6. To keep a copy in a file or move plans to another device, use Export on Load/Save. **All plans** makes one file with every plan, and **This plan** makes a file with only the plan you have open. **Import file** adds the plans from either kind of file. After importing a file with one plan, tap **Open** to open it.
+7. To share a plan, use Share. **Copy link** gives a link that opens the plan, and you also get a text summary or a plan code that someone else can load.
 
 ## Disclaimer
 

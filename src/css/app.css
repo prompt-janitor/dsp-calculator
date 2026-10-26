@@ -95,7 +95,11 @@ button { cursor: pointer; -webkit-user-select: none; user-select: none; }
 /* compact: one pane visible */
 .app[data-tab="plan"] .main, .app[data-tab="settings"] .main { display: none; }
 .app[data-tab="map"] .side, .app[data-tab="build"] .side { display: none; }
-.app[data-tab="plan"] #pane-settings, .app[data-tab="settings"] #pane-plan { display: none; }
+.app[data-tab="plan"] #pane-settings { display: none; }
+.app[data-tab="settings"] :is(.plan-head, .plan-segs, #pane-plan, #pane-saved, #pane-files) { display: none; }
+/* The Plan tab shows one of three panes, picked with the switch under its header. */
+.app:not([data-psec="plan"]) #pane-plan, .app:not([data-psec="saved"]) #pane-saved, .app:not([data-psec="files"]) #pane-files { display: none; }
+.side-tabs { display: none; }
 .app[data-tab="map"] #pane-build, .app[data-tab="build"] #pane-map { display: none; }
 
 /* large-title header (compact) */
@@ -105,6 +109,10 @@ button { cursor: pointer; -webkit-user-select: none; user-select: none; }
 .phone-head h1 { margin: 0; font: 600 28px/1.1 var(--f-display); letter-spacing: .02em; flex: 1; min-width: 0; }
 .phone-head .sub { display: block; font: 13px/1.3 var(--f-body); color: var(--muted); letter-spacing: 0; margin-top: 2px; }
 .pane.scrolled .phone-head { border-bottom-color: var(--sep); }
+/* The Plan tab's header and switch sit above its three panes. */
+.plan-segs { border-bottom: 1px solid transparent; }
+.app[data-psec="plan"] .side:has(#pane-plan.scrolled) .plan-segs, .app[data-psec="saved"] .side:has(#pane-saved.scrolled) .plan-segs,
+.app[data-psec="files"] .side:has(#pane-files.scrolled) .plan-segs { border-bottom-color: var(--sep); }
 
 /* tab bar */
 .tabbar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; display: grid; grid-template-columns: repeat(4, 1fr);
@@ -187,6 +195,55 @@ a.row { color: inherit; text-decoration: none; }
 .chip .stack .ic { margin-right: -8px; border-radius: 50%; }
 .chip .stack + span { margin-left: 6px; }
 
+/* saved plans */
+/* One line, so saving is one tap without pushing the presets down. */
+.savebar { margin-top: 12px; display: flex; align-items: center; gap: 12px; padding: 8px 14px; min-height: 56px; }
+.savebar .main-t { flex: 1 1 0; min-width: 0; }
+.savebar .btn { white-space: nowrap; }
+.savebar .t { display: block; font-weight: 600; line-height: 1.25; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.savebar .s { display: block; font-size: 13px; color: var(--muted); line-height: 1.3; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.savebar .s.changed, .fstat .s.changed { color: var(--warm); }
+.savebar .s.changed::before, .fstat .s.changed::before { content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: currentColor; margin: 0 6px 1px 0; }
+.acts { display: flex; flex-wrap: wrap; gap: 8px; }
+.prow { position: relative; display: flex; flex-wrap: wrap; align-items: center; }
+.prow + .prow::before, .prow + .pall::before { content: ""; position: absolute; top: 0; left: 62px; right: 0; border-top: 1px solid var(--sep); }
+.prow + .pall::before { left: 14px; }
+.prow .popen { flex: 1; min-width: 0; padding-right: 4px; }
+.prow.open .popen::after { content: ""; position: absolute; left: 0; top: 10px; bottom: 10px; width: 3px; border-radius: 0 3px 3px 0; background: var(--accent); }
+.prow.open .popen .t { color: var(--accent); }
+/* Wraps so the time is not cut off in a narrow sidebar. */
+.prow .popen .s { white-space: normal; }
+.row .t.acc { color: var(--accent); }
+.row .s.wrap { white-space: normal; }
+.pmore { flex: none; width: 44px; height: 44px; margin-right: 6px; border: 0; border-radius: 22px; background: none; color: var(--muted); display: grid; place-items: center; }
+.pmore[aria-expanded="true"] { background: var(--raised); color: var(--fg); }
+.pacts { flex-basis: 100%; display: flex; flex-wrap: wrap; gap: 8px; padding: 0 14px 12px; }
+.pacts .btn { flex: 1 1 auto; padding: 0 10px; }
+.btn.danger { color: var(--bad); }
+.btn:disabled { opacity: .45; cursor: default; transform: none; }
+.prow.renaming { gap: 8px; padding: 10px 14px; }
+.pname { flex: 1 1 160px; min-width: 0; height: 40px; border-radius: 10px; border: 1px solid var(--line); background: var(--bg); padding: 0 10px; font-size: 16px; }
+.pfind { margin: 0 max(16px, var(--sar)) 10px max(16px, var(--sal)); display: flex; align-items: center; gap: 8px; background: var(--raised); border-radius: 11px; padding: 0 10px; }
+.pfind input { flex: 1; min-width: 0; border: 0; background: none; height: 40px; font-size: 16px; outline: none; }
+.pfind:focus-within { outline: 2px solid var(--accent); outline-offset: 2px; }
+.pad-row.two { display: flex; gap: 10px; }
+.pad-row.two .btn { flex: 1; min-width: 0; }
+.gnote.warn { color: var(--warm); margin-top: 0; margin-bottom: 10px; }
+.gnote.warn.gap-top { margin-top: 12px; }
+
+/* Load/Save pane */
+.fname { display: flex; align-items: center; gap: 12px; padding: 10px 14px 0; }
+.fname > span { flex: none; font-size: 14px; color: var(--muted); }
+.fname .pname { flex: 1; }
+.fstat { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; padding: 10px 14px; }
+.fstat .s { flex: 1 1 110px; min-width: 0; font-size: 13px; color: var(--muted); }
+.fload { display: flex; gap: 10px; align-items: center; padding: 10px 14px; }
+.fload select { flex: 1; min-width: 0; height: 40px; border-radius: 10px; border: 1px solid var(--line); background-color: var(--bg); padding: 0 30px 0 10px; font-size: 16px;
+  appearance: none; -webkit-appearance: none; text-overflow: ellipsis; white-space: nowrap; overflow: hidden;
+  background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%), linear-gradient(-45deg, transparent 50%, var(--muted) 50%);
+  background-size: 5px 5px; background-position: right 15px center, right 10px center; background-repeat: no-repeat; }
+.fload select:disabled { opacity: .45; }
+
 /* tier picker */
 .tier { padding: 10px 14px 12px; position: relative; }
 .tier + .tier::before { content: ""; position: absolute; top: 0; left: 14px; right: 0; border-top: 1px solid var(--sep); }
@@ -223,6 +280,8 @@ a.row { color: inherit; text-decoration: none; }
 .viewport { position: absolute; inset: 0; overflow: hidden; touch-action: none; cursor: grab; background-color: var(--bg);
   background-image: radial-gradient(var(--grid) 1px, transparent 1px); background-size: 24px 24px; -webkit-user-select: none; user-select: none; }
 .viewport.drag { cursor: grabbing; }
+/* A long press picks up a box, so iOS must not show its callout. */
+.viewport, .node { -webkit-touch-callout: none; }
 .stage { position: absolute; left: 0; top: 0; transform-origin: 0 0; will-change: transform; }
 .stage.anim { transition: transform .32s cubic-bezier(.2, .8, .2, 1); }
 .stage svg { position: absolute; left: 0; top: 0; overflow: visible; pointer-events: none; }
@@ -239,7 +298,9 @@ a.row { color: inherit; text-decoration: none; }
 .node { position: absolute; width: 228px; height: 86px; background: var(--panel); border: 1px solid var(--line); border-left: 4px solid var(--nc, var(--c-other));
   border-radius: 10px; padding: 7px 9px 6px 8px; display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 0 9px; box-shadow: 0 2px 10px rgba(0, 0, 0, .2); }
 .node.sel { outline: 2px solid var(--accent); outline-offset: 2px; }
-.stage.has-sel .node:not(.rel) { opacity: .35; }
+.node.lifted { z-index: 1; transform: scale(1.03); box-shadow: 0 12px 30px rgba(0, 0, 0, .38); }
+/* A box being moved stays clear, even when it is not part of the selection. */
+.stage.has-sel .node:not(.rel):not(.lifted) { opacity: .35; }
 .node .pic { grid-row: 1 / span 2; width: 40px; height: 40px; border-radius: 7px; background: var(--bg); display: grid; place-items: center; margin-top: 2px; }
 .node .t1 { font-weight: 600; font-size: 13.5px; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-right: 4px; }
 .node .t1.hb { padding-right: 58px; }
@@ -269,6 +330,9 @@ a.row { color: inherit; text-decoration: none; }
 .mapbar .btn.round, .zoombar .btn.round, .edgefade .btn.round { background: var(--bg-blur); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); border: 1px solid var(--sep); box-shadow: var(--shadow); }
 .zoombar { position: absolute; z-index: 4; right: max(12px, var(--sar)); bottom: calc(var(--tab-h) + var(--sab) + 14px); display: flex; flex-direction: column; gap: 8px; }
 .layers { position: absolute; z-index: 5; right: max(12px, var(--sar)); top: calc(var(--sat) + 62px); width: 250px; padding: 6px 0; border-radius: 14px; }
+.layers-act { padding: 8px 14px; border-top: 1px solid var(--sep); }
+.layers-act .btn { width: 100%; }
+.layers-act .hint { display: block; margin-bottom: 8px; font-size: 12.5px; color: var(--muted); }
 .legend { display: flex; flex-wrap: wrap; gap: 6px 12px; padding: 10px 14px 6px; border-top: 1px solid var(--sep); font-size: 12.5px; color: var(--muted); }
 .legend i { display: inline-block; width: 9px; height: 9px; border-radius: 2px; margin-right: 5px; }
 /* Shown on small screens while part of the map is off the left edge. On
@@ -328,18 +392,85 @@ a.row { color: inherit; text-decoration: none; }
 .grp { font: 600 12px var(--f-display); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin: 14px 4px 6px; }
 textarea { width: 100%; min-height: 240px; border-radius: 12px; border: 1px solid var(--line); background: var(--bg); padding: 12px; font: 16px/1.45 var(--f-mono); resize: vertical; }
 .sh-actions { display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
-.sh-actions .btn { flex: 1; min-height: 48px; }
+.sh-actions .btn { flex: 1; min-height: 48px; white-space: nowrap; }
 
 .toast { position: fixed; z-index: 60; left: 50%; bottom: calc(var(--tab-h) + var(--sab) + 18px); transform: translateX(-50%); display: flex; gap: 12px; align-items: center;
   padding: 10px 10px 10px 16px; border-radius: 14px; background: var(--fg); color: var(--bg); box-shadow: var(--shadow); font-size: 14px; width: max-content; max-width: calc(100% - 32px); }
-.toast .btn { min-height: 34px; background: var(--accent); color: var(--accent-ink); border: 0; }
-.toast-x { display: grid; place-items: center; width: 34px; height: 34px; margin-left: -6px; border: 0; border-radius: 17px; background: none; color: inherit; }
+.toast-t { flex: 1 1 auto; min-width: 0; }
+.toast-acts { flex: none; display: flex; gap: 12px; align-items: center; }
+.toast.two { flex-wrap: wrap; row-gap: 8px; }
+.toast.two .toast-acts { margin-left: auto; }
+.toast .btn { flex: none; white-space: nowrap; min-height: 34px; background: var(--accent); color: var(--accent-ink); border: 0; }
+.toast-x { flex: none; display: grid; place-items: center; width: 34px; height: 34px; margin-left: -6px; border: 0; border-radius: 17px; background: none; color: inherit; }
 
 /* build sections */
 .bsec { display: none; }
 .app[data-bsec="buildings"] .bsec[data-sec="buildings"], .app[data-bsec="steps"] .bsec[data-sec="steps"], .app[data-bsec="resources"] .bsec[data-sec="resources"] { display: block; }
 .segbar { padding: 6px max(16px, var(--sar)) 8px max(16px, var(--sal)); background: var(--bg-blur); }
 .warnbox { margin: 12px max(16px, var(--sar)) 0 max(16px, var(--sal)); padding: 12px 14px; border-radius: 14px; border: 1px solid var(--bad); color: var(--bad); font-size: 14px; }
+
+/* ---------- step layouts ---------- */
+.lv-card { padding: 10px 12px 12px; }
+.group > .lv-sum:only-child { margin: 0; padding: 14px; color: var(--muted); }
+.lv-prev { position: relative; border-radius: 10px; background: var(--bg); overflow: hidden; cursor: zoom-in; }
+.lv-prev svg { display: block; width: 100%; height: auto; max-height: 200px; }
+/* The preview shows the start of a long row and fades out on the right. */
+.lv-prev.cut::after { content: ""; position: absolute; top: 0; right: 0; bottom: 0; width: 56px; background: linear-gradient(to right, transparent, var(--bg)); pointer-events: none; }
+.lv-sum { margin: 10px 2px 0; font-size: 14px; line-height: 1.4; }
+.lv-act { display: flex; margin-top: 10px; }
+.lv-act .btn { flex: 1; }
+.lv-svg { display: block; font-family: var(--f-body); }
+.lv-grid { fill: none; stroke: var(--grid); stroke-width: .04; }
+.lv-belt-edge { fill: none; stroke: var(--line); stroke-width: .78; stroke-linejoin: round; }
+.lv-belt { fill: none; stroke-width: .6; stroke-linejoin: round; }
+.lv-belt.mix { stroke-dasharray: .5 .5; }
+/* Dark chevrons read on every item color, in both themes. */
+.lv-chev { fill: none; stroke: #0a1117; stroke-width: .09; stroke-linecap: round; stroke-linejoin: round; opacity: .6; }
+.lv-bead { fill: var(--panel); stroke: var(--line); stroke-width: .05; }
+.lv-bld { fill: var(--panel2); stroke-width: .12; }
+.lv-name { fill: var(--muted); text-anchor: middle; font-weight: 600; }
+.lv-svg:not(.full) .lv-name, .lv-svg.far .lv-name { display: none; }
+.lv-sorter { fill: none; stroke: var(--fg); stroke-width: .13; stroke-linecap: round; }
+.lv-sorter-head { fill: var(--fg); }
+.lv-port { fill: none; stroke: var(--accent); stroke-width: .16; stroke-linecap: round; }
+.lv-port-head { fill: var(--accent); }
+.lv-badge { fill: var(--warm); }
+.lv-badge-t { fill: var(--bg); font: 700 .42px var(--f-mono); text-anchor: middle; dominant-baseline: middle; }
+.lv-coater { fill: var(--accent-soft); stroke: var(--accent); stroke-width: .08; }
+.lv-tower circle { fill: var(--warm); stroke: var(--bg); stroke-width: .06; }
+.lv-tower path { fill: none; stroke: var(--bg); stroke-width: .09; stroke-linecap: round; stroke-linejoin: round; }
+
+/* The layout sheet: full screen on phones, a large dialog on wider screens. */
+.sheet.lsheet { --drag: 0; top: 0; height: 100%; max-height: none; border-radius: 0; padding-top: var(--sat); }
+.lsheet .grab { cursor: default; padding: 10px 16px 4px; }
+.lsheet .grab::before { display: none; }
+.lsheet .sh-head h3 small, .lsheet .sh-head h3 { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ls-body { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+.ls-view { position: relative; flex: none; height: 44%; min-height: 200px; margin: 8px max(16px, var(--sar)) 0 max(16px, var(--sal)); border-radius: 14px; overflow: hidden;
+  background: var(--bg); border: 1px solid var(--sep); }
+.ls-canvas { position: absolute; inset: 0; touch-action: none; cursor: grab; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+.ls-canvas.drag { cursor: grabbing; }
+.ls-canvas svg { width: 100%; height: 100%; }
+.ls-zoom { position: absolute; right: 10px; bottom: 10px; display: flex; gap: 8px; }
+.ls-zoom .btn.round { flex: none; background: var(--bg-blur); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); border: 1px solid var(--sep); box-shadow: var(--shadow); }
+.ls-info { flex: 1; min-height: 0; overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain;
+  padding: 4px max(16px, var(--sar)) calc(var(--sab) + 20px) max(16px, var(--sal)); }
+.ls-info .group { margin: 12px 0 0; background: var(--panel2); }
+.ls-info .gtitle { margin: 20px 16px 7px; }
+.ls-info .lv-sum { margin-top: 12px; font-size: 15px; }
+.lv-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.lv-table th, .lv-table td { padding: 8px 4px; border-top: 1px solid var(--sep); text-align: right; vertical-align: top; }
+.lv-table td { font: 600 14px var(--f-mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.lv-table thead th { border-top: 0; padding-top: 0; font: 600 12px var(--f-body); color: var(--muted); }
+.lv-table th[scope="row"], .lv-table thead th:first-child { text-align: left; padding-left: 0; }
+.lv-table small { display: block; font: 12px/1.3 var(--f-body); color: var(--muted); white-space: normal; }
+.lv-item { display: flex; gap: 8px; align-items: flex-start; font-weight: 500; }
+.lv-item .ic { margin-top: 1px; }
+.lv-legend { list-style: none; margin: 0; padding: 0 4px; display: grid; gap: 8px; font-size: 14px; }
+.lv-legend li { display: flex; align-items: center; gap: 12px; }
+.lv-legend svg { width: 42px; height: 22px; flex: none; }
+.lv-notes { margin: 0; padding: 0 4px 0 22px; font-size: 14px; display: grid; gap: 6px; }
+.lv-foot { margin-top: 20px; }
 
 /* ================= Touch: 44 px tap targets ================= */
 @media (pointer: coarse) {
@@ -353,6 +484,7 @@ textarea { width: 100%; min-height: 240px; border-radius: 12px; border: 1px soli
   .stepper input { height: 44px; }
   .gtitle .act { min-height: 48px; padding: 0 6px; margin: -14px -6px; }
   .picker .search input { height: 44px; }
+  .pname, .pfind input, .fload select { height: 44px; }
 }
 
 /* ================= Phone in landscape: tab bar on the left ================= */
@@ -397,6 +529,11 @@ textarea { width: 100%; min-height: 240px; border-radius: 12px; border: 1px soli
   textarea { min-height: 72px; height: calc(100vh - 290px); }
   .export .sh-actions { position: sticky; bottom: 0; background: var(--panel); padding: 8px 0; margin-top: 4px; }
   .toast { left: calc(50% + var(--rail-w) / 2); bottom: calc(var(--sab) + 12px); }
+  /* Little height is left, so the drawing and the table sit side by side. */
+  .ls-body { flex-direction: row; }
+  .ls-view { flex: 1; height: auto; min-height: 0; margin: 4px 0 calc(var(--sab) + 10px) max(12px, var(--sal)); }
+  .ls-info { flex: none; width: min(340px, 46%); padding-left: 12px; }
+  .lsheet .grab { padding-top: 8px; }
 }
 
 /* ================= Split view: 600 px wide and up ================= */
@@ -407,8 +544,16 @@ textarea { width: 100%; min-height: 240px; border-radius: 12px; border: 1px soli
   .app .side, .app .main { display: flex !important; }
   .side { flex: none; width: calc(var(--side-w) + var(--sal)); border-right: 1px solid var(--sep); background: var(--bg); padding-left: var(--sal); }
   .main { padding-right: var(--sar); min-width: 0; }
-  .app[data-side="plan"] #pane-settings, .app[data-side="settings"] #pane-plan { display: none !important; }
-  .app[data-side="plan"] #pane-plan, .app[data-side="settings"] #pane-settings { display: flex !important; }
+  .side .pane { display: none !important; }
+  .app[data-side="plan"] #pane-plan, .app[data-side="saved"] #pane-saved, .app[data-side="files"] #pane-files,
+  .app[data-side="settings"] #pane-settings { display: flex !important; }
+  /* Four equal tabs under the brand. Labels sit under an icon, as on the
+     phone tab bar, so they fit the 272 px sidebar. */
+  .side-tabs { display: block; padding: 8px 12px; border-bottom: 1px solid var(--sep); }
+  .side-tabs .seg button { min-width: 0; min-height: 46px; padding: 4px 2px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 2px; font: 600 11px/1.15 var(--f-body); white-space: normal; text-align: center; }
+  .side-tabs .seg .svgi { width: 20px; height: 20px; }
+  .side-tabs .seg button[aria-selected="true"] { color: var(--accent); }
   .app[data-main="map"] #pane-build, .app[data-main="build"] #pane-map { display: none !important; }
   .app[data-main="map"] #pane-map, .app[data-main="build"] #pane-build { display: flex !important; }
   .wide-head { display: flex; align-items: center; gap: 12px; padding: calc(var(--sat) + 10px) 16px 10px; border-bottom: 1px solid var(--sep); min-height: 64px; }
@@ -435,6 +580,18 @@ textarea { width: 100%; min-height: 240px; border-radius: 12px; border: 1px soli
   .sheet.picker .grab::before, .sheet.export .grab::before { display: none; }
   .sheet.picker .grab, .sheet.export .grab { padding-top: 16px; cursor: default; }
   .igrid { grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); }
+  .sheet.lsheet { left: 50%; top: 50%; bottom: auto; width: min(1180px, calc(100% - 48px)); height: min(900px, calc(100% - 48px)); border-radius: 18px; padding: 0;
+    transform: translate(-50%, -45%); opacity: 0; transition: transform .25s, opacity .2s; pointer-events: none; }
+  .sheet.lsheet.on { transform: translate(-50%, -50%); opacity: 1; pointer-events: auto; }
+  .lsheet .grab { padding-top: 16px; }
+  .ls-view { height: 50%; }
+}
+
+/* Room for the drawing and the table side by side. */
+@media (min-width: 900px) and (min-height: 500px) {
+  .ls-body { flex-direction: row; }
+  .ls-view { flex: 1; height: auto; margin: 8px 0 16px 16px; }
+  .ls-info { flex: none; width: 360px; }
 }
 
 /* A smaller plan code with a mouse. Touch screens keep 16 px, or iOS zooms on focus. */
@@ -451,7 +608,6 @@ textarea { width: 100%; min-height: 240px; border-radius: 12px; border: 1px soli
 
 /* Narrow split view (iPad in portrait): step details as a sheet under the map. */
 @media (min-width: 600px) and (max-width: 1023px) and (min-height: 500px) {
-  .brand b { display: none; }
   .side .stat b { font-size: 18px; }
   /* Four tiers do not fit in one row here, so they go in two. */
   .side .tiers { gap: 6px; }

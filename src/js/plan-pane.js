@@ -4,6 +4,7 @@ import { $, esc, svg, itemIcon, machineIcon, itemName, machineName, rateStr, uni
 import { state, ui, update } from './store.js';
 import { openPicker } from './picker.js';
 import { toast } from './toast.js';
+import { renderSaveBar } from './saved-list.js';
 
 // How much one tap on + or - changes a rate. Bigger rates get bigger steps.
 function stepFor(rate, dir) {
@@ -59,9 +60,11 @@ export function renderPlan() {
     <div class="gtitle">Targets<span class="push"></span>${unitSwitch()}</div>
     <div class="group">${state.targets.length ? state.targets.map(targetHTML).join('') : NO_TARGETS}</div>
     <div class="pad-row"><button class="btn primary block" type="button" id="addTarget">${svg('i-plus', 20)}Add item</button></div>
+    <div class="group savebar" id="saveBar"></div>
     <div class="gtitle">Quick start</div>
     <div class="chips">${PRESETS.map(presetChip).join('')}</div>
     <div class="glance" id="glance"></div>`;
+  renderSaveBar(true);
 }
 
 const stat = (value, label, cls = '') => `<div class="stat${cls}"><b>${value}</b><span>${label}</span></div>`;
@@ -122,6 +125,8 @@ function loadPreset(id) {
   ui.sel = null;
   update((draft) => {
     draft.targets = preset.items.map(([item, perMin]) => ({ item, rate: draft.unit === 'min' ? perMin : rateInUnit(perMin, 's') }));
+    // A quick start is a new plan, so boxes moved in the last one go back.
+    draft.moved = {};
   }, 'plan', 'refit', 'solve');
   toast(`Loaded ${preset.name.toLowerCase()}.`);
 }
@@ -137,8 +142,8 @@ function onClick(e) {
   if (!button) return;
   const { unit, del, pick, tstep, dir, preset } = button.dataset;
   if (unit) switchUnit(unit);
-  else if (del) update((draft) => { draft.targets.splice(+del, 1); }, 'plan', 'solve');
-  else if (pick) openPicker((item) => update((draft) => { draft.targets[+pick].item = item; }, 'plan', 'solve'));
+  else if (del) update((draft) => { draft.targets.splice(+del, 1); }, 'plan', 'prune', 'solve');
+  else if (pick) openPicker((item) => update((draft) => { draft.targets[+pick].item = item; }, 'plan', 'prune', 'solve'));
   else if (tstep) stepRate(+tstep, +dir);
   else if (preset) loadPreset(preset);
   else if (button.id === 'addTarget') addTarget();
@@ -156,5 +161,5 @@ export function wirePlan() {
   const body = $('#planBody');
   body.addEventListener('click', onClick);
   body.addEventListener('input', onInput);
-  body.addEventListener('keydown', (e) => { if (e.key === 'Enter' && e.target.tagName === 'INPUT') e.target.blur(); });
+  body.addEventListener('keydown', (e) => { if (e.key === 'Enter' && e.target.dataset.rate) e.target.blur(); });
 }

@@ -452,7 +452,7 @@ textarea { width: 100%; min-height: 240px; border-radius: 12px; border: 1px soli
 .ls-canvas.drag { cursor: grabbing; }
 .ls-canvas svg { width: 100%; height: 100%; }
 .ls-zoom { position: absolute; right: 10px; bottom: 10px; display: flex; gap: 8px; }
-.ls-zoom .btn.round { background: var(--bg-blur); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); border: 1px solid var(--sep); box-shadow: var(--shadow); }
+.ls-zoom .btn.round { flex: none; background: var(--bg-blur); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); border: 1px solid var(--sep); box-shadow: var(--shadow); }
 .ls-info { flex: 1; min-height: 0; overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain;
   padding: 4px max(16px, var(--sar)) calc(var(--sab) + 20px) max(16px, var(--sal)); }
 .ls-info .group { margin: 12px 0 0; background: var(--panel2); }

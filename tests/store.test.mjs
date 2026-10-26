@@ -20,7 +20,7 @@ test('a valid plan code comes back the same', () => {
   plan.moved = { 'iron-ingot': [24, -48], '__target_space-warper': [-300, 12] };
   plan.overrides = { 'graphene': { recipe: 'graphene-advanced' }, 'processor': { external: true },
     'iron-ingot': { machine: 'arc-smelter', prolif: { level: 1, mode: 'products' } } };
-  plan.opts = { spray: false, labels: false, theme: 'light' };
+  plan.opts = { spray: false, labels: false, theme: 'light', sorter: 'sorter-1' };
   plan.tab = 'settings'; plan.side = 'settings'; plan.psec = 'files'; plan.main = 'build'; plan.bsec = 'steps';
   assert.deepEqual(merge(JSON.parse(JSON.stringify(plan))), plan);
 });
@@ -29,7 +29,7 @@ test('markup in a plan code is dropped', () => {
   const hostile = '"><img src=x onerror="window.pwned=1">';
   const merged = merge({
     mining: { speed: hostile, veins: hostile }, machines: { smelter: hostile }, belt: hostile,
-    prolif: { level: hostile, mode: hostile }, opts: { theme: hostile, spray: hostile },
+    prolif: { level: hostile, mode: hostile }, opts: { theme: hostile, spray: hostile, sorter: hostile },
     overrides: { [hostile]: { external: true }, 'iron-ingot': { recipe: hostile, machine: hostile, prolif: hostile } },
     tab: hostile, side: hostile, psec: hostile, main: hostile, bsec: hostile
   });
@@ -95,6 +95,15 @@ test('stack must be a whole number from 1 to 4', () => {
   assert.equal(merge({ stack: 2.5 }).stack, 1);
   assert.equal(merge({ stack: 5 }).stack, 1);
   assert.equal(merge({ stack: 3 }).stack, 3);
+});
+
+test('the layout sorter is one of the four tiers, Mk.III by default', () => {
+  assert.equal(defaultState().opts.sorter, 'sorter-3');
+  for (const tier of ['sorter-1', 'sorter-2', 'sorter-3', 'sorter-4']) assert.equal(merge({ opts: { sorter: tier } }).opts.sorter, tier);
+  for (const bad of ['sorter-5', 'conveyor-belt-3', 4, null, 'constructor']) assert.equal(merge({ opts: { sorter: bad } }).opts.sorter, 'sorter-3');
+  // A state saved before the setting existed keeps its other display options.
+  assert.deepEqual(merge({ opts: { spray: false, labels: true, theme: 'dark' } }).opts,
+    { spray: false, labels: true, theme: 'dark', sorter: 'sorter-3' });
 });
 
 test('targets with an unknown item or a bad rate are dropped', () => {

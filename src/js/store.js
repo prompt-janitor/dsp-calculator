@@ -1,5 +1,6 @@
 // The user's choices and the session state.
 import { DATA, ITEMS, RECIPES, BELTS, MACHINE_CLASS } from './engine.js';
+import { SORTERS, DEFAULT_SORTER } from './geometry.js';
 
 const STORE_KEY = 'dsp-calculator-v1';
 
@@ -15,7 +16,7 @@ export function defaultState() {
     mining: { speed: 100, veins: 8, oil: 1, orbital: 55 },
     overrides: {},
     moved: {},
-    opts: { spray: true, labels: true, theme: 'auto' },
+    opts: { spray: true, labels: true, theme: 'auto', sorter: DEFAULT_SORTER },
     tab: 'plan', side: 'plan', psec: 'plan', main: 'map', bsec: 'buildings'
   };
 }
@@ -125,6 +126,7 @@ export function mergeState(base, saved) {
   if (isObject(saved.opts)) {
     for (const key of ['spray', 'labels']) if (typeof saved.opts[key] === 'boolean') base.opts[key] = saved.opts[key];
     if (THEMES.includes(saved.opts.theme)) base.opts.theme = saved.opts.theme;
+    if (SORTERS.includes(saved.opts.sorter)) base.opts.sorter = saved.opts.sorter;
   }
   for (const key of Object.keys(PANES)) {
     if (PANES[key].includes(saved[key])) base[key] = saved[key];

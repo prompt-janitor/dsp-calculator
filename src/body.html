@@ -138,5 +138,20 @@
   </div>
 </section>
 
+<section class="sheet lsheet" id="layoutSheet" hidden role="dialog" aria-modal="true" aria-labelledby="lsTitle" tabindex="-1">
+  <div class="grab"><div class="sh-head" id="lsHead"><h3 id="lsTitle">Layout</h3></div></div>
+  <div class="ls-body">
+    <div class="ls-view">
+      <div class="ls-canvas" id="lsCanvas"></div>
+      <div class="ls-zoom">
+        <button class="btn round" type="button" id="lsZoomIn" aria-label="Zoom in"><svg class="svgi" aria-hidden="true"><use href="#i-plus"/></svg></button>
+        <button class="btn round" type="button" id="lsZoomOut" aria-label="Zoom out"><svg class="svgi" aria-hidden="true"><use href="#i-minus"/></svg></button>
+        <button class="btn round" type="button" id="lsFit" aria-label="Fit layout"><svg class="svgi" aria-hidden="true"><use href="#i-fit"/></svg></button>
+      </div>
+    </div>
+    <div class="ls-info" id="lsInfo"></div>
+  </div>
+</section>
+
 <div class="toast" id="toast" hidden role="status"></div>
 <input type="file" id="planFile" accept=".json,application/json" hidden aria-hidden="true" tabindex="-1">

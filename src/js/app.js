@@ -10,6 +10,7 @@ import { renderSettings, wireSettings } from './settings-pane.js';
 import { renderBuildList, wireBuildList } from './build-list.js';
 import { renderInspector, closeInspector, wireInspector } from './inspector.js';
 import { wirePicker } from './picker.js';
+import { wireLayout } from './layout-view.js';
 import { wireShare } from './share.js';
 import { loadSaved, renderSaved, renderSaveBar, openPlanLink, announceLink, wireSaved } from './saved-list.js';
 import { renderFiles, renderFileStatus, wireFiles } from './files-pane.js';
@@ -79,6 +80,7 @@ export function boot() {
   wireBuildList();
   wireInspector();
   wirePicker();
+  wireLayout(() => { if (ui.sel) renderInspector(); });
   wireShare();
   wireSaved(closeAnySheet);
   wireFiles();

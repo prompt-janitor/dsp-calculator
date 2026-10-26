@@ -409,6 +409,69 @@ textarea { width: 100%; min-height: 240px; border-radius: 12px; border: 1px soli
 .segbar { padding: 6px max(16px, var(--sar)) 8px max(16px, var(--sal)); background: var(--bg-blur); }
 .warnbox { margin: 12px max(16px, var(--sar)) 0 max(16px, var(--sal)); padding: 12px 14px; border-radius: 14px; border: 1px solid var(--bad); color: var(--bad); font-size: 14px; }
 
+/* ---------- step layouts ---------- */
+.lv-card { padding: 10px 12px 12px; }
+.group > .lv-sum:only-child { margin: 0; padding: 14px; color: var(--muted); }
+.lv-prev { position: relative; border-radius: 10px; background: var(--bg); overflow: hidden; cursor: zoom-in; }
+.lv-prev svg { display: block; width: 100%; height: auto; max-height: 200px; }
+/* The preview shows the start of a long row and fades out on the right. */
+.lv-prev.cut::after { content: ""; position: absolute; top: 0; right: 0; bottom: 0; width: 56px; background: linear-gradient(to right, transparent, var(--bg)); pointer-events: none; }
+.lv-sum { margin: 10px 2px 0; font-size: 14px; line-height: 1.4; }
+.lv-act { display: flex; margin-top: 10px; }
+.lv-act .btn { flex: 1; }
+.lv-svg { display: block; font-family: var(--f-body); }
+.lv-grid { fill: none; stroke: var(--grid); stroke-width: .04; }
+.lv-belt-edge { fill: none; stroke: var(--line); stroke-width: .78; stroke-linejoin: round; }
+.lv-belt { fill: none; stroke-width: .6; stroke-linejoin: round; }
+.lv-belt.mix { stroke-dasharray: .5 .5; }
+/* Dark chevrons read on every item color, in both themes. */
+.lv-chev { fill: none; stroke: #0a1117; stroke-width: .09; stroke-linecap: round; stroke-linejoin: round; opacity: .6; }
+.lv-bead { fill: var(--panel); stroke: var(--line); stroke-width: .05; }
+.lv-bld { fill: var(--panel2); stroke-width: .12; }
+.lv-name { fill: var(--muted); text-anchor: middle; font-weight: 600; }
+.lv-svg:not(.full) .lv-name, .lv-svg.far .lv-name { display: none; }
+.lv-sorter { fill: none; stroke: var(--fg); stroke-width: .13; stroke-linecap: round; }
+.lv-sorter-head { fill: var(--fg); }
+.lv-port { fill: none; stroke: var(--accent); stroke-width: .16; stroke-linecap: round; }
+.lv-port-head { fill: var(--accent); }
+.lv-badge { fill: var(--warm); }
+.lv-badge-t { fill: var(--bg); font: 700 .42px var(--f-mono); text-anchor: middle; dominant-baseline: middle; }
+.lv-coater { fill: var(--accent-soft); stroke: var(--accent); stroke-width: .08; }
+.lv-tower circle { fill: var(--warm); stroke: var(--bg); stroke-width: .06; }
+.lv-tower path { fill: none; stroke: var(--bg); stroke-width: .09; stroke-linecap: round; stroke-linejoin: round; }
+
+/* The layout sheet: full screen on phones, a large dialog on wider screens. */
+.sheet.lsheet { --drag: 0; top: 0; height: 100%; max-height: none; border-radius: 0; padding-top: var(--sat); }
+.lsheet .grab { cursor: default; padding: 10px 16px 4px; }
+.lsheet .grab::before { display: none; }
+.lsheet .sh-head h3 small, .lsheet .sh-head h3 { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ls-body { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+.ls-view { position: relative; flex: none; height: 44%; min-height: 200px; margin: 8px max(16px, var(--sar)) 0 max(16px, var(--sal)); border-radius: 14px; overflow: hidden;
+  background: var(--bg); border: 1px solid var(--sep); }
+.ls-canvas { position: absolute; inset: 0; touch-action: none; cursor: grab; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+.ls-canvas.drag { cursor: grabbing; }
+.ls-canvas svg { width: 100%; height: 100%; }
+.ls-zoom { position: absolute; right: 10px; bottom: 10px; display: flex; gap: 8px; }
+.ls-zoom .btn.round { background: var(--bg-blur); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); border: 1px solid var(--sep); box-shadow: var(--shadow); }
+.ls-info { flex: 1; min-height: 0; overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain;
+  padding: 4px max(16px, var(--sar)) calc(var(--sab) + 20px) max(16px, var(--sal)); }
+.ls-info .group { margin: 12px 0 0; background: var(--panel2); }
+.ls-info .gtitle { margin: 20px 16px 7px; }
+.ls-info .lv-sum { margin-top: 12px; font-size: 15px; }
+.lv-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.lv-table th, .lv-table td { padding: 8px 4px; border-top: 1px solid var(--sep); text-align: right; vertical-align: top; }
+.lv-table td { font: 600 14px var(--f-mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.lv-table thead th { border-top: 0; padding-top: 0; font: 600 12px var(--f-body); color: var(--muted); }
+.lv-table th[scope="row"], .lv-table thead th:first-child { text-align: left; padding-left: 0; }
+.lv-table small { display: block; font: 12px/1.3 var(--f-body); color: var(--muted); white-space: normal; }
+.lv-item { display: flex; gap: 8px; align-items: flex-start; font-weight: 500; }
+.lv-item .ic { margin-top: 1px; }
+.lv-legend { list-style: none; margin: 0; padding: 0 4px; display: grid; gap: 8px; font-size: 14px; }
+.lv-legend li { display: flex; align-items: center; gap: 12px; }
+.lv-legend svg { width: 42px; height: 22px; flex: none; }
+.lv-notes { margin: 0; padding: 0 4px 0 22px; font-size: 14px; display: grid; gap: 6px; }
+.lv-foot { margin-top: 20px; }
+
 /* ================= Touch: 44 px tap targets ================= */
 @media (pointer: coarse) {
   .btn, .toast .btn { min-height: 44px; }
@@ -466,6 +529,11 @@ textarea { width: 100%; min-height: 240px; border-radius: 12px; border: 1px soli
   textarea { min-height: 72px; height: calc(100vh - 290px); }
   .export .sh-actions { position: sticky; bottom: 0; background: var(--panel); padding: 8px 0; margin-top: 4px; }
   .toast { left: calc(50% + var(--rail-w) / 2); bottom: calc(var(--sab) + 12px); }
+  /* Little height is left, so the drawing and the table sit side by side. */
+  .ls-body { flex-direction: row; }
+  .ls-view { flex: 1; height: auto; min-height: 0; margin: 4px 0 calc(var(--sab) + 10px) max(12px, var(--sal)); }
+  .ls-info { flex: none; width: min(340px, 46%); padding-left: 12px; }
+  .lsheet .grab { padding-top: 8px; }
 }
 
 /* ================= Split view: 600 px wide and up ================= */
@@ -512,6 +580,18 @@ textarea { width: 100%; min-height: 240px; border-radius: 12px; border: 1px soli
   .sheet.picker .grab::before, .sheet.export .grab::before { display: none; }
   .sheet.picker .grab, .sheet.export .grab { padding-top: 16px; cursor: default; }
   .igrid { grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); }
+  .sheet.lsheet { left: 50%; top: 50%; bottom: auto; width: min(1180px, calc(100% - 48px)); height: min(900px, calc(100% - 48px)); border-radius: 18px; padding: 0;
+    transform: translate(-50%, -45%); opacity: 0; transition: transform .25s, opacity .2s; pointer-events: none; }
+  .sheet.lsheet.on { transform: translate(-50%, -50%); opacity: 1; pointer-events: auto; }
+  .lsheet .grab { padding-top: 16px; }
+  .ls-view { height: 50%; }
+}
+
+/* Room for the drawing and the table side by side. */
+@media (min-width: 900px) and (min-height: 500px) {
+  .ls-body { flex-direction: row; }
+  .ls-view { flex: 1; height: auto; margin: 8px 0 16px 16px; }
+  .ls-info { flex: none; width: 360px; }
 }
 
 /* A smaller plan code with a mouse. Touch screens keep 16 px, or iOS zooms on focus. */

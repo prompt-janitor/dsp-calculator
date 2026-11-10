@@ -52,6 +52,7 @@ jobs:
         working-directory: develop
         env:
           CACHE_PREFIX: dsp-calc-develop-
+          APP_ID: dsp-calculator/develop/
         run: |
           npm ci
           npm test

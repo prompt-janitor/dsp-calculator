@@ -41,7 +41,11 @@ writeFileSync(join(dist, 'index.html'), html);
 
 for (const dir of ['icons', 'splash']) cpSync(src('assets/' + dir), join(dist, dir), { recursive: true, filter: (f) => !f.endsWith('.json') });
 cpSync(src('assets/sprite.webp'), join(dist, 'sprite.webp'));
-cpSync(src('manifest.webmanifest'), join(dist, 'manifest.webmanifest'));
+// The manifest id is read from the site root, not from the app's folder, so
+// each app on the same site needs its own. APP_ID sets the preview's.
+const manifest = JSON.parse(readFileSync(src('manifest.webmanifest'), 'utf8'));
+if (process.env.APP_ID) manifest.id = process.env.APP_ID;
+writeFileSync(join(dist, 'manifest.webmanifest'), JSON.stringify(manifest, null, 2) + '\n');
 mkdirSync(join(dist, 'licenses'), { recursive: true });
 cpSync(src('assets/fonts/OFL-ChakraPetch.txt'), join(dist, 'licenses', 'OFL-ChakraPetch.txt'));
 cpSync(join(root, 'LICENSE'), join(dist, 'licenses', 'LICENSE.txt'));

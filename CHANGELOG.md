@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.1 (2026-11-10)
+
+- The app has its own id in its manifest. Before, it had the same id as other apps on the same site, so a phone could open the wrong app from the Home Screen. Remove the app from the Home Screen and add it again to get the fix.
+
 ## 1.1.0 (2026-10-26)
 
 - Step details have a Layout section: a top-down grid drawing of one row of the step's buildings, with the belts, sorters, spray coaters and Tesla Towers, and how many rows to build. Open layout shows the whole row with pan and zoom, a key, notes and the items each building moves. Pick the sorter tier there, and the sorter counts follow. It is a suggestion, so check it in the game.
